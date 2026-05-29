@@ -35,8 +35,8 @@ class MpesaController extends Controller
     }
     public function subscribe(){
 //YOU MPESA API KEYS
-        $consumerKey = "HZKs4kTilx4xoc8CGKgR8t3Jkxe6A5Yp"; //Fill with your app Consumer Key
-        $consumerSecret = "R2xDmkzkVtBAeU4C"; //Fill with your app Consumer Secret
+        $consumerKey = "dflOmBxekAw2elw32rejH8Xm5xkmht7RxFsXPuqSYfjA3wvb"; //Fill with your app Consumer Key
+        $consumerSecret = "RZjnYDTR2EJtDuJRm3I3Gnhh3uv6tBQaqpAs3OSzxsM8bULVxkF6FuB91OD34GH4"; //Fill with your app Consumer Secret
 //ACCESS TOKEN URL
         $access_token_url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
         $headers = ['Content-Type:application/json; charset=utf8'];
@@ -51,9 +51,9 @@ class MpesaController extends Controller
         $access_token = $result->access_token;
         Log::info($access_token);
         $registerurl = 'https://api.safaricom.co.ke/mpesa/c2b/v2/registerurl';
-        $BusinessShortCode = '6589582';
-        $confirmationUrl = 'https://dolextechnologies.co.ke/api/storeWebhooks';
-        $validationUrl = 'https://dolextechnologies.co.ke/api/authenticate';
+        $BusinessShortCode = '4311304';
+        $confirmationUrl = 'https://vumtelnetworks.co.ke/api/storeWebhooks';
+        $validationUrl = 'https://vumatelnetworks.co.ke/api/authenticate';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $registerurl);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
