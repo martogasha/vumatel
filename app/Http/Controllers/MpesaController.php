@@ -52,7 +52,7 @@ class MpesaController extends Controller
         Log::info($access_token);
         $registerurl = 'https://api.safaricom.co.ke/mpesa/c2b/v2/registerurl';
         $BusinessShortCode = '4311304';
-        $confirmationUrl = 'https://vumtelnetworks.co.ke/api/storeWebhooks';
+        $confirmationUrl = 'https://vumatelnetworks.co.ke/api/storeWebhooks';
         $validationUrl = 'https://vumatelnetworks.co.ke/api/authenticate';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $registerurl);
