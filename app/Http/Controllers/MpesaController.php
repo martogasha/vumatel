@@ -76,9 +76,7 @@ class MpesaController extends Controller
     }
     public function storeWebhooks(Request $request)
     {
-        Log::info($request->all());
-
-        
+        Log::info($request->json()->all());
         
         $dateFormats = $request->TransTime;
         $dateFormat = Carbon::parse($dateFormats);
