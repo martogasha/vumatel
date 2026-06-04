@@ -2370,6 +2370,7 @@ class AdminController extends Controller
         $customer = User::find($request->user_id);
         $customer->role = 4;
         $customer->save();
+        $deleteInvoice = invoice::where('user_id',$customer->id)->delete();
         return redirect()->back()->with('success','Customer Deactivated');
     }
     public function editC(Request $request, $id){
