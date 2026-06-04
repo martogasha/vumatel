@@ -82,29 +82,15 @@ class Billing extends Command
                 if($currentBalance>=1500 || $currentBalance == 1 || $currentBalance == 2){
 
                                             if($currentBalance>=1500 && $currentBalance < 2000){
-                                                $bandwidth = '6MBPS';
-                                            }
-                                            if($currentBalance>=2000 && $currentBalance < 2500){
                                                 $bandwidth = '8MBPS';
                                             }
+                                            if($currentBalance>=2000 && $currentBalance < 2500){
+                                                $bandwidth = '15MBPS';
+                                            }
                                             if($currentBalance>=2500 && $currentBalance < 3000){
-                                                $bandwidth = '10MBPS';
-                                            }
-                                            if($currentBalance>=3000 && $currentBalance < 3500){
-                                                $bandwidth = '12MBPS';
-                                            }
-                                            if($currentBalance>=3500 && $currentBalance < 4000){
-                                                $bandwidth = '14MBPS';
-                                            }
-                                            if($currentBalance>=4000 && $currentBalance < 4500){
-                                                $bandwidth = '16MBPS';
-                                            }
-                                            if($currentBalance>=4500 && $currentBalance < 5000){
-                                                $bandwidth = '18MBPS';
-                                            }
-                                            if($currentBalance>=5000 && $currentBalance > 5000){
                                                 $bandwidth = '20MBPS';
                                             }
+                                    
                                             if($currentBalance==1){
                                                 $bandwidth = '6MBPS';
                                             }

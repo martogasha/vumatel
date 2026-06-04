@@ -33,6 +33,7 @@ Route::get('/', [IndexController::class, 'index']);
 //admin routes
 Route::get('admin', [AdminController::class, 'admin']);
 Route::get('disableC/{id}', [AdminController::class, 'disablePppoeSecret']);
+Route::get('prompt/{id}', [AdminController::class, 'prompt']);
 Route::get('getPppoeProfiles', [AdminController::class, 'getPppoeProfiles']);
 Route::get('bandwidth', [AdminController::class, 'bandwidth']);
 Route::get('refreshBandwidth', [AdminController::class, 'refreshBandwidth']);

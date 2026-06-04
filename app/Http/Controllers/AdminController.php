@@ -520,6 +520,85 @@ class AdminController extends Controller
             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
         }
     }
+    public function prompt($id){
+        
+        $customer = User::find($id);
+        $account = $customer->phone;
+        $cleanedNumber = $customer->package_amount;
+        $phoneNumber = $customer->phoneOne;
+        $modifiedNumber = ltrim($phoneNumber, "0");
+        $code = '254';
+        $finalNumber = $code . $modifiedNumber;
+        
+
+                // Do not hard code these values
+                       $consumer_key ="dflOmBxekAw2elw32rejH8Xm5xkmht7RxFsXPuqSYfjA3wvb";
+        $consumer_secret = "RZjnYDTR2EJtDuJRm3I3Gnhh3uv6tBQaqpAs3OSzxsM8bULVxkF6FuB91OD34GH4";
+        $credentials = base64_encode($consumer_key.":".$consumer_secret);
+        
+        $url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+  
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Basic '.$credentials)); //setting a custom header
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  
+        $curl_response = curl_exec($curl);
+  
+        $access_token = json_decode($curl_response);
+
+        $token = $access_token->access_token;
+
+        // Do not hard code these values
+        $BusinessShortCode = 4311304;
+        $passkey ='05e2b97433a94401c9a5330d35e8bdc88b3c0079233c9039d7b5694ba06d0df9';
+        $timestamp= Carbon::rawParse('now')->format('YmdHms');
+
+        $password = base64_encode($BusinessShortCode.$passkey.$timestamp);
+        $Amount = $cleanedNumber;
+        $PartyA = $finalNumber;
+        $PartyB = 4311304;
+
+
+        $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+  
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+          curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type:application/json; charset=utf8',
+            'Authorization:Bearer ' . $token
+        )); //setting custom header
+        
+        
+        $curl_post_data = array(
+          //Fill in the request parameters with valid values
+          'BusinessShortCode' => $BusinessShortCode,
+          'Password' => $password,
+          'Timestamp' => $timestamp,
+          'TransactionType' => 'CustomerPayBillOnline',
+          'Amount' => $Amount,
+          'PartyA' => $PartyA,
+          'PartyB' => $PartyB,
+          'PhoneNumber' => $PartyA,
+          'CallBackURL' => 'https://vumatelnetworks.co.ke/storeWebhooks',
+          'AccountReference' => $account,
+          'TransactionDesc' => 'Testing stkpush on Sandbox '
+        );
+        
+        $data_string = json_encode($curl_post_data);
+        
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        
+        $curl_response = curl_exec($curl);   
+          
+                return redirect()->back()->with('success','CUSTOMER PROMPTED SUCCESS');
+
+    }
     public function product(){
         $products = Product::orderByDesc('id')->get();
         return view('admin.products',[

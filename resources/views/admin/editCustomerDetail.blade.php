@@ -13,14 +13,19 @@
                 <button type="submit" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Enable</button>
                 @endif
                 </form>
+                
+                
 
                 <ul>
-                    <li>
-                        <a href="{{url('admin')}}">Home</a>
-                    </li>
-                    <li>Edit <b style="color: red">{{$customer->first_name}}</b></li>
+                   <br>
                 </ul>
+                     <form action="{{url('prompt',$customer->id)}}">
+                        @csrf
+                <button type="submit" class="btn-fill-lg bg-success btn-hover-yellow">Prompt</button>
+               
+                </form>
             </div>
+
             @include('flash-message');
             <!-- Breadcubs Area End Here -->
             <!-- Add New Teacher Area Start Here -->
@@ -45,14 +50,11 @@
                         @csrf
                         <div class="row">
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>First Name *</label>
+                                <label> Name *</label>
                                 <input type="text" value="{{$customer->first_name}}" class="form-control" name="first_name">
                             </div>
                           
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Email Address *</label>
-                                <input type="email" value="{{$customer->email}}" class="form-control" name="email">
-                            </div>
+                           
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Account No:</label>
                                 <input type="text" value="{{$customer->phone}}" class="form-control" name="phone" required>
@@ -61,10 +63,7 @@
                                 <label>Phone No:</label>
                                 <input type="text" value="{{$customer->phoneOne}}" class="form-control" name="phoneOne" required>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Location</label>
-                                <input type="text" value="{{$customer->location}}" class="form-control" name="location">
-                            </div>
+                           
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Package *</label>
                                 <input type="text" value="{{$customer->last_name}}" class="form-control" name="bandwidth"/>
@@ -76,7 +75,7 @@
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Current Balance *</label>
-                                <input type="text" value="{{$customer->balance}}" class="form-control"/>
+                                <input type="text" value="{{$customer->balance}}" class="form-control" disabled/>
 
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -96,14 +95,22 @@
                                     <input type="date" value="{{ old('due_date', $customer->due_date ? \Carbon\Carbon::parse($customer->due_date)->format('Y-m-d') : '') }}" class="form-control" name="due_date"/>
                                 </div>
                             </div>
-                     
+                      <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <div class="form-group">
+                                    <label for="dob">1Day MSG *</label>
+                                    <input type="date" value="" class="form-control" name="one_day_before"/>
+                                </div>
+                            </div>
                         
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="addCustomer">Save</button>
                             </div>
+                            
                         </div>
                     </form>
+                    
                 </div>
+                
             </div>
             <!-- Add New Teacher Area End Here -->
             <footer class="footer-wrap-layout1">

@@ -19,143 +19,90 @@
     
      
     
-            <div class="row gutters-20" id="report">
-                    <div class="col-lg-3 col-sm-6 col-12">
-                        <a href="{{url('customers')}}">
-                        <div class="card dashboard-card-seven">
-                            <div class="social-media bg-fb hover-fb" style="background-color: dodgerblue">
-                                <div class="media media-none--lg">
-                                    <div class="media-body space-sm">
-                                        <h6 class="item-title">Customers</h6>
+           
+                            <!-- Dashboard summery Start Here -->
+                <div class="row gutters-20">
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-green ">
+                                        <i class="flaticon-classmates text-green"></i>
                                     </div>
                                 </div>
-                                <div class="social-like">{{\App\Models\User::where('role',2)->count()}}</div>
+                                
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Customers</div>
+                                        <div class="item-number"><span class="counter" data-num="{{\App\Models\User::where('role',2)->count()}}">{{\App\Models\User::where('role',2)->count()}}</span></div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                
+                                
                             </div>
+                            
                         </div>
-                        </a>
+                        
                     </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <a href="{{url('employees')}}">
-                    <div class="card dashboard-card-seven">
-                        <div class="social-media bg-twitter hover-twitter" style="background-color: mediumseagreen">
-                            <div class="media media-none--lg">
-
-                                <div class="media-body space-sm">
-                                    <h6 class="item-title">Users</h6>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-blue">
+                                        <i class="flaticon-multiple-users-silhouette text-blue"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Users</div>
+                                        <div class="item-number"><span class="counter" data-num="{{\App\Models\User::where('role',1)->count()}}">{{\App\Models\User::where('role',1)->count()}}</span></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="social-like">{{\App\Models\User::where('role',1)->count()}}</div>
                         </div>
                     </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="card dashboard-card-seven">
-                        <div class="social-media bg-twitter hover-twitter" style="background-color: indianred">
-                            <div class="media media-none--lg">
-
-                                <div class="media-body space-sm">
-                                    <h6 class="item-title">Net Income</h6>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-yellow">
+                                        <i class="flaticon-money text-red"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Mpesa Income</div>
+                                        <div class="item-number">Ksh <span class="counter" data-num="">5,690</span></div>
+                                    </div>
                                 </div>
                             </div>
-                            <span>KSH</span>
-                            <div class="social-like"></div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <a href="{{url('mpesa')}}">
-                    <div class="card dashboard-card-seven">
-                        <div class="social-media bg-twitter hover-twitter" style="background-color: hotpink">
-                            <div class="media media-none--lg">
-
-                                <div class="media-body space-sm">
-                                    <h6 class="item-title">Mpesa Income</h6>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-red">
+                                        <i class="flaticon-money text-red"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Cash Income</div>
+                                        <div class="item-number"><span>Ksh </span><span class="counter" data-num=""></span></div>
+                                    </div>
                                 </div>
                             </div>
-                            <span>KSH</span>
-                            <div class="social-like"></div>
                         </div>
                     </div>
-                    </a>
                 </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <a href="{{url('cash')}}">
-                    <div class="card dashboard-card-seven">
-                        <div class="social-media bg-twitter hover-twitter" style="background-color: mediumpurple">
-                            <div class="media media-none--lg">
-
-                                <div class="media-body space-sm">
-                                    <h6 class="item-title">Cash Income</h6>
-                                </div>
-                            </div>
-                            <span>KSH</span>
-                            <div class="social-like"></div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <a href="{{url('expenses')}}">
-                    <div class="card dashboard-card-seven">
-                        <div class="social-media bg-twitter hover-twitter">
-                            <div class="media media-none--lg">
-
-                                <div class="media-body space-sm">
-                                    <h6 class="item-title">Expenses</h6>
-                                </div>
-                            </div>
-                            <span>KSH</span>
-                            <div class="social-like"></div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                
-            </div>
-            <div class="row gutters-20" id="basic">
-
-            </div>
+                <!-- Dashboard summery End Here -->
             <!-- Dashboard summery End Here -->
             <!-- Dashboard Content Start Here -->
             <div class="row gutters-20" id="scrollToReports">
-                    <div class="col-12 col-xl-6 col-3-xxxl">
-                        <div class="card dashboard-card-three pd-b-20">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>Customer</h3>
-                                    </div>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                           aria-expanded="false">...</a>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-times text-orange-red"></i>Close</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="doughnut-chart-wrap">
-                                    <canvas id="student-doughnut-chart" width="100" height="300"></canvas>
-                                </div>
-                                <div class="student-report">
-                                    <div class="student-count pseudo-bg-blue">
-                                        <h4 class="item-title">Paid Customers</h4>
-                                        <div class="item-number">45,000</div>
-                                    </div>
-                                    <div class="student-count pseudo-bg-yellow">
-                                        <h4 class="item-title">Unpaid Customers</h4>
-                                        <div class="item-number">1,05,000</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  
                     <div class="col-12 col-xl-6 col-4-xxxl">
                         <div class="card dashboard-card-four pd-b-20">
                             <div class="card-body">

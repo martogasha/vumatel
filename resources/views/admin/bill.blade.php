@@ -1,5 +1,5 @@
 @include('adminPartial.nav')
-<title>Bill Customer | Japcom</title>
+<title>Bill Customer | Henix</title>
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->

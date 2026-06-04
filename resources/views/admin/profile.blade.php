@@ -1,6 +1,6 @@
 @include('adminPartial.nav')
 @if(\Illuminate\Support\Facades\Auth::check())
-<title>{{\Illuminate\Support\Facades\Auth::user()->first_name}} {{\Illuminate\Support\Facades\Auth::user()->last_name}} | Japcom Networks</title>
+<title>{{\Illuminate\Support\Facades\Auth::user()->first_name}} {{\Illuminate\Support\Facades\Auth::user()->last_name}} | Henix</title>
 @endif
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
@@ -24,7 +24,7 @@
                             <div class="heading-layout1">
                                 <div class="item-title">
                                     @if(\Illuminate\Support\Facades\Auth::check())
-                                    <h3>Edit {{\Illuminate\Support\Facades\Auth::user()->first_name}}</h3>
+                                    <h3>Edit {{\Illuminate\Support\Facades\Auth::user()->first_name}} {{\Illuminate\Support\Facades\Auth::user()->last_name}}</h3>
                                     @endif
                                 </div>
                                 <div class="dropdown">
@@ -87,7 +87,7 @@
                 </div>
             <!-- Account Settings Area End Here -->
             <footer class="footer-wrap-layout1">
-                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>
+                <div class="copyright">© Copyrights <a href="#">Henix</a> 2026. All rights reserved. Designed by <a href="#">Henix</a></div>
             </footer>
         </div>
     </div>

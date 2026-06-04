@@ -75,8 +75,8 @@ class sendSms extends Command
                         'mobile' => $one->user->phoneOne,
                         
                         'message' => 'Dear customer, your internet subscription expires on '.date('d/F/Y',strtotime($one->user->due_date)).'. Pay to avoid disconnection.
-TILL NUMBER (buy goods and services): 9190643
-Thank you in advance.',
+PAYBILL: 4311304
+ACC NO: '.$get->user->phone.'',
                         'shortcode' => 'VUMATEL',
                         
                     ];
