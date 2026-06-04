@@ -74,7 +74,7 @@ class sendSms extends Command
                         'partnerID' => 138,
                         'mobile' => $one->user->phoneOne,
                         
-                        'message' => 'Dear customer, your internet subscription expires on '.date('d/F/Y',strtotime($one->user->due_date)).'. Pay to avoid disconnection.
+                        'message' => 'Dear customer, your internet subscription expires on '.date('d/F/Y',strtotime($one->user->due_date)).'. To renew, kindly pay using
 PAYBILL: 4311304
 ACC NO: '.$one->user->phone.'',
                         'shortcode' => 'VUMATEL',
