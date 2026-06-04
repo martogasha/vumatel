@@ -2376,8 +2376,9 @@ class AdminController extends Controller
     public function editC(Request $request, $id){
        
         $dateFormat = Carbon::parse($request->due_date);
+        $endDate = Carbon::parse($request->input('due_date'))->endOfDay();
         $dateNow = Carbon::now();
-        $nextDate = $dateFormat;
+        $nextDate = $endDate;
         $edit = User::find($id);
         $bal = $edit->balance;
         $currentBal = $bal + $request->cBalance;
