@@ -2616,9 +2616,8 @@ class AdminController extends Controller
         return response($output);
     }
     public function deleteC(Request $request){
-        $deleteUser = User::where('id',$request->userid)->update(['package_amount'=>null]);
-        $deleteInvoice = Invoice::where('user_id',$request->userid)->update(['statas',1]);
-        return redirect(url('customers'))->with('success','CUSTOMER TERMINATED SUCCESS');
+        $deleteUser = User::where('id',$request->userid)->delete();
+        return redirect(url('noneActivecustomers'))->with('success','CUSTOMER DELETED SUCCESS');
 
     }
       public function bandwidth(){

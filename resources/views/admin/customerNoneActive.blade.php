@@ -65,13 +65,21 @@
                                                 <form action="{{url('activate')}}" method="post">
                                                     @csrf
                                                     <input type="hidden" value="{{$customer->id}}" name="user_id">
-                                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Activate</button>
+                                                    <div class="col-12 form-group mg-t-8">
+                                                    <button type="submit" class="btn-fill-xl text-light bg-yellow">Activate</button>
+                                                    <div>
                                                 </form>
                                                 @else
-                                                <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Activated</button>
+                                                <button class="btn-fill-xl text-light bg-yellow">Activated</button>
                                                 @endif
+                                                <br>
 
-                                            </div>
+                                                <div class="col-12 form-group mg-t-8">
+                                                        <button type="button" class="btn-fill-xl text-light bg-red view" data-toggle="modal"
+                                                        data-target="#west" id="{{$customer->id}}">
+                                                        Delete
+                                                    </button>
+                                                </div>
                                         </div>
                                     </td>
                                     </tr>
