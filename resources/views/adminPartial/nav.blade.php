@@ -164,7 +164,16 @@
                     </li>
             
              
-          
+           <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-open-book"></i><span>Send Bulk SMS</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="{{url('bulksms')}}" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Send Bulk SMS</a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Billing</span></a>
                         <ul class="nav sub-group-menu">
@@ -183,15 +192,15 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-open-book"></i><span>Logs</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="{{url('logs')}}" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Logs</a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-open-book"></i><span>Logs</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{{url('logs')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Logs</a>
+                                </li>
+                            </ul>
+                        </li>
 
                 </ul>
             </div>

@@ -29,6 +29,7 @@ use RouterOS\Query;
 use RouterOS\Config;
 use Illuminate\Support\Facades\Log;
 use App\Models\Cache;
+use Illuminate\Support\Facades\Http;
 class AdminController extends Controller
 {
     public function admin(){
@@ -2553,6 +2554,34 @@ class AdminController extends Controller
         $delete->delete();
         return redirect(url('employees'))->with('success','USER DELETED SUCCESS');
 
+    }
+    public function bulksms(){
+        return view('admin.bulksms');
+    }
+    public function sendBulkSms(Request $request){
+           $ones =  Invoice::where('status',1)->where('statas',0)->get();
+          
+        foreach($ones as $one){
+                $oneDay = $one->one_day_before;
+              
+           
+                         $postData = [
+                        'apikey' => '9324ef7e2034b5d479f64d31ae513215',
+                        'partnerID' => 138,
+                        'mobile' => $one->user->phoneOne,
+                        
+                        'message' => $request->message,
+                        'shortcode' => 'VUMATEL',
+                        
+                    ];
+                    $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
+
+       
+                                     
+        }
+                return redirect()->back()->with('success','MESSAGE SENT SUCCESSFULLY');
+
+    
     }
     public function del(Request $request){
         $output = "";
