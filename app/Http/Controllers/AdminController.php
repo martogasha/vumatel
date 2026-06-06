@@ -1536,129 +1536,22 @@ class AdminController extends Controller
         ]);
     }
     public function storeCustomer(Request $request){
-        if ($request->ajax()){
-            $output = "";
-        }
-        $finalAmount = $request->amount_supposed_to_pay + $request->previous_balance;
-        $bal = $finalAmount - $request->amount;
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $paymentDate =  date('d-m-Y', strtotime($request->payment_date));
-        $store = User::create([
-           'first_name'=>$request->first_name,
-           'last_name'=>$request->bandwidth,
-           'email'=>$request->email,
-           'phone'=>$request->phone,
-           'phoneOne'=>$request->phoneOne,
-           'location'=>$request->location,
-           'payment_date'=>$paymentDate,
-           'time_difference'=>$request->time_difference,
-           'due_date'=>$request->due_date,
-           'date_to_send_sms'=>$request->sms_date,
-           'amount'=>$request->amount,
-           'package_amount'=>$request->amount_supposed_to_pay,
-           'amount_supposed_to_be_paid'=>$finalAmount - $request->amount,
-           'balance'=>$bal,
-           'role'=>2,
-           'password'=>Hash::make('123456'),
+       dd($request->all());
+          $store = User::create([
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->bandwidth,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'phoneOne'=>$request->phoneOne,
+            'location'=>$request->location,
+            'bandwidth'=>$request->bandwidth,
+            'payment_date'=>$paymentDate,
+            'due_date'=>$request->due_date,
+            'amount'=>$request->amount,
+            'package_amount'=>$request->amount_supposed_to_pay,
+            'balance'=>$bal,
+            'role'=>2,
         ]);
-        $date1 = $request->payment_date;
-        $date2 =$request->due_date;
-
-        $diff = abs(strtotime($date2) - strtotime($date1));
-
-        $years = floor($diff / (365*60*60*24));
-        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-        if ($months==1){
-            $usage_time = $days+30;
-        }
-        else{
-            $usage_time = $days;
-        }
-        $createInvoice = Invoice::create([
-            'invoice_date'=>$paymentDate,
-            'amount'=>$request->amount_supposed_to_pay,
-            'user_id'=>$store->id,
-            'usage_time'=>$usage_time,
-            'balance'=>$finalAmount,
-            'status'=>0,
-            'statas'=>0,
-        ]);
-        $nextDate =  date('d-m-Y', strtotime($request->due_date));
-        $updateBalance = User::where('id',$store->id)->update(['balance'=>$bal]);
-        $updateAmount = User::where('id',$store->id)->update(['amount'=>0]);
-        $updatePaymentDate = User::where('id',$store->id)->update(['payment_date'=>0]);
-            $updateDueDate = User::where('id',$store->id)->update(['due_date'=>$nextDate]);
-
-        $getMinUsage = Invoice::where('user_id',$store->id)->where('status',0)->min('usage_time');
-        $getInvoice = Invoice::where('user_id',$store->id)->where('status',0)->where('usage_time',$getMinUsage)->first();
-        $currentBalance = $getInvoice->balance - $request->amount;
-        if ($request->amount==0){
-
-        }
-        else{
-            if ($currentBalance<=0){
-                $createPayment = Cash::create([
-                    'user_id'=>$store->id,
-                    'invoice_id'=>$getInvoice->id,
-                    'amount'=>$request->amount,
-                    'date'=>$paymentDate,
-                    'reason'=>'Internet Subscription',
-                    'currentMonth'=>$currentMonth,
-                    'currentYear' =>$currentYear,
-                ]);
-                $createPay = Payment::create([
-                    'user_id'=>$store->id,
-                    'invoice_id'=>$getInvoice->id,
-                    'amount'=>$request->amount,
-                    'date'=>$paymentDate,
-                    'payment_method'=>'Cash',
-                    'currentMonth'=>$currentMonth,
-                ]);
-                $updateBal = Invoice::where('user_id',$store->id)->update(['usage_time'=>10000]);
-                $updateStatus = Invoice::where('user_id',$store->id)->update(['status'=>1]);
-                $updateBalance = Invoice::where('user_id',$store->id)->update(['balance'=>$currentBalance]);
-                $updatePaymentId = Invoice::where('user_id',$store->id)->update(['payment_id'=>$createPay->id]);
-                $updateIBalance = Payment::where('invoice_id',$getInvoice->id)->where('id',$createPay->id)->update(['invoice_balance'=>$currentBalance]);
-                $updateCashAmount = Invoice::where('user_id',$store->id)->update(['cash_id'=>$createPayment->id]);
-                $updateCash = Invoice::where('user_id',$store->id)->update(['cash_amount'=>$request->amount]);
-                $updateUserAmount = User::where('id',$store->id)->update(['amount'=>$request->amount]);
-                $updateUserDate = User::where('id',$store->id)->update(['payment_date'=>$paymentDate]);
-                $updateUserBalance = User::where('id',$store->id)->update(['balance'=>$currentBalance]);
-            }
-            else{
-                $getInv = Invoice::where('user_id',$store->id)->where('status',0)->first();
-                $currentBal = $getInv->balance - $request->amount;
-                if ($currentBal>0){
-                    $createPayment1 = Cash::create([
-                        'user_id'=>$store->id,
-                        'invoice_id'=>$getInvoice->id,
-                        'amount'=>$request->amount,
-                        'date'=>$paymentDate,
-                        'reason'=>'Internet Subscription',
-                        'currentMonth'=>$currentMonth,
-                        'currentYear' =>$currentYear,
-                    ]);
-                    $createPay1 = Payment::create([
-                        'user_id'=>$store->id,
-                        'invoice_id'=>$getInv->id,
-                        'amount'=>$request->amount,
-                        'date'=>$paymentDate,
-                        'payment_method'=>'Cash',
-                        'currentMonth'=>$currentMonth,
-                    ]);
-                    $updateBalance = Invoice::where('id',$getInv->id)->update(['balance'=>$currentBal]);
-                    $updateIBalance = Payment::where('invoice_id',$getInv->id)->where('id',$createPay1->id)->update(['invoice_balance'=>$currentBal]);
-                    $updateCashAmount = Invoice::where('id',$getInv->id)->update(['payment_id'=>$createPay1->id]);
-                    $updateCash = Invoice::where('id',$getInv->id)->update(['cash_amount'=>$request->amount]);
-                    $updateUserA = User::where('id',$store->id)->update(['amount'=>$request->amount]);
-                    $updateUserD = User::where('id',$store->id)->update(['payment_date'=>$paymentDate]);
-                    $updateUserBal = User::where('id',$store->id)->update(['balance'=>$currentBal]);
-                }
-            }
-
-        }
     }
     public function storeCustomerOne(Request $request){
         if ($request->ajax()){
@@ -2361,6 +2254,10 @@ class AdminController extends Controller
             'date'=>$date
         ]);
     }
+     public function addCustomers(Request $request){
+      
+        return view('admin.customerAdd');
+    }
     public function activate(Request $request){
         $customer = User::find($request->user_id);
         $customer->role = 2;
@@ -2375,8 +2272,13 @@ class AdminController extends Controller
         return redirect()->back()->with('success','Customer Deactivated');
     }
     public function editC(Request $request, $id){
-       
-        $dateFormat = Carbon::parse($request->due_date);
+        $getAccountNo = User::where('phone',$request->phone)->first();
+        if($getAccountNo){
+        return redirect()->back()->with('error','ACCOUNT NUMBER ALREADY IN USE');
+
+        }
+        else{
+             $dateFormat = Carbon::parse($request->due_date);
         $endDate = Carbon::parse($request->input('due_date'))->endOfDay();
         $dateNow = Carbon::now();
         $nextDate = $endDate;
@@ -2548,6 +2450,10 @@ class AdminController extends Controller
 
         }
         return redirect(url('customers'))->with('success','CUSTOMER EDIT SUCCESS');
+
+        }
+       
+       
     }
     public function deleteUser(Request $request){
         $delete = User::find($request->userid);

@@ -145,6 +145,10 @@
                                 <a href="{{url('noneActivecustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Non-Active
                                     Customers</a>
                             </li>
+                              <li class="nav-item">
+                                <a href="{{url('addCustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Customers</a>
+                            </li>
                          
                         </ul>
                     </li>

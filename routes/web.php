@@ -40,6 +40,7 @@ Route::get('refreshBandwidth', [AdminController::class, 'refreshBandwidth']);
 Route::get('refreshPercentage', [AdminController::class, 'refreshPercentage']);
 Route::get('testing', [AdminController::class, 'testing']);
 Route::get('refresh', [AdminController::class, 'refresh']);
+Route::get('addCustomers', [AdminController::class, 'addCustomers']);
 Route::get('storePppoe', [AdminController::class, 'storePppoe']);
 Route::get('createInvoice', [AdminController::class, 'cInvoice']);
 Route::get('editUser/{id}', [AdminController::class, 'editUser']);
@@ -109,7 +110,7 @@ Route::post('makeMpesaPayment', [AdminController::class, 'makeMpesaPayment'])->n
 Route::post('storeEmployee', [AdminController::class, 'storeEmployee'])->name('storeEmployee');
 Route::get('storeQuotation', [AdminController::class, 'storeQuotation']);
 Route::get('storeInvoice', [AdminController::class, 'storeInvoice']);
-Route::get('storeCustomer', [AdminController::class, 'storeCustomer']);
+Route::post('storeCustomer', [AdminController::class, 'storeCustomer']);
 Route::get('storeCustomerOne', [AdminController::class, 'storeCustomerOne']);
 Route::get('dueDate', [AdminController::class, 'dueDate']);
 Route::get('updateDueDate', [AdminController::class, 'updateDueDate']);

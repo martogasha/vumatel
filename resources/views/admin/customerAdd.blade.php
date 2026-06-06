@@ -1,29 +1,16 @@
 @include('adminPartial.nav')
-<title>{{$customer->first_name}} | Henix</title>
+<title>Add Customer | Henix</title>
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
-            <div class="breadcrumbs-area">
-                <h3>Edit <b style="color: red">{{$customer->first_name}}</b> </h3>
-                <form action="{{url('disableC',$customer->mikrotik_id)}}">
-                        @csrf
-                @if($customer->dis_status != 'true')
-                <button type="submit" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Disable</button>
-                @else
-                <button type="submit" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Enable</button>
-                @endif
-                </form>
-                
-                
-
+       <div class="breadcrumbs-area">
+                <h3>Add New Customer</h3>
                 <ul>
-                   <br>
+                    <li>
+                        <a href="{{url('admin')}}">Home</a>
+                    </li>
+                    <li>Add New Customer</li>
                 </ul>
-                     <form action="{{url('prompt',$customer->id)}}">
-                        @csrf
-                <button type="submit" class="btn-fill-lg bg-success btn-hover-yellow">Prompt</button>
-               
-                </form>
             </div>
 
             @include('flash-message');
@@ -33,7 +20,6 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>Edit <b style="color: red">{{$customer->first_name}}</b></h3>
                         </div>
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" role="button"
@@ -46,36 +32,36 @@
                             </div>
                         </div>
                     </div>
-                    <form action="{{url('editC',$customer->id)}}" method="post">
+                    <form action="{{url('storeCustomer')}}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label> Name *</label>
-                                <input type="text" value="{{$customer->first_name}}" class="form-control" name="first_name">
+                                <input type="text" class="form-control" name="first_name" required>
                             </div>
                           
                            
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Account No:</label>
-                                <input type="text" value="{{$customer->phone}}" class="form-control" name="phone" required>
+                                <input type="text" class="form-control" name="phone" required>
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Phone No:</label>
-                                <input type="text" value="{{$customer->phoneOne}}" class="form-control" name="phoneOne" required>
+                                <input type="text" class="form-control" name="phoneOne" required>
                             </div>
                            
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Package *</label>
-                                <input type="text" value="{{$customer->last_name}}" class="form-control" name="bandwidth"/>
+                                <input type="text" class="form-control" name="bandwidth"/>
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Package Amount *</label>
-                                <input type="text" value="{{$customer->package_amount}}" class="form-control" name="package_amount" required/>
+                                <input type="text" class="form-control" name="package_amount" required/>
 
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Current Balance *</label>
-                                <input type="text" value="{{$customer->balance}}" class="form-control" disabled/>
+                                <input type="text" class="form-control" disabled/>
 
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -86,24 +72,19 @@
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <div class="form-group">
                                     <label for="dob">Payment Date *</label>
-                                    <input type="date" value="{{ old('payment_date', $customer->payment_date ? \Carbon\Carbon::parse($customer->payment_date)->format('Y-m-d') : '') }}" class="form-control" name="payment_date"/>
+                                    <input type="date" class="form-control" name="payment_date"/>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <div class="form-group">
                                     <label for="dob">Due Date *</label>
-                                    <input type="date" value="{{ old('due_date', $customer->due_date ? \Carbon\Carbon::parse($customer->due_date)->format('Y-m-d') : '') }}" class="form-control" name="due_date"/>
+                                    <input type="date" class="form-control" name="due_date"/>
                                 </div>
                             </div>
-                      <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <div class="form-group">
-                                    <label for="dob">1Day MSG *</label>
-                                    <input type="date" value="" class="form-control" name="one_day_before"/>
-                                </div>
-                            </div>
+                 
                         
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="addCustomer">Save</button>
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
                             </div>
                             
                         </div>

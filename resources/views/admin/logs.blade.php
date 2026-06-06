@@ -47,6 +47,7 @@
                                     
                                     <td>{{date('d/m/Y H:i:s',strtotime($log->date))}}</td>
                                     <td>{{$log->user->first_name}} ({{$log->user->phone}})</td>
+                                
                                     @switch($log->reason)
                                     @case(0)
                                     <td>Paid</td>
