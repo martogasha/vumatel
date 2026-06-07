@@ -1540,6 +1540,7 @@ class AdminController extends Controller
             $integer = (int) $request->bandwidth;
             $bal = 0;
             $now = Carbon::now();
+            $endDate = Carbon::parse($request->input('due_date'))->endOfDay();
           $store = User::create([
             'first_name'=>$request->first_name,
             'last_name'=>$request->bandwidth,
@@ -1549,7 +1550,7 @@ class AdminController extends Controller
             'bandwidth'=>$integer,
             'password'=>$request->password,
             'payment_date'=>$request->payment_date,
-            'due_date'=>$request->due_date,
+            'due_date'=>$endDate,
             'amount'=>$request->package_amount,
             'balance'=> $bal + $request->cBalance,
             'role'=>2,
