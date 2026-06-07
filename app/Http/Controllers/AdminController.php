@@ -1536,7 +1536,14 @@ class AdminController extends Controller
         ]);
     }
     public function storeCustomer(Request $request){
-            
+
+      $getAccountNo = User::where('phone',$request->phone)->first();
+        
+        if(isset($getAccountNo->phone)){
+        return redirect()->back()->with('error','ACCOUNT NUMBER ALREADY IN USE');
+
+        }
+        else{
             $integer = (int) $request->bandwidth;
             $bal = 0;
             $now = Carbon::now();
@@ -1621,6 +1628,10 @@ class AdminController extends Controller
                     ]);
 
                     return redirect(url('customers'))->with('success','CUSTOMER CREATED SUCCESSFULLY');
+
+        }
+            
+            
 
             
     }
