@@ -1536,22 +1536,92 @@ class AdminController extends Controller
         ]);
     }
     public function storeCustomer(Request $request){
-       dd($request->all());
+            
+            $integer = (int) $request->bandwidth;
+            $bal = 0;
+            $now = Carbon::now();
           $store = User::create([
             'first_name'=>$request->first_name,
             'last_name'=>$request->bandwidth,
-            'email'=>$request->email,
             'phone'=>$request->phone,
             'phoneOne'=>$request->phoneOne,
-            'location'=>$request->location,
-            'bandwidth'=>$request->bandwidth,
-            'payment_date'=>$paymentDate,
+            'package_amount' => $request->package_amount,
+            'bandwidth'=>$integer,
+            'password'=>$request->password,
+            'payment_date'=>$request->payment_date,
             'due_date'=>$request->due_date,
-            'amount'=>$request->amount,
-            'package_amount'=>$request->amount_supposed_to_pay,
-            'balance'=>$bal,
+            'amount'=>$request->package_amount,
+            'balance'=> $bal + $request->cBalance,
             'role'=>2,
         ]);
+              try {
+            // 2. Initialize connection to MikroTik RouterOS
+            $client = new Client([
+                'host' => '102.209.56.86',
+                'user' => 'admin',
+                'pass' => '@anxvtT3n',
+                'port' => 8728,
+            ]);
+
+            // 3. Build the endpoint query to add the secret
+            $query = new Query('/ppp/secret/add');
+            $query->equal('name', $request->first_name);
+            $query->equal('password', $request->password);
+            $query->equal('service', 'pppoe');
+            $query->equal('profile', $request->bandwidth);
+
+            // 4. Send request to the router
+            $response = $client->query($query)->read();
+
+            // Check if MikroTik returned an execution error ("!trap")
+            if (isset($response['after']['message'])) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => $response['after']['message']
+                ], 400);
+            }
+
+    
+            
+
+        } catch (Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Failed to connect or write to MikroTik: ' . $e->getMessage()
+            ], 500);
+        }
+        
+                $client = new Client([
+                    'host' => '102.209.56.86',
+                    'user' => 'admin',
+                    'pass' => '@anxvtT3n',
+                    'port' => 8728,
+                ]);
+
+            // Build a query looking for the specific name
+            $query = (new Query('/ppp/secret/print'))
+                ->where('name', $request->first_name);
+
+            $response = $client->query($query)->read();
+            $mikrotikId = $response[0]['.id'];
+            $updateMikrotikId = User::where('phone',$request->phone)->update(['mikrotik_id' => $mikrotikId]);
+            
+            $dateFor = Carbon::parse($request->due_date);
+            $oneDayBefore = $dateFor->subDays(1);
+                     $createInvoice = Invoice::create([
+                        'invoice_date'=>$now,
+                        'amount'=>$request->package_amount,
+                        'user_id'=>$store->id,
+                        'usage_time'=>31,
+                        'balance'=>0,
+                        'status'=>1,
+                        'statas'=>0,
+                        'one_day_before'=>$oneDayBefore,
+                    ]);
+
+                    return redirect(url('customers'))->with('success','CUSTOMER CREATED SUCCESSFULLY');
+
+            
     }
     public function storeCustomerOne(Request $request){
         if ($request->ajax()){
@@ -2369,7 +2439,7 @@ class AdminController extends Controller
             $twoDaysBefore = Carbon::parse($request->two_days_before);
             $updateTwoDay = Invoice::where('user_id',$id)->where('statas',0)->update(['two_days_before'=>$twoDaysBefore]);
             }
-                    if($getUser->payment_date==null){
+                    if($getUser->payment_date!=null){
                                     try {
                                 // Get the MikroTik API client using the configured facade
                                 $config = new Config([
@@ -2529,7 +2599,39 @@ class AdminController extends Controller
         return response($output);
     }
     public function deleteC(Request $request){
+            $findUser = User::where('id',$request->userid)->first();
         $deleteUser = User::where('id',$request->userid)->delete();
+            // 1. Initialize MikroTik API Client
+        // Ensure your MikroTik has the API service enabled under IP > Services > api
+        $client = new Client([
+            'host' => '102.209.56.86',
+            'user' => 'admin',
+            'pass' => '@anxvtT3n',
+            'port' => 8728,
+        ]);
+
+        // 2. Find the Secret's internal ID based on the username
+        $query = (new Query('/ppp/secret/print'))
+            ->where('.id', $findUser->mikrotik_id);
+
+        $response = $client->query($query)->read();
+
+        // Check if the secret exists
+        if (empty($response)) {
+            return response()->json(['message' => 'Secret not found in MikroTik.'], 404);
+        }
+
+        // Extract the unique .id (e.g., *1, *2)
+        $secretId = $response[0]['.id'];
+
+        // 3. Send the remove command
+        $removeQuery = (new Query('/ppp/secret/remove'))
+            ->equal('.id', $secretId);
+
+        $client->query($removeQuery)->read();
+
+       
+
         return redirect(url('noneActivecustomers'))->with('success','CUSTOMER DELETED SUCCESS');
 
     }

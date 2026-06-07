@@ -39,7 +39,10 @@
                                 <label> Name *</label>
                                 <input type="text" class="form-control" name="first_name" required>
                             </div>
-                          
+                           <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <label>Password</label>
+                                <input type="text" class="form-control" name="password" required>
+                            </div>
                            
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Account No:</label>
@@ -69,12 +72,13 @@
                                 <input type="text" class="form-control" name="cBalance" placeholder="Ksh"/>
 
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                              <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <div class="form-group">
                                     <label for="dob">Payment Date *</label>
                                     <input type="date" class="form-control" name="payment_date"/>
                                 </div>
                             </div>
+                    
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <div class="form-group">
                                     <label for="dob">Due Date *</label>
