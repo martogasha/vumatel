@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>Edit <b style="color: red">{{$customer->first_name}}</b></h3>
+                            <h3>Edit <b style="color: red">{{$customer->first_name}} <span style="color:blue;">{{$customer->phone}}</span></b></h3>
                         </div>
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" role="button"
@@ -56,8 +56,8 @@
                           
                            
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Account No:</label>
-                                <input type="text" value="{{$customer->phone}}" class="form-control" name="phone" required>
+                                <label>Account No: {{$customer->phone}}</label>
+                                <input type="text" class="form-control" name="phone">
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Phone No:</label>

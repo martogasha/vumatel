@@ -2273,7 +2273,8 @@ class AdminController extends Controller
     }
     public function editC(Request $request, $id){
         $getAccountNo = User::where('phone',$request->phone)->first();
-        if($getAccountNo){
+        
+        if(isset($getAccountNo->phone)){
         return redirect()->back()->with('error','ACCOUNT NUMBER ALREADY IN USE');
 
         }
@@ -2288,7 +2289,13 @@ class AdminController extends Controller
         $edit->first_name = $request->first_name;
         $edit->last_name = $request->bandwidth;
         $edit->email = $request->email;
-        $edit->phone = $request->phone;
+        if(!isset($request->phone)){
+
+        }
+        else{
+            $edit->phone = $request->phone;
+        }
+        
         $edit->phoneOne = $request->phoneOne;
         $edit->location = $request->location;
         $edit->package_amount = $request->package_amount;
