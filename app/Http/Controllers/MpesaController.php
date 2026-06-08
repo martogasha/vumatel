@@ -128,6 +128,7 @@ class MpesaController extends Controller
                         $oneDayBefore = $dateFor->subDays(1);
                         $updateInvoiceMDate = Invoice::where('user_id', $getUserIdentification->id)->update(['one_day_before'=>$oneDayBefore]);
                         $updateDueDate = User::where('id', $getUserIdentification->id)->update(['due_date' => $nextDate]);
+                        $updateUserInvoice = User::where('id', $getUserIdentification->id)->update(['invoice'=>null]);
                           try{
                                             $config = new Config([
                                                 'host' => '102.209.56.86',
