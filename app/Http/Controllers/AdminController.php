@@ -1686,7 +1686,7 @@ class AdminController extends Controller
                                                     'one_day_before'=>$oneDayBefore,
                                                     
                                                 ]);
-                                                $updateUserInvoice = User::where('user_id',$store->id)->update(['invoice'=>0]);
+                                                $updateUserInvoice = User::where('id',$store->id)->update(['invoice'=>0]);
 
                                                 $createLogtwentyOne = Logging::create([
                                                         'user_id' => $store->id,
