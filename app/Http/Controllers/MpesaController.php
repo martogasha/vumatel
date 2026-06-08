@@ -86,7 +86,7 @@ class MpesaController extends Controller
         $cleanedAccountNumber = str_replace(' ', '', $accountNumber);
             $getUserIdentification = User::where('phone',$cleanedAccountNumber)->first();
             $getInvoice = null;
-            if($getUserIdentification->invoice===0){
+            if($getUserIdentification->invoice === 0){
                 $getInvoice = Invoice::where('user_id', $getUserIdentification->id)->first();
                         $createPayment = Mpesa::create([
                             'reference' => $request->TransID,
