@@ -124,7 +124,7 @@ class MpesaController extends Controller
                         $currentDate = $createPay->date;
                         $nextD =  $currentDate->addMonth();
                         $nextDate = Carbon::parse($nextD)->endOfDay();
-                        $dateFor = Carbon::parse($nextDate);
+                        $dateFor = Carbon::parse($nextDate)->startOfDay();
                         $oneDayBefore = $dateFor->subDays(1);
                         $updateInvoiceMDate = Invoice::where('user_id', $getUserIdentification->id)->update(['one_day_before'=>$oneDayBefore]);
                         $updateDueDate = User::where('id', $getUserIdentification->id)->update(['due_date' => $nextDate]);
