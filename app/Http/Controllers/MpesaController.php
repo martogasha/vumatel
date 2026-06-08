@@ -86,7 +86,116 @@ class MpesaController extends Controller
         $cleanedAccountNumber = str_replace(' ', '', $accountNumber);
             $getUserIdentification = User::where('phone',$cleanedAccountNumber)->first();
             $getInvoice = null;
-            if($getUserIdentification){
+            if($getUserIdentification->invoice===0){
+                $getInvoice = Invoice::where('user_id', $getUserIdentification->id)->first();
+                        $createPayment = Mpesa::create([
+                            'reference' => $request->TransID,
+                            'originationTime' => $dateFormat,
+                            'senderFirstName' => $getUserIdentification->first_name,
+                            'senderMiddleName' => $request->FirstName,
+                            'senderPhoneNumber' => $getUserIdentification->phone,
+                            'amount' => $request->TransAmount,
+                            'invoice_id' => $getInvoice->id,
+                            'currentMonth' =>$currentMonth,
+                            'currentYear' =>$currentYear,
+
+                        ]);
+                        $createPay = Payment::create([
+                            'user_id' => $getUserIdentification->id,
+                            'invoice_id' => $getInvoice->id,
+                            'reference' => $createPayment->reference,
+                            'date' => $createPayment->originationTime,
+                            'amount' => $createPayment->amount,
+                            'status' => 1,
+                            'payment_method' => 'Mpesa',
+                            'currentMonth' =>$currentMonth,
+                        ]);
+                          $createLog = Logging::create([
+                            'user_id' => $getUserIdentification->id,
+                            'reason' => 0,
+                            'date' => $createPayment->originationTime,
+                            'amount' => $createPayment->amount,
+                        ]);
+                        $currentBalance = $getUserIdentification->balance - $createPayment->amount;
+                        $updateStatus = Invoice::where('user_id', $getUserIdentification->id)->update(['status' => 1]);
+                        $updateUserDate = User::where('id', $getUserIdentification->id)->update(['payment_date' => $createPay->date]);
+                        $updateUserBalance = User::where('id', $getUserIdentification->id)->update(['balance' => $currentBalance]);
+                        $updateUserAmount = User::where('id', $getUserIdentification->id)->update(['amount' => $createPayment->amount]);
+                        $currentDate = $createPay->date;
+                        $nextD =  $currentDate->addMonth();
+                        $nextDate = Carbon::parse($nextD)->endOfDay();
+                        $dateFor = Carbon::parse($nextDate);
+                        $oneDayBefore = $dateFor->subDays(1);
+                        $updateInvoiceMDate = Invoice::where('user_id', $getUserIdentification->id)->update(['one_day_before'=>$oneDayBefore]);
+                        $updateDueDate = User::where('id', $getUserIdentification->id)->update(['due_date' => $nextDate]);
+                          try{
+                                            $config = new Config([
+                                                'host' => '102.209.56.86',
+                                                'user' => 'admin',
+                                                'pass' => '@anxvtT3n',
+                                                'port' => 8728,
+                                        ]);
+                                        $client = new Client($config);
+                                        $mikId = $getUserIdentification->mikrotik_id;
+
+                                            // Create a query for the /ppp/profile/print command
+                                            $getUser = User::where('mikrotik_id',$getUserIdentification->mikrotik_id)->value('dis_status');
+                                            if($getUser=='true'){
+                                            $query = new Query('/ppp/profile/print');
+                                        
+                                            // 2. Build the RouterOS API query to disable the secret
+                                            $query = (new Query('/ppp/secret/set'))
+                                                ->equal('.id', $mikId)
+                                                ->equal('disabled', 'no');
+
+                                            // 3. Send the query and get the response
+                                            $response = $client->query($query)->read();
+
+                                            // 4. Handle the response
+                                            $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'false']);
+                                                $createLogOne = Logging::create([
+                                                    'user_id' => $getUserIdentification->id,
+                                                    'reason' => 1,
+                                                    'date' => $dateNow,
+                                                ]);
+                                            
+                                            
+                                            }
+                                            else{
+                                                $query = new Query('/ppp/profile/print');
+                                        
+                                            // 2. Build the RouterOS API query to disable the secret
+                                            $query = (new Query('/ppp/secret/set'))
+                                                ->equal('.id', $mikId)
+                                                ->equal('disabled', 'yes');
+
+                                            // 3. Send the query and get the response
+                                            $response = $client->query($query)->read();
+
+                                            // 4. Handle the response
+                                            $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
+                                             $createLogTwo = Logging::create([
+                                                    'user_id' => $getUserIdentification->id,
+                                                    'reason' => 2,
+                                                    'date' => $dateNow,
+                                                ]);
+                                            
+                                            }
+                                }
+                                    catch (\Exception $e) {
+                                            // 5. Handle any connection or API errors
+                                            Log::info('payment paid but no connection');
+                                            $cache = Cache::create([
+                                                'user_id' => $getUserIdentification->id,
+                                                'status' => 1,
+                                            ]);
+                                            return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                                        }
+
+
+            }
+            else{
+                       if($getUserIdentification){
                 $userDueDate = Carbon::parse($getUserIdentification->due_date);
                 $getInvoice = Invoice::where('user_id', $getUserIdentification->id)->where('status', 0)->first();
             }
@@ -463,6 +572,9 @@ class MpesaController extends Controller
 
 
                 }
+                
+            }
+     
 
     }
     public function authenticate(){

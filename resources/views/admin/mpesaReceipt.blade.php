@@ -35,8 +35,8 @@
         <div class="row mt-4" id="rrr">
             <div class="col-sm-6">
                 <div>
-                    <span class="text-sm text-grey-m2 align-middle" style="padding-left: 70px"><img src="{{asset('img/jp.png')}}" alt="logo"></span>
-                    <span class="text-600 text-110 text-blue align-middle"><br style="color:blue">Henix Networks Limited</span>
+                    <span class="text-sm text-grey-m2 align-middle"><img src="{{asset('img/jp.png')}}" alt="logo" style="width:150px;height:150px;"></span>
+                    <span class="text-600 text-110 text-blue align-middle"><br style="color:blue">Vumatel Networks Limited</span>
                 </div>
             </div>
             <div class="col-12 col-lg-10 offset-lg-1">
@@ -47,30 +47,24 @@
                     <div class="col-sm-6">
                         <div>
                             <span class="text-sm text-grey-m2 align-middle">To:</span>
-                            @if(!is_null($receipt->invoice_id))
-                            <span class="text-600 text-110 text-blue align-middle">{{$receipt->invoice->user->first_name}} {{$receipt->invoice->user->last_name}}</span>
+                            @if(!is_null($user))
+                            <span class="text-600 text-110 text-blue align-middle">{{$user->first_name}} <span style="color:black;">{{$user->phone}}</span></span>
                             @else
-                                <span class="text-600 text-110 text-blue align-middle">{{$receipt->senderFirstName}} {{$receipt->senderLastName}}</span>
+                                <span class="text-600 text-110 text-blue align-middle">{{$receipt->invoice->user->first_name}} {{$receipt->invoice->user->phone}}</span>
 
                             @endif
                         </div>
                         <div class="text-grey-m2">
                             <div class="my-1">
-                                @if(!is_null($receipt->invoice_id))
-                                {{$receipt->invoice->user->bandwidth}}Mbps
+                                @if(!is_null($user))
+                                {{$user->last_name}}
                                 @else
                                     N/A
                                 @endif
                             </div>
-                            <div class="my-1">
-                                @if(!is_null($receipt->invoice_id))
-                                {{$receipt->invoice->user->location}}
-                                @else
-                                    N/A
-                                @endif
-                            </div>
-                            @if(!is_null($receipt->invoice_id))
-                            <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">{{$receipt->invoice->user->phone}}</b></div>
+                          
+                            @if(!is_null($user))
+                            <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">{{$user->phoneOne}}</b></div>
                             @else
                                 <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b class="text-600">{{$receipt->senderPhoneNumber}}</b></div>
                             @endif
@@ -88,7 +82,8 @@
                             <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">ID:</span> 0{{$receipt->id}}</div>
 
                             <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Issue Date:</span> {{$receipt->originationTime}}</div>
-                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Payment method:</span> <span class="badge badge-success badge-pill px-25">Mpesa</span></div>
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Payment method:</span> Mpesa</div>
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Ref No:</span> <span class="badge badge-success badge-pill px-25">{{$receipt->reference}}</span></div>
                         </div>
                     </div>
                     <!-- /.col -->

@@ -1544,97 +1544,179 @@ class AdminController extends Controller
 
         }
         else{
-            $integer = (int) $request->bandwidth;
-            $bal = 0;
-            $now = Carbon::now();
-            $endDate = Carbon::parse($request->input('due_date'))->endOfDay();
-          $store = User::create([
-            'first_name'=>$request->first_name,
-            'last_name'=>$request->bandwidth,
-            'phone'=>$request->phone,
-            'phoneOne'=>$request->phoneOne,
-            'package_amount' => $request->package_amount,
-            'bandwidth'=>$integer,
-            'password'=>$request->password,
-            'payment_date'=>$request->payment_date,
-            'due_date'=>$endDate,
-            'amount'=>$request->package_amount,
-            'balance'=> $bal + $request->cBalance,
-            'role'=>2,
-        ]);
-              try {
-            // 2. Initialize connection to MikroTik RouterOS
-            $client = new Client([
-                'host' => '102.209.56.86',
-                'user' => 'admin',
-                'pass' => '@anxvtT3n',
-                'port' => 8728,
-            ]);
-
-            // 3. Build the endpoint query to add the secret
-            $query = new Query('/ppp/secret/add');
-            $query->equal('name', $request->first_name);
-            $query->equal('password', $request->password);
-            $query->equal('service', 'pppoe');
-            $query->equal('profile', $request->bandwidth);
-
-            // 4. Send request to the router
-            $response = $client->query($query)->read();
-
-            // Check if MikroTik returned an execution error ("!trap")
-            if (isset($response['after']['message'])) {
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => $response['after']['message']
-                ], 400);
-            }
-
-    
-            
-
-        } catch (Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Failed to connect or write to MikroTik: ' . $e->getMessage()
-            ], 500);
-        }
-        
-                $client = new Client([
-                    'host' => '102.209.56.86',
-                    'user' => 'admin',
-                    'pass' => '@anxvtT3n',
-                    'port' => 8728,
+                    $integer = (int) $request->bandwidth;
+                    $bal = 0;
+                    $now = Carbon::now();
+                    $endDate = Carbon::parse($request->input('due_date'))->endOfDay();
+                $store = User::create([
+                    'first_name'=>$request->first_name,
+                    'last_name'=>$request->bandwidth,
+                    'phone'=>$request->phone,
+                    'phoneOne'=>$request->phoneOne,
+                    'package_amount' => $request->package_amount,
+                    'bandwidth'=>$integer,
+                    'password'=>$request->password,
+                    'payment_date'=>$request->payment_date,
+                    
+                    'due_date'=>!isset($endDate) ? $now : $endDate,
+                    'balance'=> $bal + $request->cBalance,
+                    'role'=>2,
                 ]);
-
-            // Build a query looking for the specific name
-            $query = (new Query('/ppp/secret/print'))
-                ->where('name', $request->first_name);
-
-            $response = $client->query($query)->read();
-            $mikrotikId = $response[0]['.id'];
-            $updateMikrotikId = User::where('phone',$request->phone)->update(['mikrotik_id' => $mikrotikId]);
-            
-            $dateFor = Carbon::parse($request->due_date);
-            $oneDayBefore = $dateFor->subDays(1);
-                     $createInvoice = Invoice::create([
-                        'invoice_date'=>$now,
-                        'amount'=>$request->package_amount,
-                        'user_id'=>$store->id,
-                        'usage_time'=>31,
-                        'balance'=>0,
-                        'status'=>1,
-                        'statas'=>0,
-                        'one_day_before'=>$oneDayBefore,
+                    try {
+                    // 2. Initialize connection to MikroTik RouterOS
+                    $client = new Client([
+                        'host' => '102.209.56.86',
+                        'user' => 'admin',
+                        'pass' => '@anxvtT3n',
+                        'port' => 8728,
                     ]);
 
-                    $createLogtwentyOne = Logging::create([
-                            'user_id' => $store->id,
-                            'reason' => 21,
-                            'date' => $now,
-                            
+                    // 3. Build the endpoint query to add the secret
+                    $query = new Query('/ppp/secret/add');
+                    $query->equal('name', $request->first_name);
+                    $query->equal('password', $request->password);
+                    $query->equal('service', 'pppoe');
+                    $query->equal('profile', $request->bandwidth);
+
+                    // 4. Send request to the router
+                    $response = $client->query($query)->read();
+
+                    // Check if MikroTik returned an execution error ("!trap")
+                    if (isset($response['after']['message'])) {
+                        return response()->json([
+                            'status'  => 'error',
+                            'message' => $response['after']['message']
+                        ], 400);
+                    }
+
+            
+                    
+
+                } catch (Exception $e) {
+                    return response()->json([
+                        'status'  => 'error',
+                        'message' => 'Failed to connect or write to MikroTik: ' . $e->getMessage()
+                    ], 500);
+                }
+                
+                        $client = new Client([
+                            'host' => '102.209.56.86',
+                            'user' => 'admin',
+                            'pass' => '@anxvtT3n',
+                            'port' => 8728,
                         ]);
 
-                    return redirect(url('customers'))->with('success','CUSTOMER CREATED SUCCESSFULLY');
+                    // Build a query looking for the specific name
+                    $query = (new Query('/ppp/secret/print'))
+                        ->where('name', $request->first_name);
+
+                    $response = $client->query($query)->read();
+                    $mikrotikId = $response[0]['.id'];
+                    $updateMikrotikId = User::where('phone',$request->phone)->update(['mikrotik_id' => $mikrotikId]);
+            
+                    
+                    $dateFor = Carbon::parse($request->due_date);
+                    $oneDayBefore = $dateFor->subDays(1);
+                    
+                   
+
+                                if($store->balance > 0){
+                                    try{
+                                            $config = new Config([
+                                                    'host' => '102.209.56.86',
+                                                    'user' => 'admin',
+                                                    'pass' => '@anxvtT3n',
+                                                    'port' => 8728,
+                                        ]);
+                                        $client = new Client($config);
+
+                                            // Create a query for the /ppp/profile/print command
+                                            $getUse = 'true';
+                                            if($getUse!='true'){
+                                            $query = new Query('/ppp/profile/print');
+                                        
+                                            // 2. Build the RouterOS API query to disable the secret
+                                            $query = (new Query('/ppp/secret/set'))
+                                                ->equal('.id', $mikrotikId)
+                                                ->equal('disabled', 'no');
+
+                                            // 3. Send the query and get the response
+                                            $response = $client->query($query)->read();
+                                            $update = User::where('mikrotik_id',$mikrotikId)->update(['dis_status'=>'false']);
+
+                                            // 4. Handle the response
+
+                                           
+                                            
+                                            
+                                            }
+                                            else{
+                                                $query = new Query('/ppp/profile/print');
+                                        
+                                            // 2. Build the RouterOS API query to disable the secret
+                                            $query = (new Query('/ppp/secret/set'))
+                                                ->equal('.id', $mikrotikId)
+                                                ->equal('disabled', 'yes');
+
+                                            // 3. Send the query and get the response
+                                            $response = $client->query($query)->read();
+                                            $update = User::where('mikrotik_id',$mikrotikId)->update(['dis_status'=>'true']);
+                                            // 4. Handle the response
+                                            
+                                            
+                                            }
+                                          
+                                          
+                                }
+                                    catch (\Exception $e) {
+                                            // 5. Handle any connection or API errors
+                                            Log::info('Billed but no connection');
+                                      
+                                            
+                                            return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                                        }
+                                                 $createInvoice = Invoice::create([
+                                                    'invoice_date'=>$now,
+                                                    'amount'=>$request->package_amount,
+                                                    'user_id'=>$store->id,
+                                                    'usage_time'=>31,
+                                                    'balance'=>0,
+                                                    'status'=>0,
+                                                    'statas'=>0,
+                                                    'one_day_before'=>$oneDayBefore,
+                                                    'invoice'=>0,
+                                                ]);
+
+                                                $createLogtwentyOne = Logging::create([
+                                                        'user_id' => $store->id,
+                                                        'reason' => 21,
+                                                        'date' => $now,
+                                                        
+                                                    ]);
+                                }
+                                else{
+                                             $createInvoice = Invoice::create([
+                                                'invoice_date'=>$now,
+                                                'amount'=>$request->package_amount,
+                                                'user_id'=>$store->id,
+                                                'usage_time'=>31,
+                                                'balance'=>0,
+                                                'status'=>1,
+                                                'statas'=>0,
+                                                'one_day_before'=>$oneDayBefore,
+                                            ]);
+
+                                            $createLogtwentyOne = Logging::create([
+                                                    'user_id' => $store->id,
+                                                    'reason' => 21,
+                                                    'date' => $now,
+                                                    
+                                                ]);
+                                                $updateAmount = User::where('id',$store->id)->update(['amount'=>$request->package_amount]);
+                                }
+                                       
+
+                            return redirect(url('customers'))->with('success','CUSTOMER CREATED SUCCESSFULLY');
 
         }
             
@@ -2283,8 +2365,10 @@ class AdminController extends Controller
     }
     public function mpesaReceipt($id){
         $receipt = Mpesa::find($id);
+        $user = User::where('phone',$receipt->senderPhoneNumber)->first();
         return view('admin.mpesaReceipt',[
-            'receipt'=>$receipt
+            'receipt'=>$receipt,
+            'user'=>$user,
         ]);
     }
     public function editUser($id){
