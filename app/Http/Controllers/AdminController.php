@@ -1627,6 +1627,13 @@ class AdminController extends Controller
                         'one_day_before'=>$oneDayBefore,
                     ]);
 
+                    $createLogtwentyOne = Logging::create([
+                            'user_id' => $store->id,
+                            'reason' => 21,
+                            'date' => $now,
+                            
+                        ]);
+
                     return redirect(url('customers'))->with('success','CUSTOMER CREATED SUCCESSFULLY');
 
         }
@@ -2612,6 +2619,15 @@ class AdminController extends Controller
     }
     public function deleteC(Request $request){
             $findUser = User::where('id',$request->userid)->first();
+            $storeName = Logging::where('user_id',$request->userid)->update(['name'=>$findUser->first_name]);
+            $now = Carbon::now();
+               $createLogtwenty = Logging::create([
+                            'user_id' => $request->userid,
+                            'reason' => 20,
+                            'date' => $now,
+                            'name'=> $findUser->first_name,
+                            
+                        ]);
         $deleteUser = User::where('id',$request->userid)->delete();
             // 1. Initialize MikroTik API Client
         // Ensure your MikroTik has the API service enabled under IP > Services > api

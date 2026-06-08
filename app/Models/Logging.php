@@ -14,6 +14,7 @@ class Logging extends Model
         'user_id',
         'amount',
         'status',
+        'name',
         
 
     ];

@@ -44,10 +44,13 @@
                                 @foreach($logs as $log)
                                 <tr>
                                         
-                                    
+
                                     <td>{{date('d/m/Y H:i:s',strtotime($log->date))}}</td>
-                                    <td>{{$log->user->first_name}} ({{$log->user->phone}})</td>
-                                
+                                    @if(@isset($log->user->first_name))
+                                    <td>{{$log->user->first_name}} {{$log->user->phone}}</td>
+                                    @else
+                                    <td>{{$log->name}}</td>
+                                    @endif
                                     @switch($log->reason)
                                     @case(0)
                                     <td>Paid</td>
@@ -75,6 +78,12 @@
                                     @break
                                     @case(12)
                                     <td>Customer Edit Success</td>
+                                    @break
+                                    @case(20)
+                                    <td>Customer Deleted Success</td>
+                                    @break
+                                    @case(21)
+                                    <td>Customer Created Success</td>
                                     @break
                                     
                                     @endswitch
