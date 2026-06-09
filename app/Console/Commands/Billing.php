@@ -90,6 +90,9 @@ class Billing extends Command
                                             if($currentBalance>=2500 && $currentBalance < 3000){
                                                 $bandwidth = '20MBPS';
                                             }
+                                            if($currentBalance>=3000 && $currentBalance < 4000){
+                                                $bandwidth = '30MBPS';
+                                            }
                                             if($currentBalance>=9600 && $currentBalance < 10000){
                                                 $bandwidth = '80MBPS';
                                             }
@@ -158,7 +161,8 @@ class Billing extends Command
                                 $twoDaysBefore = $dateForm->subDays(3);
                                 $updateInvoiceMessageDate = Invoice::where('user_id',$getUser->id)->where('id',$createInvoice->id)->update(['two_days_before'=>$twoDaysBefore]);
                                 $dateFor = Carbon::parse($nextDate);
-                                $oneDayBefore = $dateFor->subDays(1);
+                                $dateF = Carbon::parse($dateFor)->startOfDay();
+                                $oneDayBefore = $dateF->subDays(1);
                                 $updateInvoiceMDate = Invoice::where('user_id',$getUser->id)->where('id',$createInvoice->id)->update(['one_day_before'=>$oneDayBefore]);
                                     $getLatestInvoice = Invoice::where('user_id',$getUser->id)->latest('id')->first();
                                     $getPreviousInvoices = Invoice::where('id','!=',$getLatestInvoice->id)->where('user_id',$getUser->id)->get();
