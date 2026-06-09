@@ -38,7 +38,7 @@
     <div class="login-page-content">
         <div class="login-box">
             <div class="item-logo">
-                <img src="img/jp.png" alt="logo"><h3>Henix Networks</h3>
+                <img src="img/jp.png" alt="logo" style="height:50px;width:50px;"><h3>Henix Networks</h3>
                 @include('flash-message')
             </div>
             <form action="{{route('Login')}}" class="login-form" method="post">
