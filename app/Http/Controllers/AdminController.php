@@ -1537,14 +1537,6 @@ class AdminController extends Controller
     }
     public function storeCustomer(Request $request){
 
-                do {
-                    $randomNumber = '0' . random_int(100, 999);
-                }
-                 while (User::where('last_name', $randomNumber)->exists());
-
-                // You now have a unique random number
-                dd($randomNumber);
-
       $getAccountNo = User::where('phone',$request->phone)->first();
         
         if(isset($getAccountNo->phone)){
