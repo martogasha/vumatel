@@ -573,34 +573,7 @@ class MpesaController extends Controller
                             ]);
                             
 
-                            if($getUserIdentification){
-                            $updateUserAmount = User::where('id', $getUserIdentification->id)->update(['amount' => $createPayment->amount]);
-                            $updateUserDate = User::where('id', $getUserIdentification->id)->update(['payment_date' => $createPayment->originationTime]);
-                            $getUser = User::find($getUserIdentification->id);
-                            $getBalance = $getUser->balance;
-                            $currentBalance = $getUser->balance - $request->TransAmount;
-                            $updateUserBalance = User::where('id', $getUserIdentification->id)->update(['balance' => $currentBalance]);
-                            
-                            $getMessageDate = Invoice::where('user_id', $getUserIdentification->id)->where('statas',0)->first();
-                            $dateFor = Carbon::parse($getMessageDate->two_days_before);
-                            $addMonth = $dateFor->addMonth();
-                            $dateForm = Carbon::parse($getMessageDate->one_day_before);
-                            $addOneMonth = $dateForm->addMonth();
-                            $updateInvoice = Invoice::where('id', $getMessageDate->id)->update([
-                                                    'two_days_before' => $addMonth,
-                                                    'one_day_before' => $addOneMonth,
-                                                ]);
-                            }
-                            $updateMessagePaidTwo = Invoice::where('user_id', $getUserIdentification->id)->update([
-                                'two_days_before_status' => 1,
-                                'due_date_status' => 1,
-                                ]);
-                            $createLogEleven = Logging::create([
-                            'user_id' => $getUserIdentification->id,
-                            'reason' => 11,
-                            'date' => $createPayment->originationTime,
-                            'amount' => $createPayment->amount,
-                        ]);
+               
 
             }
 
