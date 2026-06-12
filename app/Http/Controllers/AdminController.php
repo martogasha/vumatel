@@ -1573,7 +1573,7 @@ class AdminController extends Controller
 
                     // 3. Build the endpoint query to add the secret
                     $query = new Query('/ppp/secret/add');
-                    $query->equal('name', $request->first_name);
+                    $query->equal('name', $request->phone);
                     $query->equal('password', $request->password);
                     $query->equal('service', 'pppoe');
                     $query->equal('profile', $request->bandwidth);
@@ -1608,7 +1608,7 @@ class AdminController extends Controller
 
                     // Build a query looking for the specific name
                     $query = (new Query('/ppp/secret/print'))
-                        ->where('name', $request->first_name);
+                        ->where('name', $request->phone);
 
                     $response = $client->query($query)->read();
                     $mikrotikId = $response[0]['.id'];
