@@ -174,6 +174,17 @@ class MpesaController extends Controller
                                             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                         }
 
+                                                                 $postData = [
+                        'apikey' => '9324ef7e2034b5d479f64d31ae513215',
+                        'partnerID' => 138,
+                        'mobile' => $getUserIdentification->phoneOne,
+                        
+                        'message' => 'Dear Customer, your payment has been well received, thank you. Kindly restart the router.',
+                        'shortcode' => 'VUMATEL',
+                        
+                    ];
+                    $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
+
 
             }
             else{
