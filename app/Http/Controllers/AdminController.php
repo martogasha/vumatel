@@ -1694,6 +1694,20 @@ class AdminController extends Controller
                                                         'date' => $now,
                                                         
                                                     ]);
+                                                                                                             $postData = [
+                        'apikey' => '9324ef7e2034b5d479f64d31ae513215',
+                        'partnerID' => 138,
+                        'mobile' => $store->phoneOne,
+                        
+                        'message' => 'Dear Customer,
+Welcome to Vumatel Networks. Your account has been created, and to activate, kindly make a payment of KES '.$store->balance.' through;
+MPESA Paybill Number 4311304
+Account Number '.$store->phone.'
+Thank you for choosing our services.',
+                        'shortcode' => 'VUMATEL',
+                        
+                    ];
+                    $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
                                 }
                                 else{
                                              $createInvoice = Invoice::create([
