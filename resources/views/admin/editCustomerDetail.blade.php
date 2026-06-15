@@ -53,8 +53,7 @@
                                 <label> Name *</label>
                                 <input type="text" value="{{$customer->first_name}}" class="form-control" name="first_name">
                             </div>
-                          
-                           
+
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Account No: {{$customer->phone}}</label>
                                 <input type="text" class="form-control" name="phone">

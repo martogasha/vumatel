@@ -30,6 +30,7 @@ use RouterOS\Config;
 use Illuminate\Support\Facades\Log;
 use App\Models\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 class AdminController extends Controller
 {
     public function admin(){
@@ -2437,14 +2438,45 @@ Thank you for choosing our services.',
     public function editCustomerDetail(Request $request, $id){
         $customer = User::find($id);
         $date = $customer->payment_date;
+
+// 1. Initialize the client using your RouterOS credentials
+        $client = new Client([
+           'host' => '102.209.56.86',
+            'user' => 'admin',
+            'pass' => '@anxvtT3n',
+            'port' => 8728,
+        ]);
+
+        // 2. Build the query object (e.g., getting secrets with 'default' profile)
+        $query = new Query('/ppp/secret/print');
+        $query->where('.id', $customer->mikrotik_id);
+
+        // 3. Send the query and read the response
+        $response = $client->query($query)->read();
+
+        // 4. Extract only the 'name' field from the response
+        $secretNames = collect($response)->pluck('name');
+
+        
         return view('admin.editCustomerDetail',[
             'customer'=>$customer,
-            'date'=>$date
+            'date'=>$date,
+            'secrets' => $secretNames
         ]);
     }
      public function addCustomers(Request $request){
+     
+                do {
+            // Generate a random integer between your min and max bounds
+            $randomNumber = random_int(1, 1000);
+            $padded = Str::padLeft($randomNumber, 4, '0'); 
+        } while (User::where('phone', $padded)->exists());
+
+        // $randomNumber is now guaranteed to be unique and unused
       
-        return view('admin.customerAdd');
+        return view('admin.customerAdd',[
+            'randomAccount'=>$padded
+        ]);
     }
     public function activate(Request $request){
         $customer = User::find($request->user_id);
