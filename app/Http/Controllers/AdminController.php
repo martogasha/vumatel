@@ -2533,9 +2533,23 @@ Thank you for choosing our services.',
         $paymentDate = Carbon::parse($request->payment_date);
         $currentMonth = date('m');
         if($request->payment_date){
+            if(!isset($getInvoiceId)){
+                   $createInvoice = Invoice::create([
+                            'invoice_date'=>$dateFormat,
+                            'amount'=>$request->package_amount,
+                            'user_id'=>$id,
+                            'usage_time'=>null,
+                            'balance'=>0,
+                            'status'=>1,
+                            'statas'=>0,
+                        ]);
+
+
+            }
+            $getInvoiceId = Invoice::where('user_id',$id)->latest('id')->first();
             $createPay = Payment::create([
                 'user_id' => $id,
-                'invoice_id' => null,
+                'invoice_id' => $getInvoiceId->id,
                 'reference' => $request->reference,
                 'date' => $paymentDate,
                 'amount' => $request->package_amount,
