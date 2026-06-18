@@ -268,7 +268,7 @@ class Billing extends Command
                                             if($getUse=='true'){
                                             $query = new Query('/ppp/profile/print');
                                         
-                                            // 2. Build the RouterOS API query to disable the secret
+                                            // 2. Build the RouterOS API query to enable the secret
                                             $query = (new Query('/ppp/secret/set'))
                                                 ->equal('.id', $mikId)
                                                 ->equal('disabled', 'no');

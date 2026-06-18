@@ -2535,7 +2535,7 @@ Thank you for choosing our services.',
         if($request->payment_date){
             $createPay = Payment::create([
                 'user_id' => $id,
-                'invoice_id' => $getInvoiceId->id,
+                'invoice_id' => null,
                 'reference' => $request->reference,
                 'date' => $paymentDate,
                 'amount' => $request->package_amount,
