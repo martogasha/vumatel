@@ -472,6 +472,7 @@ class AdminController extends Controller
     }
     public function disablePppoeSecret($id)
     {
+        $dateNow = Carbon::now();
                try {
             // Get the MikroTik API client using the configured facade
             $config = new Config([
@@ -497,6 +498,12 @@ class AdminController extends Controller
 
             // 4. Handle the response
             $update = User::where('mikrotik_id',$id)->update(['dis_status'=>'false']);
+            $getUserId = User::where('mikrotik_id',$id)->first();
+                  $createLog = Logging::create([
+                            'user_id' => $getUserId->id,
+                            'reason' => 22,
+                            'date' => $dateNow,
+                        ]);
             return redirect()->back()->with('success','User Enabled Success');
             
             }
@@ -513,6 +520,12 @@ class AdminController extends Controller
 
             // 4. Handle the response
             $update = User::where('mikrotik_id',$id)->update(['dis_status'=>'true']);
+            $getUserId = User::where('mikrotik_id',$id)->first();
+                  $createLog = Logging::create([
+                            'user_id' => $getUserId->id,
+                            'reason' => 23,
+                            'date' => $dateNow,
+                        ]);
             return redirect()->back()->with('success','User Disabled Success');
             }
           
