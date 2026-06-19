@@ -2472,10 +2472,18 @@ Thank you for choosing our services.',
             $padded = Str::padLeft($randomNumber, 4, '0'); 
         } while (User::where('phone', $padded)->exists());
 
+               do {
+            // Generate a random integer between your min and max bounds
+            $padd = random_int(1000, 10000);
+             
+        } while (User::where('password', $padd)->exists());
+
         // $randomNumber is now guaranteed to be unique and unused
       
         return view('admin.customerAdd',[
-            'randomAccount'=>$padded
+            'randomAccount'=>$padded,
+            'randomPassword'=>$padd,
+
         ]);
     }
     public function activate(Request $request){
