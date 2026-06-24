@@ -2468,13 +2468,14 @@ Thank you for choosing our services.',
         $response = $client->query($query)->read();
 
         // 4. Extract only the 'name' field from the response
-        $secretNames = collect($response)->pluck('name');
+        $secretPassword  =  $response[0]['password'];
+        
 
         
         return view('admin.editCustomerDetail',[
             'customer'=>$customer,
             'date'=>$date,
-            'secrets' => $secretNames
+            'password' => $secretPassword
         ]);
     }
      public function addCustomers(Request $request){
@@ -2535,6 +2536,51 @@ Thank you for choosing our services.',
         }
         else{
             $edit->phone = $request->phone;
+        }
+
+          if(!isset($request->password)){
+
+        }
+        else{
+            $getA = User::find($id);
+
+          try {
+                                // Get the MikroTik API client using the configured facade
+                                $config = new Config([
+                                'host' => '102.209.56.86',
+                                'user' => 'admin',
+                                'pass' => '@anxvtT3n',
+                                'port' => 8728,
+                            ]);
+                            $client = new Client($config);
+                            $query = (new Query('/ppp/secret/print'))->where('.id', $getA->mikrotik_id);
+                            $secrets = $client->query($query)->read();
+                            
+                            // $secrets will be an array containing the user's details if found.
+                            
+                            if (!empty($secrets)) {
+                            $secretId = $secrets[0]['.id']; // Get the ID of the first matching user
+
+                            $updateQuery = (new Query('/ppp/secret/set'))
+                                ->equal('.id', $getA->mikrotik_id)
+                                ->equal('password', $request->password); // Change the assigned profile
+                                // ->equal('comment', 'Updated by Laravel'); // Add or change comments
+
+                            $client->query($updateQuery)->read(); // Execute the update
+                            
+                        }
+                 
+                                
+                        
+                    
+
+                    } catch (\Exception $e) {
+                        // 5. Handle any connection or API errors
+                        Log::info('password edit failed');
+                    
+                        return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                    }    
+
         }
         
         $edit->phoneOne = $request->phoneOne;
