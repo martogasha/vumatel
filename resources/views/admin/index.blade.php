@@ -57,7 +57,7 @@
                                 <div class="col-6">
                                     <div class="item-content">
                                         <div class="item-title">Users</div>
-                                        <div class="item-number"><span class="counter" data-num="{{\App\Models\User::where('role',1)->count()}}">{{\App\Models\User::where('role',1)->count()}}</span></div>
+                                        <div class="item-number"><span class="counter" data-num="{{\App\Models\User::count()}}">{{\App\Models\User::count()}}</span></div>
                                     </div>
                                 </div>
                             </div>
