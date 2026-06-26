@@ -11,6 +11,7 @@
                     <li>
                         <a href="{{url('admin')}}">Home</a>
                     </li>
+                    <li id="smallTitleAll"><a href="{{url('customers')}}">Active Customers ({{App\Models\User::where('role',2)->where('dis_status', 'false')->count()}})</a></li>
                     <li id="smallTitleAll" style="color:red;">Disconnected Customers ({{App\Models\User::where('role',2)->where('dis_status', 'true')->count()}})</li>
                 </ul>
             </div>
