@@ -32,6 +32,7 @@ Route::get('/', [IndexController::class, 'index']);
 
 //admin routes
 Route::get('admin', [AdminController::class, 'admin']);
+Route::get('all', [AdminController::class, 'customerAll']);
 Route::get('disableC/{id}', [AdminController::class, 'disablePppoeSecret']);
 Route::get('prompt/{id}', [AdminController::class, 'prompt']);
 Route::get('getPppoeProfiles', [AdminController::class, 'getPppoeProfiles']);

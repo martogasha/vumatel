@@ -255,6 +255,18 @@ class AdminController extends Controller
         }
 
     }
+       public function customerAll(){
+        if (Auth::check()){
+            $customers = User::where('dis_status','true')->orderByDesc('id')->get();
+            return view('admin.customerAll',[
+                'customers'=>$customers,
+            ]);
+        }
+        else{
+            return redirect(url('login'));
+        }
+    }
+
     public function noneActivecustomers(){
         if (Auth::check()){
             $customers = User::where('role', 4)->orderByDesc('id')->get();
@@ -1649,7 +1661,7 @@ class AdminController extends Controller
                                             if($getUse!='true'){
                                             $query = new Query('/ppp/profile/print');
                                         
-                                            // 2. Build the RouterOS API query to disable the secret
+                                            // 2. Build the RouterOS API query to enable the secret
                                             $query = (new Query('/ppp/secret/set'))
                                                 ->equal('.id', $mikrotikId)
                                                 ->equal('disabled', 'no');
@@ -1741,7 +1753,8 @@ Thank you for choosing our services.',
                                                     'date' => $now,
                                                     
                                                 ]);
-                                                $updateAmount = User::where('id',$store->id)->update(['amount'=>$request->package_amount]);
+                                                $updateAmount = User::where('id',$store->id)->update(['amount'=>$request->package_amount, 'dis_status'=>'false']);
+                                                
                                 }
                                        
 

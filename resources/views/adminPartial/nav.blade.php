@@ -139,6 +139,10 @@
                                     Customers</a>
                             </li>
                              <li class="nav-item">
+                                <a href="{{url('all')}}" class="nav-link"><i class="fas fa-angle-right"></i>Disconnected
+                                    Customers</a>
+                            </li>
+                             <li class="nav-item">
                                 <a href="{{url('Selectcustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>From Mikrotik to System</a>
                             </li>
                             <li class="nav-item">
@@ -149,7 +153,8 @@
                                 <a href="{{url('addCustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                     Customers</a>
                             </li>
-                         
+
+                      
                         </ul>
                     </li>
                    
