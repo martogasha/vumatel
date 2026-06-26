@@ -12,6 +12,7 @@
                         <a href="{{url('admin')}}">Home</a>
                     </li>
                     <li id="smallTitleAll">Active Customers ({{App\Models\User::where('role',2)->where('dis_status', 'false')->count()}})</li>
+                    <li id="smallTitleAll" style="color:red;">Disconnected Customers ({{App\Models\User::where('role',2)->where('dis_status', 'true')->count()}})</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
