@@ -306,7 +306,24 @@ class Billing extends Command
                                                 ]);
                                             
                                             }
-                                            $usernameToDisconnect = $getUser->first_name;
+
+                                            // 1. Initialize the client using your RouterOS credentials
+                                                $client = new Client([
+                                                'host' => '102.209.56.86',
+                                                    'user' => 'admin',
+                                                    'pass' => '@anxvtT3n',
+                                                    'port' => 8728,
+                                                ]);
+
+                                                // 2. Build the query object (e.g., getting secrets with 'default' profile)
+                                                $query = new Query('/ppp/secret/print');
+                                                $query->where('.id', $getUser->mikrotik_id);
+
+                                                // 3. Send the query and read the response
+                                                $response = $client->query($query)->read();
+
+                                                // 4. Extract only the 'name' field from the response
+                                                $usernameToDisconnect  =  $response[0]['name'];
                                             $query = new Query('/ppp/active/print');
                                             $query->where('name', $usernameToDisconnect);
                                             $activeConnections = $client->query($query)->read();
