@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
 Route::get('/', [IndexController::class, 'index']);
 Route::post('Login', [AuthController::class, 'login'])->name('Login');
 
-
+Route::middleware(['auth'])->group(function () {
 //admin routes
 Route::get('admin', [AdminController::class, 'admin']);
 Route::get('all', [AdminController::class, 'customerAll']);
@@ -158,5 +158,6 @@ Route::get('test', [CashController::class, 'test']);
 Route::post('testOne', [CashController::class, 'testOne']);
 Route::get('users', [AdminController::class, 'employees']);
 Route::get('addUser', [AdminController::class, 'addEmployee']);
+});
 
 require __DIR__.'/auth.php';
