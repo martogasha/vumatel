@@ -25,7 +25,7 @@ Route::get('home', function () {
 });
 
 Route::get('/dashboard', function () {
-    return url('login');
+    return redirect(url('login'));
 })->middleware(['auth'])->name('dashboard');
 //client side routes
 Route::get('/', [IndexController::class, 'index']);
