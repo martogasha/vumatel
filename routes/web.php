@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 //client side routes
 Route::get('/', [IndexController::class, 'index']);
+Route::middleware(['auth'])->group(function () {
 
 //admin routes
 Route::get('admin', [AdminController::class, 'admin']);
@@ -154,5 +155,8 @@ Route::get('mpesa', [MpesaController::class, 'index']);
 Route::get('cash', [CashController::class, 'index']);
 Route::get('test', [CashController::class, 'test']);
 Route::post('testOne', [CashController::class, 'testOne']);
+Route::get('users', [AdminController::class, 'employees']);
+Route::get('addUser', [AdminController::class, 'addEmployee']);
+});
 
 require __DIR__.'/auth.php';

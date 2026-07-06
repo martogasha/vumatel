@@ -22,6 +22,7 @@
            
                             <!-- Dashboard summery Start Here -->
                 <div class="row gutters-20">
+                    @if(auth()->user()->products!=null)
                     <div class="col-xl-3 col-sm-6 col-12">
                         <div class="dashboard-summery-one mg-b-20">
                             <div class="row align-items-center">
@@ -97,6 +98,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <!-- Dashboard summery End Here -->
             <!-- Dashboard summery End Here -->

@@ -79,14 +79,20 @@
                 <li class="navbar-item dropdown header-admin">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
-                        @if(\Illuminate\Support\Facades\Auth::check())
+                            @if(\Illuminate\Support\Facades\Auth::check())
                         <div class="admin-title">
                             <h5 class="item-title">{{\Illuminate\Support\Facades\Auth::user()->first_name}} {{\Illuminate\Support\Facades\Auth::user()->last_name}}</h5>
-                            @if(\Illuminate\Support\Facades\Auth::user()->role==0)
+                            @if(\Illuminate\Support\Facades\Auth::user()->role==5)
+                            <span>Technician</span>
+                            @endif
+                              @if(\Illuminate\Support\Facades\Auth::user()->role==6)
+                            <span>Sales</span>
+                            @endif
+                             @if(\Illuminate\Support\Facades\Auth::user()->role==7)
+                            <span>Finance</span>
+                            @endif
+                              @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                             <span>Admin</span>
-                            @else
-                                <span>Employee</span>
-
                             @endif
                         </div>
                         @endif
@@ -124,83 +130,86 @@
                   
                </div>
             <div class="sidebar-menu-content">
+                @auth
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="{{url('admin')}}" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                    </li>
+                        @if(auth()->user()->products!=null)
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="{{url('admin')}}" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        </li>
+                        @endif
               
-                 
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Customers</span></a>
-                        <ul class="nav sub-group-menu">
-                           
-                            <li class="nav-item">
-                                <a href="{{url('customers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Active
-                                    Customers</a>
-                            </li>
-                             <li class="nav-item">
-                                <a href="{{url('all')}}" class="nav-link"><i class="fas fa-angle-right"></i>Disconnected
-                                    Customers</a>
-                            </li>
-                             <li class="nav-item">
-                                <a href="{{url('Selectcustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>From Mikrotik to System</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{url('noneActivecustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Non-Active
-                                    Customers</a>
-                            </li>
-                              <li class="nav-item">
-                                <a href="{{url('addCustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                    Customers</a>
-                            </li>
+                        @if(auth()->user()->customers!=null)
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Customers</span></a>
+                            <ul class="nav sub-group-menu">
+                            
+                                <li class="nav-item">
+                                    <a href="{{url('customers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Active
+                                        Customers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('all')}}" class="nav-link"><i class="fas fa-angle-right"></i>Disconnected
+                                        Customers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('Selectcustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>From Mikrotik to System</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('noneActivecustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Non-Active
+                                        Customers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('addCustomers')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Customers</a>
+                                </li>
 
-                      
-                        </ul>
-                    </li>
+                        
+                            </ul>
+                        </li>
+                        @endif
                    
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
-                                class="flaticon-books"></i><span>Payments</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="{{url('mpesa')}}" class="nav-link"><i class="fas fa-angle-right"></i>Mpesa</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{url('cash')}}" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Cash</a>
-                            </li>
-                        </ul>
-                    </li>
+                        @if(auth()->user()->payments!=null)
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i
+                                    class="flaticon-books"></i><span>Payments</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{{url('mpesa')}}" class="nav-link"><i class="fas fa-angle-right"></i>Mpesa</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('cash')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Cash</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
             
              
-           <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-open-book"></i><span>Send Bulk SMS</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="{{url('bulksms')}}" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Send Bulk SMS</a>
-                            </li>
-                        </ul>
-                    </li>
+                        @if(auth()->user()->expenses!=null)
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-open-book"></i><span>Send Bulk SMS</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{{url('bulksms')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Send Bulk SMS</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
 
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Billing</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="{{url('bill')}}" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Bill Customer</a>
-                            </li>
-                        </ul>
-                    </li>
-                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Bandwith Monitor</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="{{url('bandwidth')}}" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Bandwith Monitor</a>
-                            </li>
-                        </ul>
-                    </li>
+              
+                        @if(auth()->user()->estimate!=null)
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Bandwith Monitor</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{{url('bandwidth')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Bandwith Monitor</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
+                         @if(auth()->user()->amount_supposed_to_be_paid!=null)
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-open-book"></i><span>Logs</span></a>
                             <ul class="nav sub-group-menu">
@@ -210,7 +219,26 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
+
+                        @if(auth()->user()->users!=null)
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Users</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{{url('users')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Users</a>
+                                </li>
+
+                                    <li class="nav-item">
+                                    <a href="{{url('addUser')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Add Users</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
 
                 </ul>
+                @endauth
             </div>
         </div>

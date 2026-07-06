@@ -1,15 +1,15 @@
 @include('adminPartial.nav')
-<title>Employee List | Japcom</title>
+<title>Users List | Henix</title>
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Employee</h3>
+                <h3>Users</h3>
                 <ul>
                     <li>
                         <a href="{{url('admin')}}">Home</a>
                     </li>
-                    <li>All Employee</li>
+                    <li>All Users</li>
                 </ul>
             </div>
             @include('flash-message')
@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Employee Data</h3>
+                            <h3>All Users Data</h3>
                         </div>
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
@@ -69,9 +69,20 @@
                                 <td>{{$customer->phone}}</td>
                                 @if($customer->role==0)
                                 <td>Admin</td>
-                                @else
-                                    <td>User</td>
                                 @endif
+                                @if($customer->role==5)
+                                <td>Technician</td>
+                                @endif
+                                @if($customer->role==6)
+                                <td>Sales</td>
+                                @endif
+                                @if($customer->role==7)
+                                <td>Finance</td>
+                                @endif
+                                @if($customer->role==8)
+                                <td>Technician</td>
+                                @endif
+                               
                                 <td><a href="{{url('editUser',$customer->id)}}"><button class="btn btn-info">Edit</button></a>
                                     <button type="button" class="btn btn-danger view" id="{{$customer->id}}" data-toggle="modal" data-target="#west">Delete</button>
                                 </td>
@@ -136,6 +147,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
                 <button type="submit" class="btn btn-danger">Delete</button>
             </div>
             </form>
