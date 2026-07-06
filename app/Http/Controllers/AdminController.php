@@ -18,6 +18,7 @@ use App\Models\Logging;
 use App\Models\Qproduct;
 use App\Models\Quotation;
 use App\Models\User;
+use App\Models\Singlesms;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
@@ -1418,6 +1419,45 @@ class AdminController extends Controller
             'quotations'=>$quotations
         ]);
     }
+   
+    public function sendUserSms(){
+        if (Auth::check()){
+            $customers = Singlesms::get();
+            $users = User::where('role',1)->orWhere('role',0)->orWhere('role',5)->orWhere('role',6)->orWhere('role',7)->orWhere('role',8)->orderByDesc('id')->get();
+
+            return view('admin.userMessage',[
+                'customers'=>$customers,
+                'users'=>$users,
+            ]);
+        }
+        else{
+            return redirect(url('login'));
+        }
+
+    }
+    public function selectUser($id){
+        $getUser = User::find($id);
+        $getSelectedUser = Singlesms::where('user_id',$getUser->id)->first();
+        if($getSelectedUser){
+        return redirect()->back()->with('error','USER ALREADY SELECTED');
+        }
+        else{
+        $store = new Singlesms();
+        $store->user_id = $getUser->id;
+        $store->save();
+
+        return redirect()->back()->with('success','USER SELECTED');
+
+        }
+
+    }
+    public function removeUser($id){
+        $getSelectedUser = Singlesms::find($id);
+        $getSelectedUser->delete();
+        return redirect()->back()->with('success','USER REMOVED');
+
+    }
+
     public function deleteQ($id){
         $del = Quotation::find($id);
         $deleteProducts = Qproduct::where('quotation_id',$id)->delete();
@@ -2808,6 +2848,32 @@ Thank you for choosing our services.',
        
                                      
         }
+                return redirect()->back()->with('success','MESSAGE SENT SUCCESSFULLY');
+
+    
+    }
+       public function sendSingleSms(Request $request){
+           $ones =  Singlesms::get();
+          
+        foreach($ones as $one){
+                $oneDay = $one->one_day_before;
+              
+           
+                         $postData = [
+                        'apikey' => '9324ef7e2034b5d479f64d31ae513215',
+                        'partnerID' => 138,
+                        'mobile' => $one->user->phoneOne,
+                        
+                        'message' => $request->message,
+                        'shortcode' => 'VUMATEL',
+                        
+                    ];
+                    $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
+
+       
+                                     
+        }
+        Singlesms::truncate();
                 return redirect()->back()->with('success','MESSAGE SENT SUCCESSFULLY');
 
     

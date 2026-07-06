@@ -302,7 +302,7 @@ class MpesaController extends Controller
                                             if($getUser=='true'){
                                             $query = new Query('/ppp/profile/print');
                                         
-                                            // 2. Build the RouterOS API query to disable the secret
+                                            // 2. Build the RouterOS API query to enable the secret
                                             $query = (new Query('/ppp/secret/set'))
                                                 ->equal('.id', $mikId)
                                                 ->equal('disabled', 'no');
@@ -384,7 +384,7 @@ class MpesaController extends Controller
                                             // 5. Handle any connection or API errors
                                             Log::info('Paid but profile not updated');
                                             $cache = Cache::create([
-                                                'user_id' => $getUser->id,
+                                                'user_id' => $getUserIdentification->id,
                                                 'status' => 3,
                                             ]);
                                             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
