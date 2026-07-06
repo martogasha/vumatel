@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 //client side routes
 Route::get('/', [IndexController::class, 'index']);
+Route::post('Login', [AuthController::class, 'login'])->name('Login');
 Route::middleware(['auth'])->group(function () {
 
 //admin routes
@@ -56,7 +57,7 @@ Route::post('resetUser/{id}', [AdminController::class, 'resetUser'])->name('rese
 Route::post('editC/{id}', [AdminController::class, 'editC'])->name('editC');
 Route::post('deleteUser', [AdminController::class, 'deleteUser'])->name('deleteUser');
 Route::post('deleteC', [AdminController::class, 'deleteC'])->name('deleteC');
-Route::post('Login', [AuthController::class, 'login'])->name('Login');
+
 Route::get('customers', [AdminController::class, 'customers']);
 Route::get('logs', [AdminController::class, 'logs']);
 Route::get('Selectcustomers', [AdminController::class, 'Selectcustomers']);
