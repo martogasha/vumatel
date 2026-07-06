@@ -26,7 +26,7 @@ Route::get('home', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('Login');
 //client side routes
 Route::get('/', [IndexController::class, 'index']);
 Route::middleware(['auth'])->group(function () {
