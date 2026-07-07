@@ -36,7 +36,7 @@ class AdminController extends Controller
 {
     public function admin(){
         if (Auth::check()) {
-            if (Auth::user()->role==0 || Auth::user()->role==1) {
+            if (Auth::user()->role==0 || Auth::user()->role==1 || Auth::user()->role==5 || Auth::user()->role==6 || Auth::user()->role==7 || Auth::user()->role==8) {
                 $notice = Notice::where('id','>',0)->first();
               $currentMonth = date('m');
               $currentYeah = date('Y');
@@ -201,7 +201,7 @@ class AdminController extends Controller
     }
     public function profile(){
         if (Auth::check()) {
-            if (Auth::user()->role==0 || Auth::user()->role==1) {
+            if (Auth::user()->role==0 || Auth::user()->role==1 || Auth::user()->role==5 || Auth::user()->role==6 || Auth::user()->role==7 || Auth::user()->role==8) {
                 return view('admin.profile');
             }
         }
