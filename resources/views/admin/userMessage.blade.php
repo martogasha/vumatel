@@ -100,7 +100,7 @@
                                 <tr>
                                 <td>{{$customer->user->first_name}} {{$customer->user->last_name}}</td>
                                 <td>{{$customer->user->email}}</td>
-                                <td>{{$customer->user->phone}}</td>
+                                <td>{{$customer->user->phoneOne}}</td>
                                 @if($customer->user->role==0)
                                 <td>Admin</td>
                                 @endif
@@ -151,7 +151,7 @@
                                 <tr>
                                 <td>{{$user->first_name}} {{$user->last_name}}</td>
                                 <td>{{$user->email}}</td>
-                                <td>{{$user->phone}}</td>
+                                <td>{{$user->phoneOne}}</td>
                                 @if($user->role==0)
                                 <td>Admin</td>
                                 @endif

@@ -66,7 +66,7 @@
 
                                 <td>{{$customer->first_name}} {{$customer->last_name}}</td>
                                 <td>{{$customer->email}}</td>
-                                <td>{{$customer->phone}}</td>
+                                <td>{{$customer->phoneOne}}</td>
                                 @if($customer->role==0)
                                 <td>Admin</td>
                                 @endif

@@ -698,7 +698,7 @@ class AdminController extends Controller
         $store = new User();
         $store->first_name = $request->first_name;
         $store->last_name = $request->last_name;
-        $store->phone = $request->phone;
+        $store->phoneOne = $request->phone;
         $store->email = $request->email;
         $store->role = $request->role;
         $store->products = $request->dashboard;
@@ -2473,7 +2473,7 @@ Thank you for choosing our services.',
         $edit->first_name = $request->first_name;
         $edit->last_name = $request->last_name;
         $edit->email = $request->email;
-        $edit->phone = $request->phone;
+        $edit->phoneOne = $request->phone;
         $edit->role = $request->role;
         $edit->products = $request->dashboard;
         $edit->customers = $request->customers;
@@ -2854,6 +2854,7 @@ Thank you for choosing our services.',
     }
        public function sendSingleSms(Request $request){
            $ones =  Singlesms::get();
+           
           
         foreach($ones as $one){
                 $oneDay = $one->one_day_before;
