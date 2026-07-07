@@ -59,7 +59,7 @@
 
                                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                                         <label>Phone Number</label>
-                                        <input type="text" placeholder="712345678" name="phone" value="{{\Illuminate\Support\Facades\Auth::user()->phone}}" class="form-control">
+                                        <input type="text" placeholder="712345678" name="phone" value="{{\Illuminate\Support\Facades\Auth::user()->phoneOne}}" class="form-control">
                                     </div>
                                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                                         <label>Password</label>

@@ -214,7 +214,7 @@ class AdminController extends Controller
         $edit = User::find($id);
         $edit->first_name = $request->first_name;
         $edit->last_name = $request->last_name;
-        $edit->phone = $request->phone;
+        $edit->phoneOne = $request->phone;
         $edit->email = $request->email;
         $edit->password = Hash::make($request->password);
         $edit->save();
