@@ -2505,10 +2505,13 @@ Thank you for choosing our services.',
     }
     public function editCustomerDetail(Request $request, $id){
         $customer = User::find($id);
+        $secretPassword = null;
         $date = $customer->payment_date;
 
 // 1. Initialize the client using your RouterOS credentials
-        $client = new Client([
+        
+        try{
+             $client = new Client([
            'host' => '102.209.56.86',
             'user' => 'admin',
             'pass' => '@anxvtT3n',
@@ -2524,6 +2527,14 @@ Thank you for choosing our services.',
 
         // 4. Extract only the 'name' field from the response
         $secretPassword  =  $response[0]['password'];
+
+        }
+         catch (\Exception $e) {
+                                            // 5. Handle any connection or API errors
+                                            Log::info('Mikrotik not connected');
+                            
+                                        }
+       
         
 
         
