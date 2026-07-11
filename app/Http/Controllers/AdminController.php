@@ -2426,7 +2426,7 @@ Thank you for choosing our services.',
     public function filterMpesa(Request $request){
         $start_date = $request->start_date;
         $end_date = $request->end_date;
-        $invoices  = Mpesa::whereBetween('created_at', array($start_date, $end_date))->get();
+        $invoices  = Mpesa::whereBetween('created_at', array($start_date, $end_date))->orderByDesc('id')->get();
         $total  = Mpesa::whereBetween('created_at', array($start_date, $end_date))->sum('amount');
         return view('admin.mpesa',[
             'mpesas'=>$invoices,
@@ -2532,6 +2532,7 @@ Thank you for choosing our services.',
          catch (\Exception $e) {
                                             // 5. Handle any connection or API errors
                                             Log::info('Mikrotik not connected');
+                                            Log::info($e->getMessage());
                             
                                         }
        
@@ -2644,7 +2645,7 @@ Thank you for choosing our services.',
                         // 5. Handle any connection or API errors
                         Log::info('password edit failed');
                     
-                        return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                        return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
                     }    
 
         }
@@ -2773,7 +2774,7 @@ Thank you for choosing our services.',
                             'user_id' => $getUser->id,
                             'status' => 2,
                         ]);
-                        return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                        return response()->json(['error' => 'Failed to enable PPPoE secret: ' . $e->getMessage()], 500);
                     }
                     
                       try {
@@ -2811,7 +2812,7 @@ Thank you for choosing our services.',
                             'user_id' => $getUser->id,
                             'status' => 3,
                         ]);
-                        return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                        return response()->json(['error' => 'Failed to update Profile: ' . $e->getMessage()], 500);
                     }
 
                     }
