@@ -2584,6 +2584,7 @@ Thank you for choosing our services.',
     }
 
     public function subAccount(Request $request){
+        Log::info('sub account incomplete');
      dd($request->all());
         return redirect()->back()->with('success','Sub Account Added');
     }
