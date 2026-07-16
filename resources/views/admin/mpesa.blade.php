@@ -49,7 +49,15 @@
                     @if(isset($start_date))
                         <h3>Total from <b style="color: red">{{date('d-m-Y', strtotime($start_date))}}</b> to <b style="color: red">{{date('d-m-Y', strtotime($end_date))}}</b> = <b>SH {{$total}}</b></h3>
                     @else
-                        <h3>Total for {{\Carbon\Carbon::now()->format('F')}} = <b>SH {{$total}}</b></h3>
+                        <h3>Total for {{\Carbon\Carbon::now()->format('F')}} = <b id="my-text">SH {{$total}}</b>
+                            <div class="container">
+                                <button id="eye-btn" aria-label="Toggle text visibility">
+                                    👁️
+                                </button>
+                            </div>
+
+
+                    </h3>
                     @endif
                     <div class="table-responsive">
                         <div class="col-lg-12 col-12 form-group">
@@ -98,6 +106,32 @@
     </div>
     <!-- Page Area End Here -->
 </div>
+<style>
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#my-text {
+  /* Smooth transition between blurred and clear */
+  transition: filter 0.3s ease; 
+}
+
+/* Applies the blur effect */
+.blurred {
+  filter: blur(5px);
+  user-select: none; /* Prevents selecting the text */
+}
+
+#eye-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+
+</style>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -124,6 +158,17 @@
             });
         });
     });
+const textElement = document.getElementById('my-text');
+const eyeBtn = document.getElementById('eye-btn');
+
+// Start with the text blurred
+textElement.classList.add('blurred');
+
+eyeBtn.addEventListener('click', () => {
+  // Toggle the blur class on click
+  textElement.classList.toggle('blurred');
+});
+
 </script>
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jun 2021 10:35:18 GMT -->
 </html>

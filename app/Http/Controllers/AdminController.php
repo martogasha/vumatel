@@ -2505,6 +2505,7 @@ Thank you for choosing our services.',
     }
     public function editCustomerDetail(Request $request, $id){
         $customer = User::find($id);
+        $clients = User::where('role',2)->get();
         $secretPassword = null;
         $date = $customer->payment_date;
 
@@ -2541,6 +2542,7 @@ Thank you for choosing our services.',
         
         return view('admin.editCustomerDetail',[
             'customer'=>$customer,
+            'clients'=>$clients,
             'date'=>$date,
             'password' => $secretPassword
         ]);
@@ -2580,6 +2582,12 @@ Thank you for choosing our services.',
         $deleteInvoice = invoice::where('user_id',$customer->id)->delete();
         return redirect()->back()->with('success','Customer Deactivated');
     }
+
+    public function subAccount(Request $request){
+     dd($request->all());
+        return redirect()->back()->with('success','Sub Account Added');
+    }
+
     public function editC(Request $request, $id){
         $getAccountNo = User::where('phone',$request->phone)->first();
         

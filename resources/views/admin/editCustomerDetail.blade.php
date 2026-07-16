@@ -24,6 +24,33 @@
                 <button type="submit" class="btn-fill-lg bg-success btn-hover-yellow">Prompt</button>
                
                 </form>
+                <br>
+                    <div id="subDiv">
+                        <button id="subButton" class="btn-fill-lg bg-warning btn-hover-yellow">Add Sub-accounts</button>
+
+                    </div>
+
+                <br>
+                <form action="{{url('subAccount',$customer->id)}}" method="post">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{$customer->id}}">
+                           <div class="col-xl-3 col-lg-6 col-12 form-group" id="subaccount">
+                                    <div class="form-group">
+                                        <label>Select Account</label>
+                                        <select class="form-control select2" name="sub_id">
+                                            @foreach($clients as $client)
+                                            <option value="{{$client->id}}">{{$client->first_name}} {{$client->phone}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                            <button type="submit" class="btn-fill-lg bg-warning btn-hover-yellow">Save Sub-accounts</button>
+
+                            </div>
+               
+                </form>
+
+                   
             </div>
 
             @include('flash-message');
@@ -142,7 +169,15 @@
 <!-- Custom Js -->
 <script src="{{asset('js/main.js')}}"></script>
 
-
+<script>
+$(document).ready(function() {
+    $("#subaccount").hide();
+});
+$("#subButton").click(function(){
+  $("#subaccount").show();
+  $("#subDiv").hide();
+});
+    </script>
 </body>
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/add-teacher.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jun 2021 10:36:38 GMT -->
 </html>

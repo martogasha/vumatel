@@ -52,6 +52,7 @@ Route::post('editEmployee/{id}', [AdminController::class, 'editEmployee'])->name
 Route::get('editCustomerDetail/{id}', [AdminController::class, 'editCustomerDetail'])->name('editCustomerDetail');
 Route::post('activate', [AdminController::class, 'activate']);
 Route::post('noneActive', [AdminController::class, 'noneActive']);
+Route::post('subAccount/{id}', [AdminController::class, 'subAccount']);
 Route::get('bulksms', [AdminController::class, 'bulksms']);
 Route::post('sendBulkSms', [AdminController::class, 'sendBulkSms']);
 Route::post('sendSingleSms', [AdminController::class, 'sendSingleSms']);
