@@ -168,17 +168,11 @@
 
                                   
                                     
-                                    <td>{{$cust->user->first_name}}</td>0558
+                                    <td>{{$cust->user->first_name}}</td>
                                     <td>{{$cust->user->phone}}</td>
                                     
                                     <td>{{$cust->user->last_name}}</td>
-                                        @if($cust->user->amount!=0)
-                                    <td>Ksh: {{$cust->user->amount}}</td>
-                                        @else
-                                            <td><span class="badge badge-danger">Not Paid</span></td>
-
-                                        @endif
-                                      
+                                    <td>Ksh: {{$cust->user->package_amount}}</td>
                                       
                                     <td>
                                         
@@ -188,6 +182,8 @@
                                                 <span class="flaticon-more-button-of-three-dots"></span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="{{url('editCustomerDetail',$cust->user_id)}}"><i
+                                                        class="fas fa-edit text-blue"></i>Edit</a>
                                                  <div class="col-12 form-group mg-t-8">
                                                         <button type="button" class="btn-fill-xl text-light bg-red view" data-toggle="modal"
                                                         data-target="#west" id="{{$cust->id}}">
