@@ -60,6 +60,7 @@ Route::post('resetUser/{id}', [AdminController::class, 'resetUser'])->name('rese
 Route::post('editC/{id}', [AdminController::class, 'editC'])->name('editC');
 Route::post('deleteUser', [AdminController::class, 'deleteUser'])->name('deleteUser');
 Route::post('deleteC', [AdminController::class, 'deleteC'])->name('deleteC');
+Route::post('deleteDuplicate', [AdminController::class, 'deleteDuplicate'])->name('deleteDuplicate');
 
 Route::get('customers', [AdminController::class, 'customers']);
 Route::get('logs', [AdminController::class, 'logs']);
@@ -74,6 +75,7 @@ Route::post('filterMpesa', [AdminController::class, 'filterMpesa']);
 Route::get('addProduct', [AdminController::class, 'addProduct']);
 Route::get('del', [AdminController::class, 'del']);
 Route::get('delC', [AdminController::class, 'delC']);
+Route::get('delDuplicate', [AdminController::class, 'delDuplicate']);
 Route::get('delE', [AdminController::class, 'delE']);
 Route::get('delP', [AdminController::class, 'delP']);
 Route::get('getReceipt/{id}', [AdminController::class, 'getReceipt']);

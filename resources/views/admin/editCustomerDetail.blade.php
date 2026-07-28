@@ -33,11 +33,11 @@
                 <br>
                 <form action="{{url('subAccount',$customer->id)}}" method="post">
                         @csrf
-                        <input type="hidden" name="user_id" value="{{$customer->id}}">
+                        <input type="hidden" name="sub_id" value="{{$customer->id}}">
                            <div class="col-xl-3 col-lg-6 col-12 form-group" id="subaccount">
                                     <div class="form-group">
                                         <label>Select Account</label>
-                                        <select class="form-control select2" name="sub_id">
+                                        <select class="form-control select2" name="user_id">
                                             @foreach($clients as $client)
                                             <option value="{{$client->id}}">{{$client->first_name}} {{$client->phone}}</option>
                                             @endforeach
@@ -137,9 +137,110 @@
                             
                         </div>
                     </form>
+                    <br>
+                    <div class="row-fluid" id="customerAll">
+                        <div class="col-lg-12 col-12 form-group">
+                            <h3><b>Sub Accounts</b></h3>
+                            <input type="text" placeholder="Search" class="form-control" id="myInput">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Connection</th>
+                                    <th>Balance</th>
+                                    <th>Name</th>
+                                    <th>A/c</th>
+                                    
+                                    <th>Package</th>
+                                    <th>Amount</th>
+                                    <th>Phone No:</th>
+                                    <th>Due Date</th>
+                                   
+                                    <th>Msg Date</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                @foreach($custs as $cust)
+                                <tr>
+                                        @if($cust->user->dis_status=='true')
+                                            <td><span class="badge badge-danger">Disconnected</span></td> 
+                                            @else
+                                            <td><span class="badge badge-success">Active</span></td>
+                                        @endif  
+
+                                        @if($cust->user->package_amount==null)
+                                            <td><b style="color: red">TERMINATED</b></td>
+
+                                        @elseif($cust->user->balance<=0)
+                                            <td><b style="color: green">Ksh: {{$cust->user->balance}}</b></td>
+
+                                        @else
+                                        <td><b style="color: red">Ksh: {{$cust->user->balance}}</b></td>
+
+                                    @endif
+                                    
+                                    <td>{{$cust->user->first_name}}</td>0558
+                                    <td>{{$cust->user->phone}}</td>
+                                    
+                                    <td>{{$cust->user->last_name}}</td>
+                                        @if($cust->user->amount!=0)
+                                    <td>Ksh: {{$cust->user->amount}}</td>
+                                        @else
+                                            <td><span class="badge badge-danger">Not Paid</span></td>
+
+                                        @endif
+                                    <td><span class="badge badge-success">{{$cust->user->phoneOne}}</span></td>
+                                        @if($cust->user->due_date==0)
+                                            <td><span class="badge badge-danger">Not Paid</span>
+                                            </td>
+                                        @else   
+                                            <td>{{date('d/m/Y H:i:s',strtotime($cust->user->due_date))}}</td>
+                                        @endif
+                                        @if(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('status')==0)
+                                        <td><span class="badge badge-danger">Disconnected</span></td>
+                                        @else
+                                         
+                                            @if(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('due_date_status')===null)
+                                            <td>{{date('d/m/Y H:i:s',strtotime(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('one_day_before')))}}</td>
+                                            @elseif(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('due_date_status')==0)
+                                            <td><span class="badge badge-info">Msg Sent</span></td></td>
+                                            @else
+                                            <td><span class="badge badge-success">Paid</span></td></td>
+                                            @endif
+                                        @endif
+                                    <td>
+                                        
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false">
+                                                <span class="flaticon-more-button-of-three-dots"></span>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                 <div class="col-12 form-group mg-t-8">
+                                                        <button type="button" class="btn-fill-xl text-light bg-red view" data-toggle="modal"
+                                                        data-target="#west" id="{{$cust->id}}">
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                              
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+
+                                                        </tbody>
+                            </table>
+                        </div>
+                    </div>
+                
                     
                 </div>
-                
+
+                    
             </div>
             <!-- Add New Teacher Area End Here -->
             <footer class="footer-wrap-layout1">
@@ -149,6 +250,27 @@
         </div>
     </div>
     <!-- Page Area End Here -->
+</div>
+<div class="modal fade" id="west" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">ARE YOU SURE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{url('deleteDuplicate')}}" method="post" id="deleteCustomers">
+                @csrf
+                <div id="del">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- jquery-->
 <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
@@ -177,6 +299,23 @@ $("#subButton").click(function(){
   $("#subaccount").show();
   $("#subDiv").hide();
 });
+    $(document).on('click','.view',function () {
+        $value = $(this).attr('id');
+        $.ajax({
+            type:"get",
+            url:"{{url('delDuplicate')}}",
+            data:{'id':$value},
+            success:function (data) {
+                $('#del').html(data);
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
     </script>
 </body>
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/add-teacher.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Jun 2021 10:36:38 GMT -->

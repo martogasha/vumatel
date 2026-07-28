@@ -15,6 +15,16 @@ class Logging extends Model
         'amount',
         'status',
         'name',
+        'password',
+        'account',
+        'phone_number',
+        'package',
+        'package_amount',
+        'current_balance',
+        'add_balance',
+        'payment_date',
+        'due_date',
+        'duplicate_id',
         
 
     ];

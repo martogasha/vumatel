@@ -17,6 +17,7 @@ use App\Models\Band;
 use App\Models\Logging;
 use App\Models\Qproduct;
 use App\Models\Quotation;
+use App\Models\Duplicate;
 use App\Models\User;
 use App\Models\Singlesms;
 use Carbon\Carbon;
@@ -2505,6 +2506,7 @@ Thank you for choosing our services.',
     }
     public function editCustomerDetail(Request $request, $id){
         $customer = User::find($id);
+        $custs = Duplicate::where('duplicate_id', $id)->orderByDesc('id')->get();
         $clients = User::where('role',2)->get();
         $secretPassword = null;
         $date = $customer->payment_date;
@@ -2542,6 +2544,7 @@ Thank you for choosing our services.',
         
         return view('admin.editCustomerDetail',[
             'customer'=>$customer,
+            'custs'=>$custs,
             'clients'=>$clients,
             'date'=>$date,
             'password' => $secretPassword
@@ -2585,8 +2588,33 @@ Thank you for choosing our services.',
 
     public function subAccount(Request $request){
         Log::info('sub account incomplete');
-     dd($request->all());
-        return redirect()->back()->with('success','Sub Account Added');
+        $findDuplicate = Duplicate::where('user_id', $request->user_id)->first();
+        
+        if(!isset($findDuplicate)){
+            $duplicate = Duplicate::create([
+                'user_id' => $request->user_id,
+                'duplicate_id' => $request->sub_id,
+            ]);
+            $findUser = User::where('id', $request->user_id)->first();
+            $now = Carbon::now();
+            $createLogthertyone = Logging::create([
+                                'user_id' => $findUser->user_id,
+                                'reason' => 31,
+                                'date' => $now,
+                                'name'=> $findUser->first_name,
+                                'duplicate_id' => $request->sub_id,
+                                
+                            ]);
+
+            return redirect()->back()->with('success','SUB-ACCOUNT ADDED SUCCESS');  
+
+        }
+        else{
+            return redirect()->back()->with('error','SUB-ACCOUNT ALREADY EXIST');
+
+        }
+
+       
     }
 
     public function editC(Request $request, $id){
@@ -2671,6 +2699,17 @@ Thank you for choosing our services.',
             'user_id' => $id,
             'reason' => 12,
             'date' => $dateNow,
+            'name' => $request->first_name,
+            'password' => $request->password,
+            'account' => $request->phone,
+            'phone_number' => $request->phoneOne,
+            'package' => $request->bandwidth,
+            'package_amount' => $request->package_amount,
+            'current_balance' => $request->first_name,
+            'add_balance' => $request->cBalance,
+            'payment_date' => $request->payment_date,
+            'due_date' => $request->due_date,
+            'duplicate_id' => $request->sub_id,
         ]);
         $getInvoiceId = Invoice::where('user_id',$id)->latest('id')->first();
         $paymentDate = Carbon::parse($request->payment_date);
@@ -2916,6 +2955,14 @@ Thank you for choosing our services.',
         ';
         return response($output);
     }
+       public function delDuplicate(Request $request){
+        $output = "";
+        $userId = Duplicate::find($request->id);
+        $output = '
+        <input type=hidden value='.$userId->id.' name=userid>
+        ';
+        return response($output);
+    }
     public function delE(Request $request){
         $output = "";
         $userId = Expense::find($request->id);
@@ -2976,6 +3023,23 @@ Thank you for choosing our services.',
        
 
         return redirect(url('noneActivecustomers'))->with('success','CUSTOMER DELETED SUCCESS');
+
+    }
+       public function deleteDuplicate(Request $request){
+            $findUser = Duplicate::where('id',$request->userid)->first();
+            $now = Carbon::now();
+               $createLogTherty = Logging::create([
+                            'user_id' => $findUser->user_id,
+                            'reason' => 30,
+                            'date' => $now,
+                            'name'=> $findUser->user->first_name,
+                            'duplicate_id' => $findUser->duplicate_id,
+                            
+                        ]);
+        $deleteUser = Duplicate::where('id',$request->userid)->delete();
+     
+
+        return redirect()->back()->with('success','SUB-ACCOUNT REMOVED SUCCESS');
 
     }
       public function bandwidth(){

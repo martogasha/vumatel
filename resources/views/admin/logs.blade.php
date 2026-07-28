@@ -91,7 +91,12 @@
                                      @case(23)
                                     <td>Customer Disabled Success</td>
                                     @break
-                                    
+                                    @case(30)
+                                    <td>Sub-Account removed Success</td>
+                                    @break
+                                    @case(31)
+                                    <td>Sub-Account Added Success</td>
+                                    @break
                                     @endswitch
                                     <td>{{$log->amount}}</td>
                                     
