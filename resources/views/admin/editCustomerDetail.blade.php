@@ -148,16 +148,12 @@
                                 <thead>
                                 <tr>
                                     <th>Connection</th>
-                                    <th>Balance</th>
                                     <th>Name</th>
                                     <th>A/c</th>
                                     
                                     <th>Package</th>
                                     <th>Amount</th>
-                                    <th>Phone No:</th>
-                                    <th>Due Date</th>
                                    
-                                    <th>Msg Date</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -170,16 +166,7 @@
                                             <td><span class="badge badge-success">Active</span></td>
                                         @endif  
 
-                                        @if($cust->user->package_amount==null)
-                                            <td><b style="color: red">TERMINATED</b></td>
-
-                                        @elseif($cust->user->balance<=0)
-                                            <td><b style="color: green">Ksh: {{$cust->user->balance}}</b></td>
-
-                                        @else
-                                        <td><b style="color: red">Ksh: {{$cust->user->balance}}</b></td>
-
-                                    @endif
+                                  
                                     
                                     <td>{{$cust->user->first_name}}</td>0558
                                     <td>{{$cust->user->phone}}</td>
@@ -191,25 +178,8 @@
                                             <td><span class="badge badge-danger">Not Paid</span></td>
 
                                         @endif
-                                    <td><span class="badge badge-success">{{$cust->user->phoneOne}}</span></td>
-                                        @if($cust->user->due_date==0)
-                                            <td><span class="badge badge-danger">Not Paid</span>
-                                            </td>
-                                        @else   
-                                            <td>{{date('d/m/Y H:i:s',strtotime($cust->user->due_date))}}</td>
-                                        @endif
-                                        @if(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('status')==0)
-                                        <td><span class="badge badge-danger">Disconnected</span></td>
-                                        @else
-                                         
-                                            @if(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('due_date_status')===null)
-                                            <td>{{date('d/m/Y H:i:s',strtotime(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('one_day_before')))}}</td>
-                                            @elseif(App\Models\Invoice::where('user_id',$cust->user->id)->latest('id')->value('due_date_status')==0)
-                                            <td><span class="badge badge-info">Msg Sent</span></td></td>
-                                            @else
-                                            <td><span class="badge badge-success">Paid</span></td></td>
-                                            @endif
-                                        @endif
+                                      
+                                      
                                     <td>
                                         
                                         <div class="dropdown">
