@@ -2708,7 +2708,7 @@ Thank you for choosing our services.',
             'current_balance' => $currentBal,
             'add_balance' => $request->cBalance,
             'payment_date' => $request->payment_date,
-            'due_date' => $request->due_date,
+            'due_date' => $nextDate,
             'duplicate_id' => $request->sub_id,
         ]);
         $getInvoiceId = Invoice::where('user_id',$id)->latest('id')->first();
