@@ -92,10 +92,10 @@
                                     <td>Customer Disabled Success</td>
                                     @break
                                     @case(30)
-                                    <td>Sub-Account removed Success</td>
+                                    <td>Sub-Account removed Success from {{\App\Models\User::where('id',$log->duplicate_id)->value('first_name')}} {{\App\Models\User::where('id',$log->duplicate_id)->value('phone')}}</td>
                                     @break
                                     @case(31)
-                                    <td>Sub-Account Added Success</td>
+                                    <td>Sub-Account Added Success to {{\App\Models\User::where('id',$log->duplicate_id)->value('first_name')}} {{\App\Models\User::where('id',$log->duplicate_id)->value('phone')}}</td>
                                     @break
                                     @endswitch
                                     <td>{{$log->amount}}</td>

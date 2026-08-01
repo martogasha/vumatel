@@ -4,7 +4,7 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Edit <b style="color: red">{{$customer->first_name}}</b> </h3>
+                <h3>Edit <b style="color: red">{{$customer->first_name}}</b> Sub-Account of <span style="color:blue;">{{\App\Models\User::where('id', \App\Models\Duplicate::where('user_id', $customer->id)->value('duplicate_id'))->value('first_name')}} {{\App\Models\User::where('id', \App\Models\Duplicate::where('user_id', $customer->id)->value('duplicate_id'))->value('phone')}}</span></h3>
                 <form action="{{url('disableC',$customer->mikrotik_id)}}">
                         @csrf
                 @if($customer->dis_status != 'true')
@@ -19,36 +19,39 @@
                 <ul>
                    <br>
                 </ul>
-                     <form action="{{url('prompt',$customer->id)}}">
-                        @csrf
-                <button type="submit" class="btn-fill-lg bg-success btn-hover-yellow">Prompt</button>
-               
-                </form>
-                <br>
-                    <div id="subDiv">
-                        <button id="subButton" class="btn-fill-lg bg-warning btn-hover-yellow">Add Sub-accounts</button>
-
-                    </div>
-
-                <br>
-                <form action="{{url('subAccount',$customer->id)}}" method="post">
-                        @csrf
-                        <input type="hidden" name="sub_id" value="{{$customer->id}}">
-                           <div class="col-xl-3 col-lg-6 col-12 form-group" id="subaccount">
-                                    <div class="form-group">
-                                        <label>Select Account</label>
-                                        <select class="form-control select2" name="user_id">
-                                            @foreach($clients as $client)
-                                            <option value="{{$client->id}}">{{$client->first_name}} {{$client->phone}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                            <button type="submit" class="btn-fill-lg bg-warning btn-hover-yellow">Save Sub-accounts</button>
+                @if(\App\Models\Duplicate::where('user_id', $customer->id)->exists())
+                @else
+                            <form action="{{url('prompt',$customer->id)}}">
+                                    @csrf
+                                <button type="submit" class="btn-fill-lg bg-success btn-hover-yellow">Prompt</button>
+                        
+                            </form>
+                        <br>
+                            <div id="subDiv">
+                                <button id="subButton" class="btn-fill-lg bg-warning btn-hover-yellow">Add Sub-accounts</button>
 
                             </div>
-               
-                </form>
+
+                        <br>
+                        <form action="{{url('subAccount',$customer->id)}}" method="post">
+                                @csrf
+                                <input type="hidden" name="sub_id" value="{{$customer->id}}">
+                                <div class="col-xl-3 col-lg-6 col-12 form-group" id="subaccount">
+                                            <div class="form-group">
+                                                <label>Select Account</label>
+                                                <select class="form-control select2" name="user_id">
+                                                    @foreach($clients as $client)
+                                                    <option value="{{$client->id}}">{{$client->first_name}} {{$client->phone}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                    <button type="submit" class="btn-fill-lg bg-warning btn-hover-yellow">Save Sub-accounts</button>
+
+                                    </div>
+                    
+                        </form>
+                @endif
 
                    
             </div>
@@ -88,48 +91,55 @@
                                 <label>Account No: <b>{{$customer->phone}}</b></label>
                                 <input type="text" class="form-control" name="phone">
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Phone No:</label>
-                                <input type="text" value="{{$customer->phoneOne}}" class="form-control" name="phoneOne" required>
-                            </div>
+                            @if(\App\Models\Duplicate::where('user_id', $customer->id)->exists())
+                            @else
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <label>Phone No:</label>
+                                    <input type="text" value="{{$customer->phoneOne}}" class="form-control" name="phoneOne" required>
+                                </div>
+                            @endif
                            
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Package *</label>
                                 <input type="text" value="{{$customer->last_name}}" class="form-control" name="bandwidth"/>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                          
+                            @if(\App\Models\Duplicate::where('user_id', $customer->id)->exists())
+                            @else
+                              <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Package Amount *</label>
                                 <input type="text" value="{{$customer->package_amount}}" class="form-control" name="package_amount" required/>
 
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Current Balance *</label>
-                                <input type="text" value="{{$customer->balance}}" class="form-control" disabled/>
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <label>Current Balance *</label>
+                                    <input type="text" value="{{$customer->balance}}" class="form-control" disabled/>
 
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Add Balance *</label>
-                                <input type="text" class="form-control" name="cBalance" placeholder="Ksh"/>
+                                </div>
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <label>Add Balance *</label>
+                                    <input type="text" class="form-control" name="cBalance" placeholder="Ksh"/>
 
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <div class="form-group">
-                                    <label for="dob">Payment Date *</label>
-                                    <input type="date" value="{{ old('payment_date', $customer->payment_date ? \Carbon\Carbon::parse($customer->payment_date)->format('Y-m-d') : '') }}" class="form-control" name="payment_date"/>
                                 </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <div class="form-group">
-                                    <label for="dob">Due Date *</label>
-                                    <input type="date" value="{{ old('due_date', $customer->due_date ? \Carbon\Carbon::parse($customer->due_date)->format('Y-m-d') : '') }}" class="form-control" name="due_date"/>
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <div class="form-group">
+                                        <label for="dob">Payment Date *</label>
+                                        <input type="date" value="{{ old('payment_date', $customer->payment_date ? \Carbon\Carbon::parse($customer->payment_date)->format('Y-m-d') : '') }}" class="form-control" name="payment_date"/>
+                                    </div>
                                 </div>
-                            </div>
-                      <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <div class="form-group">
-                                    <label for="dob">1Day MSG *</label>
-                                    <input type="date" value="" class="form-control" name="one_day_before"/>
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <div class="form-group">
+                                        <label for="dob">Due Date *</label>
+                                        <input type="date" value="{{ old('due_date', $customer->due_date ? \Carbon\Carbon::parse($customer->due_date)->format('Y-m-d') : '') }}" class="form-control" name="due_date"/>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <div class="form-group">
+                                        <label for="dob">1Day MSG *</label>
+                                        <input type="date" value="" class="form-control" name="one_day_before"/>
+                                    </div>
+                                </div>
+                            @endif
                         
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="addCustomer">Save</button>
@@ -138,70 +148,71 @@
                         </div>
                     </form>
                     <br>
-                    <div class="row-fluid" id="customerAll">
-                        <div class="col-lg-12 col-12 form-group">
-                            <h3><b>Sub Accounts</b></h3>
-                            <input type="text" placeholder="Search" class="form-control" id="myInput">
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Connection</th>
-                                    <th>Name</th>
-                                    <th>A/c</th>
-                                    
-                                    <th>Package</th>
-                                    <th>Amount</th>
-                                   
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody id="myTable">
-                                @foreach($custs as $cust)
-                                <tr>
-                                        @if($cust->user->dis_status=='true')
-                                            <td><span class="badge badge-danger">Disconnected</span></td> 
-                                            @else
-                                            <td><span class="badge badge-success">Active</span></td>
-                                        @endif  
-
-                                  
-                                    
-                                    <td>{{$cust->user->first_name}}</td>
-                                    <td>{{$cust->user->phone}}</td>
-                                    
-                                    <td>{{$cust->user->last_name}}</td>
-                                    <td>Ksh: {{$cust->user->package_amount}}</td>
-                                      
-                                    <td>
+                    @if(\App\Models\Duplicate::where('user_id', $customer->id)->exists())
+                    @else
+                        <div class="row-fluid" id="customerAll">
+                            <div class="col-lg-12 col-12 form-group">
+                                <h3><b>Sub Accounts</b></h3>
+                                <input type="text" placeholder="Search" class="form-control" id="myInput">
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Connection</th>
+                                        <th>Name</th>
+                                        <th>A/c</th>
                                         
-                                        <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                                            aria-expanded="false">
-                                                <span class="flaticon-more-button-of-three-dots"></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="{{url('editCustomerDetail',$cust->user_id)}}"><i
-                                                        class="fas fa-edit text-blue"></i>Edit</a>
-                                                 <div class="col-12 form-group mg-t-8">
-                                                        <button type="button" class="btn-fill-xl text-light bg-red view" data-toggle="modal"
-                                                        data-target="#west" id="{{$cust->id}}">
-                                                        Remove
-                                                    </button>
+                                        <th>Package</th>
+                                    
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                    @foreach($custs as $cust)
+                                    <tr>
+                                            @if($cust->user->dis_status=='true')
+                                                <td><span class="badge badge-danger">Disconnected</span></td> 
+                                                @else
+                                                <td><span class="badge badge-success">Active</span></td>
+                                            @endif  
+
+                                    
+                                        
+                                        <td>{{$cust->user->first_name}}</td>
+                                        <td>{{$cust->user->phone}}</td>
+                                        
+                                        <td>{{$cust->user->last_name}}</td>
+                                        
+                                        <td>
+                                            
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                                aria-expanded="false">
+                                                    <span class="flaticon-more-button-of-three-dots"></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="{{url('editCustomerDetail',$cust->user_id)}}"><i
+                                                            class="fas fa-edit text-blue"></i>Edit</a>
+                                                    <div class="col-12 form-group mg-t-8">
+                                                            <button type="button" class="btn-fill-xl text-light bg-red view" data-toggle="modal"
+                                                            data-target="#west" id="{{$cust->id}}">
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                
+
                                                 </div>
-                                              
-
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                        </td>
+                                    </tr>
+                                    @endforeach
 
-                                                        </tbody>
-                            </table>
+                                                            </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 
                     
                 </div>

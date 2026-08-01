@@ -223,7 +223,7 @@ class AdminController extends Controller
     }
     public function customers(){
         if (Auth::check()){
-            $customers = User::where('role', 2)->orderByDesc('id')->get();
+            $customers = User::where('role', 2)->orWhere('role',50)->orderByDesc('id')->get();
             return view('admin.customers',[
                 'customers'=>$customers,
             ]);
@@ -2595,6 +2595,9 @@ Thank you for choosing our services.',
                 'user_id' => $request->user_id,
                 'duplicate_id' => $request->sub_id,
             ]);
+            $updateRole = User::where('id', $request->user_id)->update(['role'=>50]);
+            $deleteInvoice = invoice::where('user_id',$request->user_id)->delete();
+
             $findUser = User::where('id', $request->user_id)->first();
             $now = Carbon::now();
             $createLogthertyone = Logging::create([
@@ -3037,6 +3040,16 @@ Thank you for choosing our services.',
                             
                         ]);
         $deleteUser = Duplicate::where('id',$request->userid)->delete();
+        $updateRole = User::where('id', $findUser->user_id)->update(['role'=>2]);
+         $createInvoice = Invoice::create([
+                                            'invoice_date'=>$now,
+                                            'amount'=>0,
+                                            'user_id'=>$request->user_id,
+                                            'usage_time'=>0,
+                                            'balance'=>0,
+                                            'status'=>0,
+                                            'statas'=>0,
+                                        ]);
      
 
         return redirect()->back()->with('success','SUB-ACCOUNT REMOVED SUCCESS');

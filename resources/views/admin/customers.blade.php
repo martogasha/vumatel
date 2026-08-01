@@ -56,45 +56,63 @@
                                             @else
                                             <td><span class="badge badge-success">Active</span></td>
                                         @endif  
-
-                                        @if($customer->package_amount==null)
-                                            <td><b style="color: red">TERMINATED</b></td>
-
-                                        @elseif($customer->balance<=0)
-                                            <td><b style="color: green">Ksh: {{$customer->balance}}</b></td>
-
+                                        
+                                        @if($customer->role==50)
+                                        <td><span class="badge badge-warning">Sub-Account</span></td>
                                         @else
-                                        <td><b style="color: red">Ksh: {{$customer->balance}}</b></td>
+                                            @if($customer->package_amount==null)
+                                                <td><b style="color: red">TERMINATED</b></td>
+
+                                            @elseif($customer->balance<=0)
+                                                <td><b style="color: green">Ksh: {{$customer->balance}}</b></td>
+
+                                            @else
+                                            <td><b style="color: red">Ksh: {{$customer->balance}}</b></td>
+
+                                            @endif
+                                        @endif
+                                    @if(\App\Models\Duplicate::where('duplicate_id', $customer->id)->doesntExist())
+                                    <td>{{$customer->first_name}}</td>
+
+                                    @else
+                                    <td>{{$customer->first_name}} Sub A/c's <span class="badge badge-warning">{{\App\Models\Duplicate::where('duplicate_id', $customer->id)->count()}}</span></td>
 
                                     @endif
-                                    
-                                    <td>{{$customer->first_name}}</td>
                                     <td>{{$customer->phone}}</td>
                                     
                                     <td>{{$customer->last_name}}</td>
-                                        @if($customer->amount!=0)
-                                    <td>Ksh: {{$customer->amount}}</td>
+                                    @if($customer->role==50)
+                                        <td><span class="badge badge-warning">Sub-Account</span></td>
                                         @else
-                                            <td><span class="badge badge-danger">Not Paid</span></td>
+                                            @if($customer->amount!=0)
+                                                <td>Ksh: {{$customer->amount}}</td>
+                                            @else
+                                                <td><span class="badge badge-danger">Not Paid</span></td>
 
+                                            @endif
                                         @endif
                                     <td><span class="badge badge-success">{{$customer->phoneOne}}</span></td>
-                                        @if($customer->due_date==0)
-                                            <td><span class="badge badge-danger">Not Paid</span>
-                                            </td>
-                                        @else   
-                                            <td>{{date('d/m/Y H:i:s',strtotime($customer->due_date))}}</td>
-                                        @endif
-                                        @if(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('status')==0)
-                                        <td><span class="badge badge-danger">Disconnected</span></td>
-                                        @else
-                                         
-                                            @if(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('due_date_status')===null)
-                                            <td>{{date('d/m/Y H:i:s',strtotime(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('one_day_before')))}}</td>
-                                            @elseif(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('due_date_status')==0)
-                                            <td><span class="badge badge-info">Msg Sent</span></td></td>
+
+                                    @if(\App\Models\Duplicate::where('user_id', $customer->id)->exists())
+                                    <td colspan="2" style="text-align:center;"><span class="badge badge-warning">Sub-Account of {{\App\Models\User::where('id', \App\Models\Duplicate::where('user_id', $customer->id)->value('duplicate_id'))->value('first_name')}} {{\App\Models\User::where('id', \App\Models\Duplicate::where('user_id', $customer->id)->value('duplicate_id'))->value('phone')}}</span></td>
+                                    @else
+                                            @if($customer->due_date==0)
+                                                <td><span class="badge badge-danger">Not Paid</span>
+                                                </td>
+                                            @else   
+                                                <td>{{date('d/m/Y H:i:s',strtotime($customer->due_date))}}</td>
+                                            @endif
+                                            @if(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('status')==0)
+                                            <td><span class="badge badge-danger">Disconnected</span></td>
                                             @else
-                                            <td><span class="badge badge-success">Paid</span></td></td>
+                                            
+                                                @if(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('due_date_status')===null)
+                                                <td>{{date('d/m/Y H:i:s',strtotime(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('one_day_before')))}}</td>
+                                                @elseif(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('due_date_status')==0)
+                                                <td><span class="badge badge-info">Msg Sent</span></td></td>
+                                                @else
+                                                <td><span class="badge badge-success">Paid</span></td></td>
+                                                @endif
                                             @endif
                                         @endif
                                     <td>
