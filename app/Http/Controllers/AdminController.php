@@ -2534,7 +2534,7 @@ Thank you for choosing our services.',
         }
          catch (\Exception $e) {
                                             // 5. Handle any connection or API errors
-                                            Log::info('Mikrotik not connected');
+                                            Log::info('Account not found in Mikrotik');
                                             Log::info($e->getMessage());
                             
                                         }
