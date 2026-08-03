@@ -279,8 +279,6 @@ class MpesaController extends Controller
                                                                 $mikId = $getDuplicate->user->mikrotik_id;
 
                                                                     // Create a query for the /ppp/profile/print command
-                                                                    $getUser = User::where('mikrotik_id',$getDuplicate->user->mikrotik_id)->value('dis_status');
-                                                                    if($getUser=='true'){
                                                                     $query = new Query('/ppp/profile/print');
                                                                 
                                                                     // 2. Build the RouterOS API query to enable the secret
@@ -300,27 +298,8 @@ class MpesaController extends Controller
                                                                         ]);
                                                                     
                                                                     
-                                                                    }
-                                                                    else{
-                                                                        $query = new Query('/ppp/profile/print');
-                                                                
-                                                                    // 2. Build the RouterOS API query to disable the secret
-                                                                    $query = (new Query('/ppp/secret/set'))
-                                                                        ->equal('.id', $mikId)
-                                                                        ->equal('disabled', 'yes');
-
-                                                                    // 3. Send the query and get the response
-                                                                    $response = $client->query($query)->read();
-
-                                                                    // 4. Handle the response
-                                                                    $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                                                    $createLogTwo = Logging::create([
-                                                                            'user_id' => $getDuplicate->user_id,
-                                                                            'reason' => 2,
-                                                                            'date' => $dateNow,
-                                                                        ]);
                                                                     
-                                                                    }
+                                               
                                                         }
                                                             catch (\Exception $e) {
                                                                     // 5. Handle any connection or API errors
@@ -348,8 +327,7 @@ class MpesaController extends Controller
                                                                 $mikId = $getUserIdentification->mikrotik_id;
 
                                                                     // Create a query for the /ppp/profile/print command
-                                                                    $getUser = User::where('mikrotik_id',$getUserIdentification->mikrotik_id)->value('dis_status');
-                                                                    if($getUser=='true'){
+                                                                  
                                                                     $query = new Query('/ppp/profile/print');
                                                                 
                                                                     // 2. Build the RouterOS API query to enable the secret
@@ -369,27 +347,7 @@ class MpesaController extends Controller
                                                                         ]);
                                                                     
                                                                     
-                                                                    }
-                                                                    else{
-                                                                        $query = new Query('/ppp/profile/print');
-                                                                
-                                                                    // 2. Build the RouterOS API query to disable the secret
-                                                                    $query = (new Query('/ppp/secret/set'))
-                                                                        ->equal('.id', $mikId)
-                                                                        ->equal('disabled', 'yes');
-
-                                                                    // 3. Send the query and get the response
-                                                                    $response = $client->query($query)->read();
-
-                                                                    // 4. Handle the response
-                                                                    $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                                                    $createLogTwo = Logging::create([
-                                                                            'user_id' => $getUserIdentification->id,
-                                                                            'reason' => 2,
-                                                                            'date' => $dateNow,
-                                                                        ]);
-                                                                    
-                                                                    }
+                              
                                                         }
                                                             catch (\Exception $e) {
                                                                     // 5. Handle any connection or API errors
@@ -647,8 +605,7 @@ class MpesaController extends Controller
                                                             $mikId = $getUserIdentification->mikrotik_id;
 
                                                                 // Create a query for the /ppp/profile/print command
-                                                                $getUser = User::where('mikrotik_id',$getUserIdentification->mikrotik_id)->value('dis_status');
-                                                                if($getUser=='true'){
+                                                             
                                                                 $query = new Query('/ppp/profile/print');
                                                             
                                                                 // 2. Build the RouterOS API query to enable the secret
@@ -668,27 +625,7 @@ class MpesaController extends Controller
                                                                     ]);
                                                                 
                                                                 
-                                                                }
-                                                                else{
-                                                                    $query = new Query('/ppp/profile/print');
-                                                            
-                                                                // 2. Build the RouterOS API query to disable the secret
-                                                                $query = (new Query('/ppp/secret/set'))
-                                                                    ->equal('.id', $mikId)
-                                                                    ->equal('disabled', 'yes');
-
-                                                                // 3. Send the query and get the response
-                                                                $response = $client->query($query)->read();
-
-                                                                // 4. Handle the response
-                                                                $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                                                $createLogTwo = Logging::create([
-                                                                        'user_id' => $getUserIdentification->id,
-                                                                        'reason' => 2,
-                                                                        'date' => $dateNow,
-                                                                    ]);
-                                                                
-                                                                }
+                                                       
                                                     }
                                                         catch (\Exception $e) {
                                                                 // 5. Handle any connection or API errors
