@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 //mpesa routes
+Route::get('getAccessToken', [MpesaController::class, 'getAccessToken']);
+Route::get('pullTransactions', [MpesaController::class, 'pullTransactions']);
 Route::get('subscribe', [MpesaController::class, 'subscribe']);
 Route::get('register', [MpesaController::class, 'register']);
 Route::get('getWebhooks', [MpesaController::class, 'getWebhooks']);

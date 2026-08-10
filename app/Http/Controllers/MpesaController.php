@@ -78,7 +78,13 @@ class MpesaController extends Controller
     }
     public function storeWebhooks(Request $request)
     {
-        
+
+    if (Mpesa::where('reference', $request->TransID)->exists()) {
+        Log::info('Mpesa Exists');
+        }
+        else{
+        Log::info('Mpesa Doesnt Exists');
+
         $dateFormats = $request->TransTime;
         $dateFormat = Carbon::parse($dateFormats);
         $dateNow = Carbon::now();
@@ -879,7 +885,9 @@ class MpesaController extends Controller
 
             }
 
-     
+        }
+        
+            
 
     }
     public function authenticate(){
@@ -888,4 +896,34 @@ class MpesaController extends Controller
     public function register(){
 
     }
+    public function getAccessToken()
+{
+    $url = config('mpesa.env') === 'live' 
+        ? 'https://safaricom.co.ke'
+        : 'https://safaricom.co.ke';
+
+    $response = Http::withBasicAuth(
+        config('mpesa.consumer_key'), 
+        config('mpesa.consumer_secret')
+    )->get($url);
+
+    return $response->json()['access_token'] ?? null;
+}
+
+public function pullTransactions()
+{
+    $token = $this->getAccessToken();
+    $url = config('mpesa.env') === 'live'
+        ? 'https://safaricom.co.ke' 
+        : 'https://safaricom.co.ke';
+
+    $response = Http::withToken($token)->get($url, [
+        'ShortCode' => config('mpesa.shortcode'),
+        'StartDate' => now()->subHours(24)->format('YmdHis'),
+        'EndDate'   => now()->format('YmdHis'),
+        'Offset'    => 0,
+    ]);
+
+    return $response->json();
+}
 }
