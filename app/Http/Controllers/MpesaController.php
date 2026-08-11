@@ -889,70 +889,150 @@ class MpesaController extends Controller
             
 
     }
-    public function authenticate(){
+    public function pullCallback(Request $request){
+        Log::info($request->all());
 
     }
     public function register(){
 
     }
-    public function getAccessToken()
-{
-    $url = config('mpesa.env') === 'live' 
-        ? 'https://safaricom.co.ke'
-        : 'https://safaricom.co.ke';
+        public function registerPullTransaction()
+        {
+            // ==========================================
+            // M-PESA CREDENTIALS
+            // ==========================================
 
-    $response = Http::withBasicAuth(
-        config('mpesa.consumer_key'), 
-        config('mpesa.consumer_secret')
-    )->get($url);
-
-    return $response->json()['access_token'] ?? null;
-}
-
-    public function pullTransactions()
-    {                
-            // 1. Generate M-Pesa Access Token
             $consumerKey = 'dflOmBxekAw2elw32rejH8Xm5xkmht7RxFsXPuqSYfjA3wvb';
             $consumerSecret = 'RZjnYDTR2EJtDuJRm3I3Gnhh3uv6tBQaqpAs3OSzxsM8bULVxkF6FuB91OD34GH4';
-            $authUrl = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'; // Use sandbox URL if testing
 
-            $credentials = base64_encode($consumerKey . ':' . $consumerSecret);
+            // Production
+            $baseUrl = 'https://api.safaricom.co.ke';
+
+            // Sandbox:
+            // $baseUrl = 'https://sandbox.safaricom.co.ke';
+
+
+            // ==========================================
+            // 1. GET ACCESS TOKEN
+            // ==========================================
+
+            $authUrl = $baseUrl .
+                '/oauth/v1/generate?grant_type=client_credentials';
+
+            $credentials = base64_encode(
+                $consumerKey . ':' . $consumerSecret
+            );
+
             $ch = curl_init($authUrl);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Basic ' . $credentials]);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $authResponse = json_decode(curl_exec($ch));
+
+            curl_setopt_array($ch, [
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Basic ' . $credentials,
+                    'Accept: application/json'
+                ],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 30
+            ]);
+
+            $authResponse = curl_exec($ch);
+
+            if ($authResponse === false) {
+                die('Authentication CURL Error: ' . curl_error($ch));
+            }
+
+            $authHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
             curl_close($ch);
 
-            if (!isset($authResponse->access_token)) {
-                die("Authentication Failed. Verify your Consumer Key and Secret.");
+            $authData = json_decode($authResponse, true);
+
+            if (!isset($authData['access_token'])) {
+
+                echo "<pre>";
+                echo "AUTH HTTP CODE: " . $authHttpCode . "\n";
+                print_r($authData);
+                echo "</pre>";
+
+                exit;
             }
-        
-            $accessToken = $authResponse->access_token;
 
-            // 2. Dispatch Pull API Request
-            $pullUrl = 'https://api.safaricom.co.ke/pulltransactions/v1/query'; // Adjust for Sandbox if needed
-            $headers = [
-                'Authorization: Bearer ' . $accessToken,
-                'Content-Type: application/json'
-            ];
-            $startDate = "2026-08-09 00:00:00";
-            $endDate   = "2026-08-09 23:59:59";
+            $accessToken = $authData['access_token'];
+
+
+            // ==========================================
+            // 2. REGISTER PULL TRANSACTION CALLBACK
+            // ==========================================
+
+            $registerUrl = $baseUrl .
+                '/pulltransactions/v1/register';
+
+
             $body = [
-                "ShortCode" => "4311304",    
-                'OrganizationName' => "VUMATEL NETWORKS",                    // Your Paybill or Till shortcode
-                "StartDate" => $startDate,
-                "EndDate"   => $endDate,
-                "OffSetValue" => "0"
+                'ShortCode' => '4311304',
+
+                'RequestType' => 'Pull',
+
+                // Safaricom nominated number associated
+                // with the organization
+                'NominatedNumber' => '254707870863',
+
+                // MUST be publicly accessible HTTPS URL
+                'CallBackURL' =>
+                    'https://vumatelnetworks.co.ke/api/pullCallback'
             ];
 
-            $ch = curl_init($pullUrl);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            // ==========================================
+            // 3. SEND REQUEST
+            // ==========================================
+
+            $ch = curl_init($registerUrl);
+
+            curl_setopt_array($ch, [
+
+                CURLOPT_POST => true,
+
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Bearer ' . $accessToken,
+                    'Content-Type: application/json',
+                    'Accept: application/json'
+                ],
+
+                CURLOPT_POSTFIELDS => json_encode($body),
+
+                CURLOPT_RETURNTRANSFER => true,
+
+                CURLOPT_TIMEOUT => 60
+            ]);
+
 
             $response = curl_exec($ch);
+
+            if ($response === false) {
+                die('Registration CURL Error: ' . curl_error($ch));
+            }
+
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
             curl_close($ch);
-            echo $response; // Check response status code or error messages
-    }
+
+
+            // ==========================================
+            // 4. DISPLAY RESPONSE
+            // ==========================================
+
+            echo "<pre>";
+
+            echo "HTTP CODE: " . $httpCode . "\n\n";
+
+            echo "REQUEST:\n";
+
+            print_r($body);
+
+            echo "\nRESPONSE:\n";
+
+            echo $response;
+
+            echo "</pre>";
+        }
 }
