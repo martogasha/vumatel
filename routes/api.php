@@ -20,8 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 //mpesa routes
 Route::get('getAccessToken', [MpesaController::class, 'getAccessToken']);
-Route::get('pullCallback', [MpesaController::class, 'pullCallback']);
-Route::post('pullTransactions', [MpesaController::class, 'registerPullTransaction']);
+Route::post('pullCallback', [MpesaController::class, 'pullCallback']);
+Route::get('pullTransactions', [MpesaController::class, 'registerPullTransaction']);
 Route::get('subscribe', [MpesaController::class, 'subscribe']);
 Route::get('register', [MpesaController::class, 'register']);
 Route::get('getWebhooks', [MpesaController::class, 'getWebhooks']);
