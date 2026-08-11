@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('getAccessToken', [MpesaController::class, 'getAccessToken']);
 Route::post('pullCallback', [MpesaController::class, 'pullCallback']);
 Route::get('pullTransactions', [MpesaController::class, 'registerPullTransaction']);
+Route::get('pullTrans', [MpesaController::class, 'pullTransactions']);
 Route::get('subscribe', [MpesaController::class, 'subscribe']);
 Route::get('register', [MpesaController::class, 'register']);
 Route::get('getWebhooks', [MpesaController::class, 'getWebhooks']);

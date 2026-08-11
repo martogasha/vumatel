@@ -896,6 +896,85 @@ class MpesaController extends Controller
     public function register(){
 
     }
+            public function pullTransactions()
+        {
+            $consumerKey = 'dflOmBxekAw2elw32rejH8Xm5xkmht7RxFsXPuqSYfjA3wvb';
+            $consumerSecret = 'RZjnYDTR2EJtDuJRm3I3Gnhh3uv6tBQaqpAs3OSzxsM8bULVxkF6FuB91OD34GH4';
+
+            $baseUrl = 'https://api.safaricom.co.ke';
+
+            // Get token
+            $credentials = base64_encode(
+                $consumerKey . ':' . $consumerSecret
+            );
+
+            $ch = curl_init(
+                $baseUrl .
+                '/oauth/v1/generate?grant_type=client_credentials'
+            );
+
+            curl_setopt_array($ch, [
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Basic ' . $credentials
+                ],
+                CURLOPT_RETURNTRANSFER => true
+            ]);
+
+            $authResponse = curl_exec($ch);
+
+            curl_close($ch);
+
+            $authData = json_decode($authResponse, true);
+
+            if (!isset($authData['access_token'])) {
+                return response()->json($authData);
+            }
+
+            $token = $authData['access_token'];
+
+
+            // Query
+            $body = [
+                'ShortCode' => '4311304',
+                'StartDate' => '2026-08-05 00:00:00',
+                'EndDate' => '2026-08-10 23:59:59',
+                'OffSetValue' => '0'
+            ];
+
+
+            $ch = curl_init(
+                $baseUrl . '/pulltransactions/v1/query'
+            );
+
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Bearer ' . $token,
+                    'Content-Type: application/json',
+                    'Accept: application/json'
+                ],
+
+                CURLOPT_POSTFIELDS => json_encode($body),
+
+                CURLOPT_RETURNTRANSFER => true
+            ]);
+
+            $response = curl_exec($ch);
+
+            $httpCode = curl_getinfo(
+                $ch,
+                CURLINFO_HTTP_CODE
+            );
+
+            curl_close($ch);
+
+
+            return response()->json([
+                'http_code' => $httpCode,
+                'response' => json_decode($response, true)
+            ]);
+        }
         public function registerPullTransaction()
         {
             // ==========================================
