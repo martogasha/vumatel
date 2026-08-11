@@ -84,7 +84,6 @@ class MpesaController extends Controller
         }
         else{
         Log::info('Mpesa Doesnt Exists');
-
         $dateFormats = $request->TransTime;
         $dateFormat = Carbon::parse($dateFormats);
         $dateNow = Carbon::now();
@@ -910,20 +909,55 @@ class MpesaController extends Controller
     return $response->json()['access_token'] ?? null;
 }
 
-public function pullTransactions()
-{
-    $token = $this->getAccessToken();
-    $url = config('mpesa.env') === 'live'
-        ? 'https://safaricom.co.ke' 
-        : 'https://safaricom.co.ke';
+    public function pullTransactions()
+    {
+                
+            // 1. Generate M-Pesa Access Token
+            $consumerKey = 'dflOmBxekAw2elw32rejH8Xm5xkmht7RxFsXPuqSYfjA3wvb';
+            $consumerSecret = 'RZjnYDTR2EJtDuJRm3I3Gnhh3uv6tBQaqpAs3OSzxsM8bULVxkF6FuB91OD34GH4';
+            $authUrl = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'; // Use sandbox URL if testing
 
-    $response = Http::withToken($token)->get($url, [
-        'ShortCode' => config('mpesa.shortcode'),
-        'StartDate' => now()->subHours(24)->format('YmdHis'),
-        'EndDate'   => now()->format('YmdHis'),
-        'Offset'    => 0,
-    ]);
+            $credentials = base64_encode($consumerKey . ':' . $consumerSecret);
 
-    return $response->json();
-}
+            $ch = curl_init($authUrl);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Basic ' . $credentials]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $authResponse = json_decode(curl_exec($ch));
+            curl_close($ch);
+
+            if (!isset($authResponse->access_token)) {
+                die("Authentication Failed. Verify your Consumer Key and Secret.");
+            }
+        
+            $accessToken = $authResponse->access_token;
+
+            // 2. Dispatch Pull API Request
+            $pullUrl = 'https://api.safaricom.co.ke/pulltransactions/v1/query'; // Adjust for Sandbox if needed
+            $headers = [
+                'Authorization: Bearer ' . $accessToken,
+                'Content-Type: application/json'
+            ];
+            $startDate = "2026-07-31 00:00:00";
+            $endDate   = "2026-08-09 23:59:59";
+
+            $body = [
+                "ShortCode" => "4311304",    
+                'OrganizationName' => "VUMATEL NETWORKS",                    // Your Paybill or Till shortcode
+                "StartDate" => $startDate,
+                "EndDate"   => $endDate,
+                "OffSetValue" => "0"
+            ];
+
+            $ch = curl_init($pullUrl);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            echo $response; // Check response status code or error messages
+
+    }
 }
