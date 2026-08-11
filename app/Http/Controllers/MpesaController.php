@@ -910,15 +910,13 @@ class MpesaController extends Controller
 }
 
     public function pullTransactions()
-    {
-                
+    {                
             // 1. Generate M-Pesa Access Token
             $consumerKey = 'dflOmBxekAw2elw32rejH8Xm5xkmht7RxFsXPuqSYfjA3wvb';
             $consumerSecret = 'RZjnYDTR2EJtDuJRm3I3Gnhh3uv6tBQaqpAs3OSzxsM8bULVxkF6FuB91OD34GH4';
             $authUrl = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'; // Use sandbox URL if testing
 
             $credentials = base64_encode($consumerKey . ':' . $consumerSecret);
-
             $ch = curl_init($authUrl);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Basic ' . $credentials]);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -937,9 +935,8 @@ class MpesaController extends Controller
                 'Authorization: Bearer ' . $accessToken,
                 'Content-Type: application/json'
             ];
-            $startDate = "2026-07-31 00:00:00";
+            $startDate = "2026-08-09 00:00:00";
             $endDate   = "2026-08-09 23:59:59";
-
             $body = [
                 "ShortCode" => "4311304",    
                 'OrganizationName' => "VUMATEL NETWORKS",                    // Your Paybill or Till shortcode
@@ -956,8 +953,6 @@ class MpesaController extends Controller
 
             $response = curl_exec($ch);
             curl_close($ch);
-
             echo $response; // Check response status code or error messages
-
     }
 }
