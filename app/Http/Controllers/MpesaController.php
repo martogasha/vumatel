@@ -931,14 +931,13 @@ class MpesaController extends Controller
             }
 
             $token = $authData['access_token'];
-            $originalDate = Carbon::now();
 
             // Query
             $body = [
                 'ShortCode' => '4311304',
                 'OrganizationName' => "VUMATEL NETWORKS",
-                'StartDate' => Carbon::parse($originalDate)->subHours(12)->format('Y-m-d H:i:s'),
-                'EndDate' => Carbon::parse($originalDate)->format('Y-m-d H:i:s'),
+                'StartDate' => Carbon::now()->subDay()->format('Y-m-d H:i:s'),
+                'EndDate' => Carbon::now()->format('Y-m-d H:i:s'),
                 'OffSetValue' => '0'
             ];
 
