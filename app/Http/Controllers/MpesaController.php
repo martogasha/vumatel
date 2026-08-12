@@ -937,7 +937,7 @@ class MpesaController extends Controller
             $body = [
                 'ShortCode' => '4311304',
                 'OrganizationName' => "VUMATEL NETWORKS",
-                'StartDate' => '2026-08-12 00:00:00',
+                'StartDate' => '2026-08-11 00:00:00',
                 'EndDate' => '2026-08-12 09:59:59',
                 'OffSetValue' => '0'
             ];
