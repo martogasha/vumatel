@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('billing')->everyMinute();
+         $schedule->command('pullmpesa')->everyMinute();
+
          $schedule->command('bandwidth')->everyMinute();
          $schedule->command('sendSms')->everyMinute()->when(function () {
              $now = Carbon::now();
