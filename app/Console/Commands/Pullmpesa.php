@@ -130,7 +130,6 @@ class Pullmpesa extends Command
 
                     foreach ($data['Response']['0'] as $transaction) {
                         if (Mpesa::where('reference', $transaction['transactionId'])->exists()) {
-                            Log::info('already exists');
                         }
                         else{
                             Log::info('Mpesa Does not exist in pull transaction table');
