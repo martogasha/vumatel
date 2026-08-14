@@ -1798,10 +1798,7 @@ class MpesaController extends Controller
                     }
                 }
 
-                return response()->json([
-                    'http_code' => $httpCode,
-                    'response' => $data
-                ]);
+           
          
         
         }
