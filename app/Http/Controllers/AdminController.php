@@ -505,7 +505,7 @@ class AdminController extends Controller
     }
     public function disablePppoeSecret($id)
     {
-         $getMikrotik = Mik::where('id',$request->mikrotik_id)->first();
+         $getMikrotik = Mik::where('id',$id)->first();
             
         $dateNow = Carbon::now();
                try {

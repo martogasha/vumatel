@@ -9,7 +9,7 @@
                 Sub-Account of <span style="color:blue;">{{\App\Models\User::where('id', \App\Models\Duplicate::where('user_id', $customer->id)->value('duplicate_id'))->value('first_name')}} {{\App\Models\User::where('id', \App\Models\Duplicate::where('user_id', $customer->id)->value('duplicate_id'))->value('phone')}}</span>
                 @endif
                 </h3>
-                <form action="{{url('disableC',$customer->mikrotik_id)}}">
+                <form action="{{url('disableC',$customer->mik_id)}}">
                         @csrf
                 @if($customer->dis_status != 'true')
                 <button type="submit" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Disable</button>
