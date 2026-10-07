@@ -346,7 +346,7 @@ class AdminController extends Controller
                                 'host' => $getMikrotik->ip,
                                 'user' => $getMikrotik->user,
                                 'pass' => $getMikrotik->password,
-                                'port' => 8728,
+                                'port' => $getMikrotik->statusOne,
                             ]);
 
                     
@@ -505,15 +505,17 @@ class AdminController extends Controller
     }
     public function disablePppoeSecret($id)
     {
+         $getMikrotik = Mik::where('id',$request->mikrotik_id)->first();
+            
         $dateNow = Carbon::now();
                try {
             // Get the MikroTik API client using the configured facade
-            $config = new Config([
-                'host' => '102.209.56.86',
-                'user' => 'admin',
-                'pass' => '@anxvtT3n',
-                'port' => 8728,
-        ]);
+                    $config = new Config([
+                                'host' => $getMikrotik->ip,
+                                'user' => $getMikrotik->user,
+                                'pass' => $getMikrotik->password,
+                                'port' => $getMikrotik->statusOne,
+                    ]);
         $client = new Client($config);
 
             // Create a query for the /ppp/profile/print command
@@ -1669,7 +1671,7 @@ class AdminController extends Controller
                         'host' => $store->mik->ip,
                         'user' => $store->mik->user,
                         'pass' => $store->mik->password,
-                        'port' => 8728,
+                        'port' => $store->mik->statusOne,
                     ]);
 
                     // 3. Build the endpoint query to add the secret
@@ -1705,7 +1707,7 @@ class AdminController extends Controller
                             'host' => $store->mik->ip,
                             'user' => $store->mik->user,
                             'pass' => $store->mik->password,
-                            'port' => 8728,
+                            'port' => $store->mik->statusOne,
                         ]);
 
                     // Build a query looking for the specific name
@@ -1728,7 +1730,7 @@ class AdminController extends Controller
                                                     'host' => $store->mik->ip,
                                                     'user' => $store->mik->user,
                                                     'pass' => $store->mik->password,
-                                                    'port' => 8728,
+                                                    'port' => $store->mik->statusOne,
                                         ]);
                                         $client = new Client($config);
 
@@ -2244,7 +2246,7 @@ class AdminController extends Controller
                                         'host' => $getUserIdentification->mik->ip,
                                         'user' => $getUserIdentification->mik->user,
                                         'pass' => $getUserIdentification->mik->password,
-                                        'port' => 8728,
+                                        'port' => $getUserIdentification->mik->statusOne,
                                 ]);
                                 $client = new Client($config);
                                 $mikId = $getUserIdentification->mikrotik_id;
@@ -2544,7 +2546,7 @@ class AdminController extends Controller
             'host' => $customer->mik->ip,
             'user' => $customer->mik->user,
             'pass' => $customer->mik->password,
-            'port' => 8728,
+            'port' => $customer->mik->statusOne,
         ]);
 
         // 2. Build the query object (e.g., getting secrets with 'default' profile)
@@ -2673,7 +2675,7 @@ class AdminController extends Controller
                                     'host' => $getA->mik->ip,
                                     'user' => $getA->mik->user,
                                     'pass' => $getA->mik->password,
-                                    'port' => 8728,
+                                    'port' => $getA->mik->statusOne,
                             ]);
                             $client = new Client($config);
                             $query = (new Query('/ppp/secret/print'))->where('.id', $getA->mikrotik_id);
@@ -2721,7 +2723,7 @@ class AdminController extends Controller
                                     'host' => $edit->mik->ip,
                                     'user' => $edit->mik->user,
                                     'pass' => $edit->mik->password,
-                                    'port' => 8728,
+                                    'port' => $edit->mik->statusOne,
                             ]);
                             $client = new Client($config);
                             $query = (new Query('/ppp/secret/print'))->where('.id', $edit->mikrotik_id);
@@ -2848,7 +2850,7 @@ class AdminController extends Controller
                                 'host' => $getUser->mik->ip,
                                 'user' => $getUser->mik->user,
                                 'pass' => $getUser->mik->password,
-                                'port' => 8728,
+                                'port' => $getUser->mik->statusOne,
                             ]);
                             $client = new Client($config);
 
@@ -2887,7 +2889,7 @@ class AdminController extends Controller
                                 'host' => $getUser->mik->ip,
                                 'user' => $getUser->mik->user,
                                 'pass' => $getUser->mik->password,
-                                'port' => 8728,
+                                'port' => $getUser->mik->statusOne,
                             ]);
                             $client = new Client($config);
                             $query = (new Query('/ppp/secret/print'))->where('.id', $getUser->mikrotik_id);
@@ -3053,7 +3055,7 @@ class AdminController extends Controller
             'host' => $findUser->mik->ip,
             'user' => $findUser->mik->user,
             'pass' => $findUser->mik->password,
-            'port' => 8728,
+            'port' => $findUser->mik->statusOne,
         ]);
 
         // 2. Find the Secret's internal ID based on the username
