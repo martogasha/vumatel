@@ -2584,10 +2584,25 @@ class AdminController extends Controller
      public function addCustomers(Request $request){
 
         // $randomNumber is now guaranteed to be unique and unused
+           do {
+            // Generate a random integer between your min and max bounds
+            $randomNumber = random_int(1, 1000);
+            $padded = Str::padLeft($randomNumber, 4, '0'); 
+        } while (User::where('phone', $padded)->exists());
+
+               do {
+            // Generate a random integer between your min and max bounds
+            $padd = random_int(1000, 10000);
+             
+        } while (User::where('password', $padd)->exists());
+
+        // $randomNumber is now guaranteed to be unique and unused
          $mikrotiks = Mik::all();
         return view('admin.customerAdd',[
           
-            'mikrotiks'=>$mikrotiks
+            'mikrotiks'=>$mikrotiks,
+            'randomAccount'=>$padded,
+            'randomPassword'=>$padd,
 
         ]);
     }
@@ -3257,6 +3272,19 @@ class AdminController extends Controller
         $actives = User::where('dis_status', 'false')->where('role','!=',4)->where('mik_id',$id)->orderByDesc('id')->get();
         $disconnects = User::where('dis_status', 'true')->where('role','!=',4)->where('mik_id',$id)->orderByDesc('id')->get();
         $nonactives = User::where('role',4)->where('mik_id',$id)->orderByDesc('id')->get();
+             do {
+            // Generate a random integer between your min and max bounds
+            $randomNumber = random_int(1, 1000);
+            $padded = Str::padLeft($randomNumber, 4, '0'); 
+        } while (User::where('phone', $padded)->exists());
+
+               do {
+            // Generate a random integer between your min and max bounds
+            $padd = random_int(1000, 10000);
+             
+        } while (User::where('password', $padd)->exists());
+
+        // $randomNumber is now guaranteed to be unique and unused
         return view('admin.mikrotikDetail',[
             'mikrotik'=>$mikrotik,
             'mikrotiks'=>$mikrotiks,
@@ -3264,6 +3292,9 @@ class AdminController extends Controller
             'disconnects'=>$disconnects,
             'actives'=>$actives,
             'nonactives'=>$nonactives,
+             'randomAccount'=>$padded,
+            'randomPassword'=>$padd,
+            
 
         ]);
     }
