@@ -13,7 +13,7 @@ class AddIpAddressToMiksTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('mikrotiks')) {
+        if (!Schema::hasTable('miks')) {
             Schema::table('miks', function (Blueprint $table) {
                 $table->string('ip')->nullable();
                 $table->string('user')->nullable();

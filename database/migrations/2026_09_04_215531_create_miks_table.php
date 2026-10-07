@@ -13,7 +13,7 @@ class CreateMiksTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('mikrotiks')) {
+        if (!Schema::hasTable('miks')) {
             Schema::create('miks', function (Blueprint $table) {
                 $table->id();
                 $table->datetime('last_logout')->nullable();

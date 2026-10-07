@@ -13,7 +13,7 @@ class CreateHotlogsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('mikrotiks')) {
+        if (!Schema::hasTable('hotlogs')) {
             Schema::create('hotlogs', function (Blueprint $table) {
                 $table->id();
                 $table->datetime('date')->nullable();

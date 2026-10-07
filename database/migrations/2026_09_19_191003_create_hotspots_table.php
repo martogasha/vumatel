@@ -13,7 +13,7 @@ class CreateHotspotsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('mikrotiks')) {
+        if (!Schema::hasTable('hotspots')) {
             Schema::create('hotspots', function (Blueprint $table) {
                 $table->id();
                 $table->string('mac')->nullable();
