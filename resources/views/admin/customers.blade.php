@@ -104,7 +104,6 @@
                                             @endif
                                             @if(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('status')==0)
                                         <td><span class="badge badge-danger">Disconnected</span></td>
-                                        <td><span class="badge badge-danger">Disconnected</span></td>
                                         @else
                                           
                                             @if(App\Models\Invoice::where('user_id',$customer->id)->latest('id')->value('due_date_status')===null)
