@@ -1722,7 +1722,7 @@ class AdminController extends Controller
             
                     
                     $dateFor = Carbon::parse($request->due_date);
-                    $oneDayBefore = $dateFor->subDays(1);
+                    $oneDayBefore = $dateFor->subDays(2);
                     
                    
 

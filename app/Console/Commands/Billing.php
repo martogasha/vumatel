@@ -141,7 +141,7 @@ class Billing extends Command
                                 $updateInvoiceMessageDate = Invoice::where('user_id',$getUser->id)->where('id',$createInvoice->id)->update(['two_days_before'=>$twoDaysBefore]);
                                 $dateFor = Carbon::parse($nextDate);
                                 $dateF = Carbon::parse($dateFor)->startOfDay();
-                                $oneDayBefore = $dateF->subDays(1);
+                                $oneDayBefore = $dateF->subDays(2);
                                 $updateInvoiceMDate = Invoice::where('user_id',$getUser->id)->where('id',$createInvoice->id)->update(['one_day_before'=>$oneDayBefore]);
                                     $getLatestInvoice = Invoice::where('user_id',$getUser->id)->latest('id')->first();
                                     $getPreviousInvoices = Invoice::where('id','!=',$getLatestInvoice->id)->where('user_id',$getUser->id)->get();
@@ -504,7 +504,7 @@ class Billing extends Command
                                 $updateInvoiceMessageDate = Invoice::where('user_id',$getUser->id)->where('id',$createInvoice->id)->update(['two_days_before'=>$twoDaysBefore]);
                                 $dateFor = Carbon::parse($nextDate);
                                 $dateF = Carbon::parse($dateFor)->startOfDay();
-                                $oneDayBefore = $dateF->subDays(1);
+                                $oneDayBefore = $dateF->subDays(2);
                                 $updateInvoiceMDate = Invoice::where('user_id',$getUser->id)->where('id',$createInvoice->id)->update(['one_day_before'=>$oneDayBefore]);
                                     $getLatestInvoice = Invoice::where('user_id',$getUser->id)->latest('id')->first();
                                     $getPreviousInvoices = Invoice::where('id','!=',$getLatestInvoice->id)->where('user_id',$getUser->id)->get();

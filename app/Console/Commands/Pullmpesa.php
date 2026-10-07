@@ -193,7 +193,7 @@ class Pullmpesa extends Command
                                                                 $nextD =  $currentDate->addMonth();
                                                                 $nextDate = Carbon::parse($nextD)->endOfDay();
                                                                 $dateFor = Carbon::parse($nextDate)->startOfDay();
-                                                                $oneDayBefore = $dateFor->subDays(1);
+                                                                $oneDayBefore = $dateFor->subDays(2);
                                                                 $updateInvoiceMDate = Invoice::where('user_id', $getUserIdentification->id)->update(['one_day_before'=>$oneDayBefore]);
                                                                 $updateDueDate = User::where('id', $getUserIdentification->id)->update(['due_date' => $nextDate]);
                                                                 $updateUserInvoice = User::where('id', $getUserIdentification->id)->update(['invoice'=>null]);
@@ -320,7 +320,7 @@ class Pullmpesa extends Command
                                                                             
                                                                             $updateInvoiceMessageDate = Invoice::where('id',$getInv->id)->update(['two_days_before'=>$twoDaysBefore]);
                                                                             $dateFor = Carbon::parse($nextDate);
-                                                                            $oneDayBefore = $dateFor->subDays(1);
+                                                                            $oneDayBefore = $dateFor->subDays(2);
                                                                             $updateInvoiceMDate = Invoice::where('id',$getInv->id)->update(['one_day_before'=>$oneDayBefore]);
                                                                             if ($transaction['amount'] >= 1500 || $transaction['amount'] == 1 || $transaction['amount'] == 2) {
                                                                                 $updateBal = Invoice::where('id', $getInv->id)->update(['usage_time' => 2147483647]);
@@ -624,7 +624,7 @@ class Pullmpesa extends Command
                                                                         
                                                                         $updateInvoiceMessageDate = Invoice::where('id',$getInv->id)->update(['two_days_before'=>$twoDaysBefore]);
                                                                         $dateFor = Carbon::parse($nextDate);
-                                                                        $oneDayBefore = $dateFor->subDays(1);
+                                                                        $oneDayBefore = $dateFor->subDays(2);
                                                                         $updateInvoiceMDate = Invoice::where('id',$getInv->id)->update(['one_day_before'=>$oneDayBefore]);
                                                                         if ($transaction['amount'] >= 1500 || $transaction['amount'] == 1 || $transaction['amount'] == 2) {
                                                                             $updateBal = Invoice::where('id', $getInv->id)->update(['usage_time' => 2147483647]);
