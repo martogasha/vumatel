@@ -268,7 +268,6 @@
                                     <th>Connection</th>
                                     <th>Balance</th>
                                     <th>Name</th>
-                                    <th>Comment</th>
                                     <th>A/c</th>
                                     
                                     <th>Package</th>
@@ -309,7 +308,6 @@
                                     <td>{{$active->first_name}} Sub A/c's <span class="badge badge-warning">{{\App\Models\Duplicate::where('duplicate_id', $active->id)->count()}}</span></td>
 
                                     @endif
-                                    <td>{{$active->location}}</td>
                                     <td>{{$active->phone}}</td>
                                     
                                     <td>{{$active->last_name}}</td>
@@ -413,7 +411,6 @@
                                     <th>Connection</th>
                                     <th>Balance</th>
                                     <th>Name</th>
-                                    <th>Comment</th>
                                     <th>A/c</th>
                                     
                                     <th>Package</th>
@@ -454,7 +451,6 @@
                                     <td>{{$disconnect->first_name}} Sub A/c's <span class="badge badge-warning">{{\App\Models\Duplicate::where('duplicate_id', $disconnect->id)->count()}}</span></td>
 
                                     @endif
-                                    <td>{{$disconnect->location}}</td>
                                     <td>{{$disconnect->phone}}</td>
                                     
                                     <td>{{$disconnect->last_name}}</td>
@@ -561,7 +557,6 @@
                                     <th>Connection</th>
                                     <th>Balance</th>
                                     <th>Name</th>
-                                    <th>Comment</th>
                                     <th>A/c</th>
                                     
                                     <th>Package</th>
@@ -602,7 +597,6 @@
                                     <td>{{$nonactive->first_name}} Sub A/c's <span class="badge badge-warning">{{\App\Models\Duplicate::where('duplicate_id', $nonactive->id)->count()}}</span></td>
 
                                     @endif
-                                    <td>{{$nonactive->location}}</td>
                                     <td>{{$nonactive->phone}}</td>
                                     
                                     <td>{{$nonactive->last_name}}</td>
