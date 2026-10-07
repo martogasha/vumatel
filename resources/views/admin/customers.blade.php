@@ -43,7 +43,7 @@
                                     <th>Amount</th>
                                     <th>Phone No:</th>
                                     <th>Due Date</th>
-                                    <th>One Day</th>
+                                    <th>Msg Date</th>
 
                                     <th>Action</th>
                                 </tr>
