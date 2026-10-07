@@ -505,7 +505,9 @@ class AdminController extends Controller
     }
     public function disablePppoeSecret($id)
     {
-         $getMikrotik = Mik::where('id',$id)->first();
+        $getUser = User::where('id',$id)->first();
+
+         $getMikrotik = Mik::where('id',$getUser->mik_id)->first();
             
         $dateNow = Carbon::now();
                try {
@@ -519,7 +521,7 @@ class AdminController extends Controller
         $client = new Client($config);
 
             // Create a query for the /ppp/profile/print command
-            $getUser = User::where('mikrotik_id',$id)->value('dis_status');
+            $getUser = User::where('id',$id)->value('dis_status');
             if($getUser=='true'){
             $query = new Query('/ppp/profile/print');
         
@@ -532,8 +534,8 @@ class AdminController extends Controller
             $response = $client->query($query)->read();
 
             // 4. Handle the response
-            $update = User::where('mikrotik_id',$id)->update(['dis_status'=>'false']);
-            $getUserId = User::where('mikrotik_id',$id)->first();
+            $update = User::where('id',$id)->update(['dis_status'=>'false']);
+            $getUserId = User::where('id',$id)->first();
                   $createLog = Logging::create([
                             'user_id' => $getUserId->id,
                             'reason' => 22,
@@ -554,8 +556,8 @@ class AdminController extends Controller
             $response = $client->query($query)->read();
 
             // 4. Handle the response
-            $update = User::where('mikrotik_id',$id)->update(['dis_status'=>'true']);
-            $getUserId = User::where('mikrotik_id',$id)->first();
+            $update = User::where('id',$id)->update(['dis_status'=>'true']);
+            $getUserId = User::where('id',$id)->first();
                   $createLog = Logging::create([
                             'user_id' => $getUserId->id,
                             'reason' => 23,
