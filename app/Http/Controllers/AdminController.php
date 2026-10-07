@@ -3323,6 +3323,7 @@ class AdminController extends Controller
         $edit->ip = $request->mikrotik_ip;
         $edit->user = $request->mikrotik_user;
         $edit->password = $request->mikrotik_password;
+        $edit->statusOne = $request->mikrotik_port;
         $edit->save();
 
         return redirect(url('listMikrotik'))->with('success','Mikrotik Edit Success');
