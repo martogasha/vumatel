@@ -95,6 +95,7 @@ class MpesaController extends Controller
         if (preg_match($pattern, $phone)) {
                         // String is the correct phone format
                         Log::info('hotspot');
+                        dd('stop');
                          $createPayment = Mpesa::create([
                             'reference' => $request->TransID,
                             'originationTime' => $request->TransTime,
@@ -471,7 +472,7 @@ class MpesaController extends Controller
                                                         'host' => $getUserIdentification->mik->ip,
                                                         'user' => $getUserIdentification->mik->user,
                                                         'pass' => $getUserIdentification->mik->password,
-                                                        'port' => $getUserIdentification->statusOne,
+                                                        'port' => $getUserIdentification->mik->statusOne,
                                                 ]);
                                                 $client = new Client($config);
                                                 $query = (new Query('/ppp/secret/print'))->where('.id', $getUserIdentification->mikrotik_id);
@@ -503,6 +504,16 @@ class MpesaController extends Controller
                                             ]);
                                             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                         }
+                                          $postData = [
+                                                'apikey' => '9324ef7e2034b5d479f64d31ae513215',
+                                                'partnerID' => 138,
+                                                'mobile' => $getUserIdentification->phoneOne,
+                                                
+                                                'message' => 'Dear Customer, your payment has been well received, thank you. Kindly restart the router.',
+                                                'shortcode' => 'VUMATEL',
+                                                
+                                            ];
+                                            $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
                                                                             
 
                         } else {
@@ -2962,7 +2973,7 @@ class MpesaController extends Controller
                                                 'host' => $getUserIdentification->mik->ip,
                                                 'user' => $getUserIdentification->mik->user,
                                                 'pass' => $getUserIdentification->mik->password,
-                                                'port' => $getUserIdentification->statusOne,
+                                                'port' => $getUserIdentification->mik->statusOne,
                                         ]);
                                         $client = new Client($config);
                                         $mikId = $getUserIdentification->mikrotik_id;
@@ -3126,7 +3137,7 @@ class MpesaController extends Controller
                                                 'host' => $getUserIdentification->mik->ip,
                                                 'user' => $getUserIdentification->mik->user,
                                                 'pass' => $getUserIdentification->mik->password,
-                                                'port' => $getUserIdentification->statusOne,
+                                                'port' => $getUserIdentification->mik->statusOne,
                                         ]);
                                         $client = new Client($config);
                                         $mikId = $getUserIdentification->mikrotik_id;

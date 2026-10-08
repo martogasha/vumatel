@@ -199,10 +199,10 @@ class Pullmpesa extends Command
                                                                 $updateUserInvoice = User::where('id', $getUserIdentification->id)->update(['invoice'=>null]);
                                                                 try{
                                                                                     $config = new Config([
-                                                                                        'host' => '102.209.56.86',
-                                                                                        'user' => 'admin',
-                                                                                        'pass' => '@anxvtT3n',
-                                                                                        'port' => 56911,
+                                                                                        'host' => $getUserIdentification->mik->ip,
+                                                                                        'user' => $getUserIdentification->mik->user,
+                                                                                        'pass' => $getUserIdentification->mik->password,
+                                                                                        'port' => $getUserIdentification->mik->statusOne,
                                                                                 ]);
                                                                                 $client = new Client($config);
                                                                                 $mikId = $getUserIdentification->mikrotik_id;
@@ -335,10 +335,10 @@ class Pullmpesa extends Command
                                                                                             // Get the MikroTik API client using the configured facade
                                                                                 try{
                                                                                                 $config = new Config([
-                                                                                                    'host' => '102.209.56.86',
-                                                                                                    'user' => 'admin',
-                                                                                                    'pass' => '@anxvtT3n',
-                                                                                                    'port' => 56911,
+                                                                                                    'host' => $getUserIdentification->mik->ip,
+                                                                                                    'user' => $getUserIdentification->mik->user,
+                                                                                                    'pass' => $getUserIdentification->mik->password,
+                                                                                                    'port' => $getUserIdentification->mik->statusOne,
                                                                                             ]);
                                                                                             $client = new Client($config);
                                                                                             $mikId = $getDuplicate->user->mikrotik_id;
@@ -383,10 +383,10 @@ class Pullmpesa extends Command
                                                                                     // Get the MikroTik API client using the configured facade
                                                                                 try{
                                                                                                 $config = new Config([
-                                                                                                    'host' => '102.209.56.86',
-                                                                                                    'user' => 'admin',
-                                                                                                    'pass' => '@anxvtT3n',
-                                                                                                    'port' => 56911,
+                                                                                                    'host' => $getUserIdentification->mik->ip,
+                                                                                                    'user' => $getUserIdentification->mik->user,
+                                                                                                    'pass' => $getUserIdentification->mik->password,
+                                                                                                    'port' => $getUserIdentification->mik->statusOne,
                                                                                             ]);
                                                                                             $client = new Client($config);
                                                                                             $mikId = $getUserIdentification->mikrotik_id;
@@ -661,10 +661,10 @@ class Pullmpesa extends Command
                                                                                 // Get the MikroTik API client using the configured facade
                                                                             try{
                                                                                             $config = new Config([
-                                                                                                'host' => '102.209.56.86',
-                                                                                                'user' => 'admin',
-                                                                                                'pass' => '@anxvtT3n',
-                                                                                                'port' => 56911,
+                                                                                               'host' => $getUserIdentification->mik->ip,
+                                                                                                'user' => $getUserIdentification->mik->user,
+                                                                                                'pass' => $getUserIdentification->mik->password,
+                                                                                                'port' => $getUserIdentification->mik->statusOne,
                                                                                         ]);
                                                                                         $client = new Client($config);
                                                                                         $mikId = $getUserIdentification->mikrotik_id;
@@ -705,10 +705,10 @@ class Pullmpesa extends Command
                                                                                         try {
                                                                                                     // Get the MikroTik API client using the configured facade
                                                                                                     $config = new Config([
-                                                                                                        'host' => '102.209.56.86',
-                                                                                                        'user' => 'admin',
-                                                                                                        'pass' => '@anxvtT3n',
-                                                                                                        'port' => 56911,
+                                                                                                        'host' => $getUserIdentification->mik->ip,
+                                                                                                        'user' => $getUserIdentification->mik->user,
+                                                                                                        'pass' => $getUserIdentification->mik->password,
+                                                                                                        'port' => $getUserIdentification->mik->statusOne,
                                                                                                 ]);
                                                                                                 $client = new Client($config);
                                                                                                 $query = (new Query('/ppp/secret/print'))->where('.id', $getUserIdentification->mikrotik_id);
@@ -740,16 +740,16 @@ class Pullmpesa extends Command
                                                                                             ]);
                                                                                             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                                                                         }
-                                                                                                                                $postData = [
-                                                                        'apikey' => '9324ef7e2034b5d479f64d31ae513215',
-                                                                        'partnerID' => 138,
-                                                                        'mobile' => $getUserIdentification->phoneOne,
-                                                                        
-                                                                        'message' => 'Dear Customer, your payment has been well received, thank you. Kindly restart the router.',
-                                                                        'shortcode' => 'VUMATEL',
-                                                                        
-                                                                    ];
-                                                                    $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
+                                                                                        $postData = [
+                                                                                            'apikey' => '9324ef7e2034b5d479f64d31ae513215',
+                                                                                            'partnerID' => 138,
+                                                                                            'mobile' => $getUserIdentification->phoneOne,
+                                                                                            
+                                                                                            'message' => 'Dear Customer, your payment has been well received, thank you. Kindly restart the router.',
+                                                                                            'shortcode' => 'VUMATEL',
+                                                                                            
+                                                                                        ];
+                                                                                        $respons = Http::post('https://sms.imarabiz.com/api/services/sendsms/', $postData);
 
                                                                         } else {
 
