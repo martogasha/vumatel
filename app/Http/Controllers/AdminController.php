@@ -2676,7 +2676,16 @@ class AdminController extends Controller
         else{
                     $edit->first_name = $request->first_name;
 
-                 try {
+                
+        }
+        $edit->last_name = $request->bandwidth;
+        $edit->email = $request->email;
+        if(!isset($request->phone)){
+
+        }
+        else{
+            $edit->phone = $request->phone;
+             try {
 
                                 // Get the MikroTik API client using the configured facade
                                 $config = new Config([
@@ -2695,7 +2704,7 @@ class AdminController extends Controller
 
                             $updateQuery = (new Query('/ppp/secret/set'))
                                 ->equal('.id', $edit->mikrotik_id)
-                                ->equal('name', $request->first_name);
+                                ->equal('name', $request->phone);
                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                             $client->query($updateQuery)->read(); // Execute the update
@@ -2712,14 +2721,6 @@ class AdminController extends Controller
                     
                         return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
                     }    
-        }
-        $edit->last_name = $request->bandwidth;
-        $edit->email = $request->email;
-        if(!isset($request->phone)){
-
-        }
-        else{
-            $edit->phone = $request->phone;
         }
 
           if(!isset($request->password)){
@@ -2768,7 +2769,6 @@ class AdminController extends Controller
         }
         
         $edit->phoneOne = $request->phoneOne;
-        $edit->location = $request->comment;
         $edit->package_amount = $request->package_amount;
         $edit->amount = $request->package_amount;
         $edit->payment_date = $request->payment_date;
