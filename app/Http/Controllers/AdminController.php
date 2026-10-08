@@ -1680,9 +1680,8 @@ class AdminController extends Controller
 
                     // 3. Build the endpoint query to add the secret
                     $query = new Query('/ppp/secret/add');
-                    $query->equal('name', $request->first_name);
+                    $query->equal('name', $request->phone);
                     $query->equal('password', $request->password);
-                    $query->equal('comment', $request->comment);
                     $query->equal('service', 'pppoe');
                     $query->equal('profile', $request->bandwidth);
 
