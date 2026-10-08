@@ -1458,11 +1458,13 @@ class AdminController extends Controller
     public function sendUserSms(){
         if (Auth::check()){
             $customers = Singlesms::get();
+            $mikrotiks = Mik::all();
             $users = User::where('role',1)->orWhere('role',0)->orWhere('role',5)->orWhere('role',6)->orWhere('role',7)->orWhere('role',8)->orderByDesc('id')->get();
 
             return view('admin.userMessage',[
                 'customers'=>$customers,
                 'users'=>$users,
+                'mikrotiks'=>$mikrotiks,
             ]);
         }
         else{
@@ -2959,7 +2961,10 @@ class AdminController extends Controller
 
     }
     public function bulksms(){
-        return view('admin.bulksms');
+        $mikrotiks = Mik::all();
+        return view('admin.bulksms',[
+            'mikrotiks'=>$mikrotiks
+        ]);
     }
     public function sendBulkSms(Request $request){
            $ones =  Invoice::where('status',1)->where('statas',0)->get();
