@@ -137,12 +137,7 @@
                                         <input type="date" value="{{ old('due_date', $customer->due_date ? \Carbon\Carbon::parse($customer->due_date)->format('Y-m-d') : '') }}" class="form-control" name="due_date"/>
                                     </div>
                                 </div>
-                                  <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <div class="form-group">
-                                    <label>Comment *</label>
-                                        <input type="text" value="{{$customer->location}}" class="form-control" name="comment"/>
-                                    </div>
-                                </div>
+                            
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <div class="form-group">
                                         <label for="dob">1Day MSG *</label>
