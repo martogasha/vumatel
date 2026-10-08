@@ -94,7 +94,6 @@ class MpesaController extends Controller
 
             
                 Log::info('First Paybill');
-        Log::info($request->all());
     if (Mpesa::where('reference', $request->TransID)->exists()) {
     Log::info('Mpesa Exists');
     }
