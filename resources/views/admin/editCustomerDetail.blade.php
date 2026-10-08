@@ -84,8 +84,8 @@
                         @csrf
                         <div class="row">
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label> Name *</label>
-                                <input type="text" value="{{$customer->first_name}}" class="form-control" name="first_name">
+                                <label> Name: <b>{{$customer->first_name}}</b> *</label>
+                                <input type="text" class="form-control" name="first_name">
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label> Password: <b>{{$password}}</b></label>

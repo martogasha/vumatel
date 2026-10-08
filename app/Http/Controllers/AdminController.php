@@ -2671,7 +2671,49 @@ class AdminController extends Controller
         $edit = User::find($id);
         $bal = $edit->balance;
         $currentBal = $bal + $request->cBalance;
-        $edit->first_name = $request->first_name;
+        if(!isset($request->first_name)){
+
+        }
+        else{
+                    $edit->first_name = $request->first_name;
+
+                 try {
+
+                                // Get the MikroTik API client using the configured facade
+                                $config = new Config([
+                                    'host' => $edit->mik->ip,
+                                    'user' => $edit->mik->user,
+                                    'pass' => $edit->mik->password,
+                                    'port' => $edit->mik->statusOne,
+                            ]);
+                            $client = new Client($config);
+                            $query = (new Query('/ppp/secret/print'))->where('.id', $edit->mikrotik_id);
+                            $secrets = $client->query($query)->read();
+                            // $secrets will be an array containing the user's details if found.
+                            
+                            if (!empty($secrets)) {
+                            $secretId = $secrets[0]['.id']; // Get the ID of the first matching user
+
+                            $updateQuery = (new Query('/ppp/secret/set'))
+                                ->equal('.id', $edit->mikrotik_id)
+                                ->equal('name', $request->first_name);
+                                // ->equal('comment', 'Updated by Laravel'); // Add or change comments
+
+                            $client->query($updateQuery)->read(); // Execute the update
+                            
+                        }
+                 
+                                
+                        
+                    
+
+                    } catch (\Exception $e) {
+                        // 5. Handle any connection or API errors
+                        Log::info('First name edit failed');
+                    
+                        return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
+                    }    
+        }
         $edit->last_name = $request->bandwidth;
         $edit->email = $request->email;
         if(!isset($request->phone)){
@@ -2735,42 +2777,7 @@ class AdminController extends Controller
         $edit->balance = $currentBal;
         $edit->save();
 
-          try {
-
-                                // Get the MikroTik API client using the configured facade
-                                $config = new Config([
-                                    'host' => $edit->mik->ip,
-                                    'user' => $edit->mik->user,
-                                    'pass' => $edit->mik->password,
-                                    'port' => $edit->mik->statusOne,
-                            ]);
-                            $client = new Client($config);
-                            $query = (new Query('/ppp/secret/print'))->where('.id', $edit->mikrotik_id);
-                            $secrets = $client->query($query)->read();
-                            // $secrets will be an array containing the user's details if found.
-                            
-                            if (!empty($secrets)) {
-                            $secretId = $secrets[0]['.id']; // Get the ID of the first matching user
-
-                            $updateQuery = (new Query('/ppp/secret/set'))
-                                ->equal('.id', $edit->mikrotik_id)
-                                ->equal('name', $request->first_name);
-                                // ->equal('comment', 'Updated by Laravel'); // Add or change comments
-
-                            $client->query($updateQuery)->read(); // Execute the update
-                            
-                        }
-                 
-                                
-                        
-                    
-
-                    } catch (\Exception $e) {
-                        // 5. Handle any connection or API errors
-                        Log::info('First name edit failed');
-                    
-                        return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
-                    }    
+     
         $createLogTwelve = Logging::create([
             'user_id' => $id,
             'reason' => 12,
