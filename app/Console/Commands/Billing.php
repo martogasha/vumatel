@@ -412,32 +412,20 @@ class Billing extends Command
                     Log::info('no duplicate');
                               if($currentBalance>=1500 || $currentBalance == 1 || $currentBalance == 2){
 
-                                            if($currentBalance>=1500 && $currentBalance < 2000){
-                                                $bandwidth = '6MBPS';
-                                            }
-                                            if($currentBalance>=2000 && $currentBalance < 2500){
+                                           if($currentBalance>=1500 && $currentBalance < 2000){
                                                 $bandwidth = '8MBPS';
                                             }
+                                            if($currentBalance>=2000 && $currentBalance < 2500){
+                                                $bandwidth = '15MBPS';
+                                            }
                                             if($currentBalance>=2500 && $currentBalance < 3000){
-                                                $bandwidth = '10MBPS';
-                                            }
-                                            if($currentBalance>=3000 && $currentBalance < 3500){
-                                                $bandwidth = '12MBPS';
-                                            }
-                                            if($currentBalance>=3500 && $currentBalance < 4000){
-                                                $bandwidth = '14MBPS';
-                                            }
-                                            if($currentBalance>=4000 && $currentBalance < 4500){
-                                                $bandwidth = '16MBPS';
-                                            }
-                                            if($currentBalance>=4500 && $currentBalance < 5000){
-                                                $bandwidth = '18MBPS';
-                                            }
-                                            if($currentBalance>=5000 && $currentBalance < 6000){
                                                 $bandwidth = '20MBPS';
                                             }
-                                            if($currentBalance >= 6000){
+                                            if($currentBalance>=3000 && $currentBalance < 4000){
                                                 $bandwidth = '30MBPS';
+                                            }
+                                            if($currentBalance>=9600 && $currentBalance < 10000){
+                                                $bandwidth = '80MBPS';
                                             }
                                             if($currentBalance==1){
                                                 $bandwidth = '6MBPS';
