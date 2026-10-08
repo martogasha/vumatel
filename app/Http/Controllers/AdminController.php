@@ -2752,8 +2752,7 @@ class AdminController extends Controller
 
                             $updateQuery = (new Query('/ppp/secret/set'))
                                 ->equal('.id', $edit->mikrotik_id)
-                                ->equal('name', $request->first_name)
-                                ->equal('comment', $request->comment);
+                                ->equal('name', $request->first_name);
                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                             $client->query($updateQuery)->read(); // Execute the update
