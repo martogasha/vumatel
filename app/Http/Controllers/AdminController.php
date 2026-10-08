@@ -1715,7 +1715,7 @@ class AdminController extends Controller
 
                     // Build a query looking for the specific name
                     $query = (new Query('/ppp/secret/print'))
-                        ->where('name', $request->first_name);
+                        ->where('name', $request->phone);
 
                     $response = $client->query($query)->read();
                     $mikrotikId = $response[0]['.id'];
