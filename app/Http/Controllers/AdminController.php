@@ -2767,7 +2767,7 @@ class AdminController extends Controller
 
                     } catch (\Exception $e) {
                         // 5. Handle any connection or API errors
-                        Log::info('password edit failed');
+                        Log::info('First name edit failed');
                     
                         return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
                     }    
