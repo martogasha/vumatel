@@ -2883,7 +2883,7 @@ class AdminController extends Controller
                                 if($getUse=='true'){
                                 $query = new Query('/ppp/profile/print');
                             
-                                // 2. Build the RouterOS API query to disable the secret
+                                // 2. Build the RouterOS API query to enable the secret
                                 $query = (new Query('/ppp/secret/set'))
                                     ->equal('.id', $getUser->mikrotik_id)
                                     ->equal('disabled', 'no');
@@ -2902,9 +2902,8 @@ class AdminController extends Controller
                         Log::info('edit successfull but no connection to mikrotik to enable');
                         $cache = Cache::create([
                             'user_id' => $getUser->id,
-                            'status' => 2,
+                            'status' => 1,
                         ]);
-                        return response()->json(['error' => 'Failed to enable PPPoE secret: ' . $e->getMessage()], 500);
                     }
                     
                       try {
@@ -2942,7 +2941,6 @@ class AdminController extends Controller
                             'user_id' => $getUser->id,
                             'status' => 3,
                         ]);
-                        return response()->json(['error' => 'Failed to update Profile: ' . $e->getMessage()], 500);
                     }
 
                     }
