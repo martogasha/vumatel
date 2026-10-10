@@ -69,7 +69,7 @@ class Downtime extends Command
        $caches = Cache::all();
        $dateNow = Carbon::now();
         foreach($caches as $cache){
-            if($cache->status==0 || $cache->status==2 || $cache->status==1){
+            if($cache->status==0 || $cache->status==2){
            // Get the MikroTik API client using the configured facade
                             try{
                                             $config = new Config([
@@ -83,27 +83,7 @@ class Downtime extends Command
 
                                             // Create a query for the /ppp/profile/print command
                                             $getUser = User::where('mikrotik_id',$cache->user->mikrotik_id)->value('dis_status');
-                                            if($getUser=='true'){
-                                            $query = new Query('/ppp/profile/print');
-                                        
-                                            // 2. Build the RouterOS API query to enable the secret
-                                            $query = (new Query('/ppp/secret/set'))
-                                                ->equal('.id', $mikId)
-                                                ->equal('disabled', 'no');
-
-                                            // 3. Send the query and get the response
-                                            $response = $client->query($query)->read();
-
-                                            // 4. Handle the response
-                                            $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'false']);
-                                            $createLogSeven = Logging::create([
-                                                    'user_id' => $cache->user->id,
-                                                    'reason' => 7,
-                                                    'date' => $dateNow,
-                                                ]);
-                                            
-                                            }
-                                            else{
+                                         
                                                 $query = new Query('/ppp/profile/print');
                                         
                                             // 2. Build the RouterOS API query to disable the secret
@@ -122,7 +102,54 @@ class Downtime extends Command
                                                     'date' => $dateNow,
                                                 ]);
                                             
-                                            }
+                                            
+                                            $deleteCache = Cache::where('id',$cache->id)->delete();
+                                }
+                                    catch (\Exception $e) {
+                                            // 5. Handle any connection or API errors
+                                            Log::info('cache not executed');
+                    
+                                            return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
+                                        }
+            }
+       
+        }
+
+               foreach($caches as $cache){
+            if($cache->status==1){
+           // Get the MikroTik API client using the configured facade
+                            try{
+                                            $config = new Config([
+                                                'host' => $cache->user->mik->ip,
+                                                'user' => $cache->user->mik->user,
+                                                'pass' => $cache->user->mik->password,
+                                                'port' => $cache->user->mik->statusOne,
+                                        ]);
+                                        $client = new Client($config);
+                                        $mikId = $cache->user->mikrotik_id;
+
+                                            // Create a query for the /ppp/profile/print command
+                                            $getUser = User::where('mikrotik_id',$cache->user->mikrotik_id)->value('dis_status');
+                                         
+                                                $query = new Query('/ppp/profile/print');
+                                        
+                                            // 2. Build the RouterOS API query to enable the secret
+                                            $query = (new Query('/ppp/secret/set'))
+                                                ->equal('.id', $mikId)
+                                                ->equal('disabled', 'no');
+
+                                            // 3. Send the query and get the response
+                                            $response = $client->query($query)->read();
+
+                                            // 4. Handle the response
+                                            $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
+                                            $createLogEight = Logging::create([
+                                                    'user_id' => $cache->user->id,
+                                                    'reason' => 8,
+                                                    'date' => $dateNow,
+                                                ]);
+                                            
+                                            
                                             $deleteCache = Cache::where('id',$cache->id)->delete();
                                 }
                                     catch (\Exception $e) {
@@ -167,7 +194,7 @@ class Downtime extends Command
 
                     } catch (\Exception $e) {
                         // 5. Handle any connection or API errors
-                        Log::info('Cache profile not updated to '.$bandwidth.'');
+                        Log::info('Cache profile not updated to allocated');
                     
                         return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                     }
@@ -213,7 +240,46 @@ class Downtime extends Command
                             }
                     }
 
-        }
+                }
+
+                  foreach($caches as $cache){
+                    if($cache->status==6){
+                                  try {
+                                    // Get the MikroTik API client using the configured facade
+                                    $config = new Config([
+                                        'host' => $cache->user->mik->ip,
+                                        'user' => $cache->user->mik->user,
+                                        'pass' => $cache->user->mik->password,
+                                        'port' => $cache->user->mik->statusOne,
+                                ]);
+                                $phone = $cache->user->phone;
+                                $client = new Client($config);
+                                $query = (new Query('/ppp/secret/print'))->where('.id', $cache->user->mikrotik_id);
+                                $secrets = $client->query($query)->read();
+                                // $secrets will be an array containing the user's details if found.
+                                
+                                if (!empty($secrets)) {
+                                $secretId = $secrets[0]['.id']; // Get the ID of the first matching user
+
+                                $updateQuery = (new Query('/ppp/secret/set'))
+                                ->equal('.id', $secretId)
+                                ->equal('name', $phone);
+
+                                $client->query($updateQuery)->read(); // Execute the update
+                            }
+                        
+                                $deleteCache = Cache::where('id',$cache->id)->delete();      
+                                
+                            
+
+                            } catch (\Exception $e) {
+                                // 5. Handle any connection or API errors
+                                Log::info('phone(account no) edit failed');
+                            
+                            }
+                    }
+
+                }
 
                foreach($caches as $cache){
                     if($cache->status==50){

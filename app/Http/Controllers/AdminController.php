@@ -2678,8 +2678,8 @@ class AdminController extends Controller
 
                 
         }
-        $edit->last_name = $request->bandwidth;
-        $edit->email = $request->email;
+       
+
         if(!isset($request->phone)){
 
         }
@@ -2717,9 +2717,11 @@ class AdminController extends Controller
 
                     } catch (\Exception $e) {
                         // 5. Handle any connection or API errors
-                        Log::info('First name edit failed');
-                    
-                        return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
+                        Log::info('phone(account no) edit failed');
+                        $cache = Cache::create([
+                            'user_id' => $getUser->id,
+                            'status' => 6,
+                        ]);
                     }    
         }
 
@@ -2767,7 +2769,7 @@ class AdminController extends Controller
                     }    
 
         }
-        
+        $edit->last_name = $request->bandwidth;
         $edit->phoneOne = $request->phoneOne;
         $edit->package_amount = $request->package_amount;
         $edit->amount = $request->package_amount;
@@ -2924,7 +2926,7 @@ class AdminController extends Controller
 
                             $updateQuery = (new Query('/ppp/secret/set'))
                                 ->equal('.id', $secretId)
-                                ->equal('profile', $request->bandwidth); // Change the assigned profile
+                                ->equal('profile', $getUser->last_name); // Change the assigned profile
                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                             $client->query($updateQuery)->read(); // Execute the update
