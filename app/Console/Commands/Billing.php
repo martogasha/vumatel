@@ -223,7 +223,7 @@ class Billing extends Command
 
                                                             $createLogFive = Logging::create([
                                                                 'user_id' => $getDuplicate->user_id,
-                                                                'reason' => 5,
+                                                                'reason' => 1,
                                                                 'date' => $dateNow,
                                                             ]);
                                                         
@@ -326,7 +326,7 @@ class Billing extends Command
 
                                                     $createLogFive = Logging::create([
                                                         'user_id' => $getUser->id,
-                                                        'reason' => 5,
+                                                        'reason' => 1,
                                                         'date' => $dateNow,
                                                     ]);
                                                 
@@ -611,7 +611,7 @@ class Billing extends Command
 
                                                     $createLogFive = Logging::create([
                                                         'user_id' => $getUser->id,
-                                                        'reason' => 5,
+                                                        'reason' => 1,
                                                         'date' => $dateNow,
                                                     ]);
                                                 

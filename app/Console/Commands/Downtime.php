@@ -82,7 +82,7 @@ class Downtime extends Command
                                         $mikId = $cache->user->mikrotik_id;
 
                                             // Create a query for the /ppp/profile/print command
-                                            $getUser = User::where('mikrotik_id',$cache->user->mikrotik_id)->value('dis_status');
+                                            $getUser = User::where('mikrotik_id',$cache->user->mikrotik_id)->first();
                                          
                                                 $query = new Query('/ppp/profile/print');
                                         
@@ -98,16 +98,51 @@ class Downtime extends Command
                                             $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
                                             $createLogEight = Logging::create([
                                                     'user_id' => $cache->user->id,
-                                                    'reason' => 8,
+                                                    'reason' => 6,
                                                     'date' => $dateNow,
                                                 ]);
+
+
+                                                        // 1. Initialize the client using your RouterOS credentials
+                                                            $client = new Client([
+                                                                'host' => $getUser->mik->ip,
+                                                                'user' => $getUser->mik->user,
+                                                                'pass' => $getUser->mik->password,
+                                                                'port' => $getUser->mik->statusOne,
+                                                            ]);
+
+                                                            // 2. Build the query object (e.g., getting secrets with 'default' profile)
+                                                            $query = new Query('/ppp/secret/print');
+                                                            $query->where('.id', $getUser->mikrotik_id);
+
+                                                            // 3. Send the query and read the response
+                                                            $response = $client->query($query)->read();
+
+                                                            // 4. Extract only the 'name' field from the response
+                                                            $usernameToDisconnect  =  $response[0]['name'];
+                                                        $query = new Query('/ppp/active/print');
+                                                        $query->where('name', $usernameToDisconnect);
+                                                        $activeConnections = $client->query($query)->read();
+                                                        // Check if a connection was found
+                                                        if (empty($activeConnections)) {
+                                                            // Handle case where user is not found or not active
+                                                        
+                                                        }
+                                                        else{
+                                                        $connectionId = $activeConnections[0]['.id'];
+                                                        // Remove the active connection
+                                                        $removeQuery = new Query('/ppp/active/remove');
+                                                        $removeQuery->equal('.id', $connectionId);
+                                                        $client->query($removeQuery)->read();
+                                                        
+                                                        }
                                             
                                             
                                             $deleteCache = Cache::where('id',$cache->id)->delete();
                                 }
                                     catch (\Exception $e) {
                                             // 5. Handle any connection or API errors
-                                            Log::info('cache not executed');
+                                            Log::info('Disable cache not executed');
                     
                                             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                         }
@@ -129,7 +164,7 @@ class Downtime extends Command
                                         $mikId = $cache->user->mikrotik_id;
 
                                             // Create a query for the /ppp/profile/print command
-                                            $getUser = User::where('mikrotik_id',$cache->user->mikrotik_id)->value('dis_status');
+                                            $getUser = User::where('mikrotik_id',$cache->user->mikrotik_id)->first();
                                          
                                                 $query = new Query('/ppp/profile/print');
                                         
@@ -154,7 +189,7 @@ class Downtime extends Command
                                 }
                                     catch (\Exception $e) {
                                             // 5. Handle any connection or API errors
-                                            Log::info('cache not executed');
+                                            Log::info('Activation cache not executed');
                     
                                             return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                         }
