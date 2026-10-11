@@ -142,10 +142,10 @@ class Downtime extends Command
                                             $response = $client->query($query)->read();
 
                                             // 4. Handle the response
-                                            $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
+                                            $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'false']);
                                             $createLogEight = Logging::create([
                                                     'user_id' => $cache->user->id,
-                                                    'reason' => 8,
+                                                    'reason' => 1,
                                                     'date' => $dateNow,
                                                 ]);
                                             
