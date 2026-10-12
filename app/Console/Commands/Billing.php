@@ -207,29 +207,8 @@ class Billing extends Command
 
                                                         // Create a query for the /ppp/profile/print command
                                                         $getUse = User::where('mikrotik_id',$getDuplicate->user->mikrotik_id)->value('dis_status');
-                                                        if($getUse=='true'){
-                                                        $query = new Query('/ppp/profile/print');
-                                                    
-                                                        // 2. Build the RouterOS API query to enable the secret
-                                                        $query = (new Query('/ppp/secret/set'))
-                                                            ->equal('.id', $mikId)
-                                                            ->equal('disabled', 'no');
-
-                                                        // 3. Send the query and get the response
-                                                        $response = $client->query($query)->read();
-
-                                                        // 4. Handle the response
-                                                        $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'false']);
-
-                                                            $createLogFive = Logging::create([
-                                                                'user_id' => $getDuplicate->user_id,
-                                                                'reason' => 1,
-                                                                'date' => $dateNow,
-                                                            ]);
+                                                   
                                                         
-                                                        
-                                                        }
-                                                        else{
                                                             $query = new Query('/ppp/profile/print');
                                                     
                                                         // 2. Build the RouterOS API query to disable the secret
@@ -247,7 +226,7 @@ class Billing extends Command
                                                                 'date' => $dateNow,
                                                             ]);
                                                         
-                                                        }
+                                                        
 
                                                         // 1. Initialize the client using your RouterOS credentials
                                                             $client = new Client([
@@ -282,6 +261,12 @@ class Billing extends Command
                                                         $client->query($removeQuery)->read();
                                                         
                                                         }
+
+                                                    $createLogSix = Logging::create([
+                                                        'user_id' => $getUser->id,
+                                                        'reason' => 6,
+                                                        'date' => $dateNow,
+                                                    ]);
                                                     
                                             }
                                                 catch (\Exception $e) {
@@ -317,29 +302,8 @@ class Billing extends Command
 
                                                 // Create a query for the /ppp/profile/print command
                                                 $getUse = User::where('mikrotik_id',$getUser->mikrotik_id)->value('dis_status');
-                                                if($getUse=='true'){
-                                                $query = new Query('/ppp/profile/print');
-                                            
-                                                // 2. Build the RouterOS API query to enable the secret
-                                                $query = (new Query('/ppp/secret/set'))
-                                                    ->equal('.id', $mikId)
-                                                    ->equal('disabled', 'no');
-
-                                                // 3. Send the query and get the response
-                                                $response = $client->query($query)->read();
-
-                                                // 4. Handle the response
-                                                $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'false']);
-
-                                                    $createLogFive = Logging::create([
-                                                        'user_id' => $getUser->id,
-                                                        'reason' => 1,
-                                                        'date' => $dateNow,
-                                                    ]);
+                                              
                                                 
-                                                
-                                                }
-                                                else{
                                                     $query = new Query('/ppp/profile/print');
                                             
                                                 // 2. Build the RouterOS API query to disable the secret
@@ -351,13 +315,9 @@ class Billing extends Command
                                                 $response = $client->query($query)->read();
                                                 // 4. Handle the response
                                                 $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                                    $createLogSix = Logging::create([
-                                                        'user_id' => $getUser->id,
-                                                        'reason' => 6,
-                                                        'date' => $dateNow,
-                                                    ]);
+                                                   
                                                 
-                                                }
+                                                
 
                                                 // 1. Initialize the client using your RouterOS credentials
                                                     $client = new Client([
@@ -392,6 +352,12 @@ class Billing extends Command
                                                 $client->query($removeQuery)->read();
                                                 
                                                 }
+
+                                                    $createLogSix = Logging::create([
+                                                        'user_id' => $getUser->id,
+                                                        'reason' => 6,
+                                                        'date' => $dateNow,
+                                                    ]);
                                             
                                     }
                                         catch (\Exception $e) {
@@ -622,29 +588,8 @@ class Billing extends Command
 
                                                 // Create a query for the /ppp/profile/print command
                                                 $getUse = User::where('mikrotik_id',$getUser->mikrotik_id)->value('dis_status');
-                                                if($getUse=='true'){
-                                                $query = new Query('/ppp/profile/print');
-                                            
-                                                // 2. Build the RouterOS API query to enable the secret
-                                                $query = (new Query('/ppp/secret/set'))
-                                                    ->equal('.id', $mikId)
-                                                    ->equal('disabled', 'no');
-
-                                                // 3. Send the query and get the response
-                                                $response = $client->query($query)->read();
-
-                                                // 4. Handle the response
-                                                $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'false']);
-
-                                                    $createLogFive = Logging::create([
-                                                        'user_id' => $getUser->id,
-                                                        'reason' => 1,
-                                                        'date' => $dateNow,
-                                                    ]);
+                                               
                                                 
-                                                
-                                                }
-                                                else{
                                                     $query = new Query('/ppp/profile/print');
                                             
                                                 // 2. Build the RouterOS API query to disable the secret
@@ -656,13 +601,9 @@ class Billing extends Command
                                                 $response = $client->query($query)->read();
                                                 // 4. Handle the response
                                                 $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                                    $createLogSix = Logging::create([
-                                                        'user_id' => $getUser->id,
-                                                        'reason' => 6,
-                                                        'date' => $dateNow,
-                                                    ]);
+                                                 
                                                 
-                                                }
+                                                
 
                                                 // 1. Initialize the client using your RouterOS credentials
                                                     $client = new Client([
@@ -697,6 +638,11 @@ class Billing extends Command
                                                 $client->query($removeQuery)->read();
                                                 
                                                 }
+                                                   $createLogSix = Logging::create([
+                                                        'user_id' => $getUser->id,
+                                                        'reason' => 6,
+                                                        'date' => $dateNow,
+                                                    ]);
                                             
                                     }
                                         catch (\Exception $e) {

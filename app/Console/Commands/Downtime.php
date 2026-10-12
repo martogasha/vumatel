@@ -96,11 +96,7 @@ class Downtime extends Command
 
                                             // 4. Handle the response
                                             $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                            $createLogEight = Logging::create([
-                                                    'user_id' => $cache->user->id,
-                                                    'reason' => 6,
-                                                    'date' => $dateNow,
-                                                ]);
+                                            
 
 
                                                         // 1. Initialize the client using your RouterOS credentials
@@ -136,6 +132,12 @@ class Downtime extends Command
                                                         $client->query($removeQuery)->read();
                                                         
                                                         }
+                                                        
+                                                $createLogEight = Logging::create([
+                                                    'user_id' => $cache->user->id,
+                                                    'reason' => 6,
+                                                    'date' => $dateNow,
+                                                ]);
                                             
                                             
                                             $deleteCache = Cache::where('id',$cache->id)->delete();
