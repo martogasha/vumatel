@@ -220,11 +220,7 @@ class Billing extends Command
                                                         $response = $client->query($query)->read();
                                                         // 4. Handle the response
                                                         $update = User::where('mikrotik_id',$mikId)->update(['dis_status'=>'true']);
-                                                            $createLogSix = Logging::create([
-                                                                'user_id' => $getDuplicate->user_id,
-                                                                'reason' => 6,
-                                                                'date' => $dateNow,
-                                                            ]);
+                                                        
                                                         
                                                         
 
