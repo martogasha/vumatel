@@ -221,6 +221,12 @@ class Downtime extends Command
                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                             $client->query($updateQuery)->read(); // Execute the update
+
+                                $createLogninety = Logging::create([
+                                    'user_id' => $cache->user->id,
+                                    'reason' => 90,
+                                    'date' => $dateNow,
+                                ]);
                         }
                  
                           $deleteCache = Cache::where('id',$cache->id)->delete();      
@@ -229,7 +235,7 @@ class Downtime extends Command
 
                     } catch (\Exception $e) {
                         // 5. Handle any connection or API errors
-                        Log::info('Cache profile not updated to allocated');
+                        Log::info('Cache profile not updated');
                     
                         return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                     }

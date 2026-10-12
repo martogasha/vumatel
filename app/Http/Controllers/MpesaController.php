@@ -376,6 +376,12 @@ class MpesaController extends Controller
                                                     // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                                                 $client->query($updateQuery)->read(); // Execute the update
+
+                                                 $createLogninety = Logging::create([
+                                                    'user_id' => $getUserIdentification->id,
+                                                    'reason' => 90,
+                                                    'date' => $dateNow,
+                                                 ]);
                                                 
                                             }
                                     

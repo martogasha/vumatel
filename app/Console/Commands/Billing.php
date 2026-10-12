@@ -289,13 +289,13 @@ class Billing extends Command
                                                         Log::info('Billed but no connection');
                                                         $getCache = Cache::where('user_id',$getDuplicate->user_id)->where('status',0)->first();
                                                         if(!isset($getCache)){
-
-                                                        }
-                                                        else{
                                                             $cache = Cache::create([
                                                             'user_id' => $getDuplicate->user_id,
                                                             'status' => 0,
                                                         ]);
+                                                        }
+                                                        else{
+
                                                         
                                                         }
                                                 
@@ -399,13 +399,13 @@ class Billing extends Command
                                                 Log::info('Billed but no connection');
                                                         $getCache = Cache::where('user_id',$getUser->id)->where('status',0)->first();
                                                         if(!isset($getCache)){
-
-                                                        }
-                                                        else{
                                                             $cache = Cache::create([
                                                             'user_id' => $getUser->id,
                                                             'status' => 0,
                                                         ]);
+                                                        }
+                                                        else{
+
                                                         
                                                         }
                                              
@@ -553,13 +553,13 @@ class Billing extends Command
                                                         Log::info('Billed but profile not updated');
                                                         $getCache = Cache::where('user_id',$getUser->id)->where('status',3)->first();
                                                         if(!isset($getCache)){
-
-                                                        }
-                                                        else{
                                                             $cache = Cache::create([
                                                             'user_id' => $getUser->id,
                                                             'status' => 3,
                                                         ]);
+                                                        }
+                                                        else{
+
                                                         
                                                         }
                                                      
@@ -704,14 +704,13 @@ class Billing extends Command
                                                 Log::info('Billed but no connection');
                                                      $getCache = Cache::where('user_id',$getUser->id)->where('status',0)->first();
                                                         if(!isset($getCache)){
-
-                                                        }
-                                                        else{
                                                             $cache = Cache::create([
                                                             'user_id' => $getUser->id,
                                                             'status' => 0,
                                                         ]);
-                                                        
+                                                        }
+                                                        else{
+                                                
                                                         }
                                              
                                                 
@@ -758,13 +757,14 @@ class Billing extends Command
                                                 Log::info('profile not updated');
                                                   $getCache = Cache::where('user_id',$getUser->id)->where('status',5)->first();
                                                         if(!isset($getCache)){
-
-                                                        }
-                                                        else{
                                                             $cache = Cache::create([
                                                             'user_id' => $getUser->id,
                                                             'status' => 5,
                                                         ]);
+
+                                                        }
+                                                        else{
+                                                    
                                                         
                                                         }
                                          
