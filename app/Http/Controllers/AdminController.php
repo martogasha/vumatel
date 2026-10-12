@@ -2764,7 +2764,7 @@ class AdminController extends Controller
                     } catch (\Exception $e) {
                         // 5. Handle any connection or API errors
                         Log::info('password edit failed');
-                    
+                       
                         return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
                     }    
 
@@ -2930,6 +2930,12 @@ class AdminController extends Controller
                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                             $client->query($updateQuery)->read(); // Execute the update
+
+                             $createLogninety = Logging::create([
+                                'user_id' => $getUser->id,
+                                'reason' => 90,
+                                'date' => $dateNow,
+                            ]);
                         }
                  
                                 

@@ -287,11 +287,18 @@ class Billing extends Command
                                                 catch (\Exception $e) {
                                                         // 5. Handle any connection or API errors
                                                         Log::info('Billed but no connection');
-                                                        $cache = Cache::create([
+                                                        $getCache = Cache::where('user_id',$getDuplicate->user_id)->where('status',0)->first();
+                                                        if(!isset($getCache)){
+
+                                                        }
+                                                        else{
+                                                            $cache = Cache::create([
                                                             'user_id' => $getDuplicate->user_id,
                                                             'status' => 0,
                                                         ]);
                                                         
+                                                        }
+                                                
                                                         return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                                     }
                                                 
@@ -390,11 +397,18 @@ class Billing extends Command
                                         catch (\Exception $e) {
                                                 // 5. Handle any connection or API errors
                                                 Log::info('Billed but no connection');
-                                                $cache = Cache::create([
-                                                    'user_id' => $getUser->id,
-                                                    'status' => 0,
-                                                ]);
-                                                
+                                                        $getCache = Cache::where('user_id',$getUser->id)->where('status',0)->first();
+                                                        if(!isset($getCache)){
+
+                                                        }
+                                                        else{
+                                                            $cache = Cache::create([
+                                                            'user_id' => $getUser->id,
+                                                            'status' => 0,
+                                                        ]);
+                                                        
+                                                        }
+                                             
                                                 return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                             }
                                      
@@ -522,6 +536,11 @@ class Billing extends Command
                                                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                                                             $client->query($updateQuery)->read(); // Execute the update
+                                                                $createLogninety = Logging::create([
+                                                                'user_id' => $getUser->id,
+                                                                'reason' => 90,
+                                                                'date' => $dateNow,
+                                                                 ]);
                                                             
                                                         }
                                                 
@@ -532,10 +551,18 @@ class Billing extends Command
                                                     } catch (\Exception $e) {
                                                         // 5. Handle any connection or API errors
                                                         Log::info('Billed but profile not updated');
-                                                        $cache = Cache::create([
+                                                        $getCache = Cache::where('user_id',$getUser->id)->where('status',3)->first();
+                                                        if(!isset($getCache)){
+
+                                                        }
+                                                        else{
+                                                            $cache = Cache::create([
                                                             'user_id' => $getUser->id,
                                                             'status' => 3,
                                                         ]);
+                                                        
+                                                        }
+                                                     
                                                         return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                                     }
 
@@ -675,10 +702,18 @@ class Billing extends Command
                                         catch (\Exception $e) {
                                                 // 5. Handle any connection or API errors
                                                 Log::info('Billed but no connection');
-                                                $cache = Cache::create([
-                                                    'user_id' => $getUser->id,
-                                                    'status' => 0,
-                                                ]);
+                                                     $getCache = Cache::where('user_id',$getUser->id)->where('status',0)->first();
+                                                        if(!isset($getCache)){
+
+                                                        }
+                                                        else{
+                                                            $cache = Cache::create([
+                                                            'user_id' => $getUser->id,
+                                                            'status' => 0,
+                                                        ]);
+                                                        
+                                                        }
+                                             
                                                 
                                                 return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                             }
@@ -705,7 +740,14 @@ class Billing extends Command
                                                         // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                                                     $client->query($updateQuery)->read(); // Execute the update
+
+                                                      $createLogninety = Logging::create([
+                                                        'user_id' => $getUser->id,
+                                                        'reason' => 90,
+                                                        'date' => $dateNow,
+                                                    ]);
                                                 }
+
                                         
                                                         
                                                 
@@ -714,10 +756,18 @@ class Billing extends Command
                                             } catch (\Exception $e) {
                                                 // 5. Handle any connection or API errors
                                                 Log::info('profile not updated');
-                                                $cache = Cache::create([
-                                                    'user_id' => $getUser->id,
-                                                    'status' => 5,
-                                                ]);
+                                                  $getCache = Cache::where('user_id',$getUser->id)->where('status',5)->first();
+                                                        if(!isset($getCache)){
+
+                                                        }
+                                                        else{
+                                                            $cache = Cache::create([
+                                                            'user_id' => $getUser->id,
+                                                            'status' => 5,
+                                                        ]);
+                                                        
+                                                        }
+                                         
                                                 return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                             }
 

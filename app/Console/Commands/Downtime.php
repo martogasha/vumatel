@@ -316,6 +316,45 @@ class Downtime extends Command
 
                 }
 
+                        foreach($caches as $cache){
+                    if($cache->status==7){
+                                  try {
+                                    // Get the MikroTik API client using the configured facade
+                                    $config = new Config([
+                                        'host' => $cache->user->mik->ip,
+                                        'user' => $cache->user->mik->user,
+                                        'pass' => $cache->user->mik->password,
+                                        'port' => $cache->user->mik->statusOne,
+                                ]);
+                                $phone = $cache->user->phone;
+                                $client = new Client($config);
+                                $query = (new Query('/ppp/secret/print'))->where('.id', $cache->user->mikrotik_id);
+                                $secrets = $client->query($query)->read();
+                                // $secrets will be an array containing the user's details if found.
+                                
+                                if (!empty($secrets)) {
+                                $secretId = $secrets[0]['.id']; // Get the ID of the first matching user
+
+                                $updateQuery = (new Query('/ppp/secret/set'))
+                                ->equal('.id', $secretId)
+                                ->equal('password', $phone);
+
+                                $client->query($updateQuery)->read(); // Execute the update
+                            }
+                        
+                                $deleteCache = Cache::where('id',$cache->id)->delete();      
+                                
+                            
+
+                            } catch (\Exception $e) {
+                                // 5. Handle any connection or API errors
+                                Log::info('phone(account no) edit failed');
+                            
+                            }
+                    }
+
+                }
+
                foreach($caches as $cache){
                     if($cache->status==50){
                         $getHotspot = Hotspot::find($cache->user_id);

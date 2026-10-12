@@ -92,6 +92,9 @@
                                     @case(22)
                                     <td>Customer Enabled Success</td>
                                     @break
+                                    @case(90)
+                                    <td>Customer Bandwidth updated Success</td>
+                                    @break
                                      @case(23)
                                     <td>Customer Disabled Success</td>
                                     @break
