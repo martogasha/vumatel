@@ -377,11 +377,7 @@ class MpesaController extends Controller
 
                                                 $client->query($updateQuery)->read(); // Execute the update
 
-                                                 $createLogninety = Logging::create([
-                                                    'user_id' => $getUserIdentification->id,
-                                                    'reason' => 90,
-                                                    'date' => $dateNow,
-                                                 ]);
+                                            
                                                 
                                             }
                                     
