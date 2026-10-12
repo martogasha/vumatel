@@ -2931,11 +2931,7 @@ class AdminController extends Controller
 
                             $client->query($updateQuery)->read(); // Execute the update
 
-                             $createLogninety = Logging::create([
-                                'user_id' => $getUser->id,
-                                'reason' => 90,
-                                'date' => $dateNow,
-                            ]);
+                          
                         }
                  
                                 

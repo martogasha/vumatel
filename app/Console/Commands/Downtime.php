@@ -132,7 +132,7 @@ class Downtime extends Command
                                                         $client->query($removeQuery)->read();
                                                         
                                                         }
-                                                        
+
                                                 $createLogEight = Logging::create([
                                                     'user_id' => $cache->user->id,
                                                     'reason' => 6,
@@ -269,6 +269,11 @@ class Downtime extends Command
                                     // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
                                 $client->query($updateQuery)->read(); // Execute the update
+                                  $createLogninety = Logging::create([
+                                    'user_id' => $cache->user->id,
+                                    'reason' => 90,
+                                    'date' => $dateNow,
+                                ]);
                             }
                         
                                 $deleteCache = Cache::where('id',$cache->id)->delete();      
