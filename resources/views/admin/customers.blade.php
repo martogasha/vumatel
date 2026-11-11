@@ -37,6 +37,7 @@
                                     <th>Connection</th>
                                     <th>Balance</th>
                                     <th>Name</th>
+                                    <th>Comment</th>
                                     <th>A/c</th>
                                      <th>Mikrotik</th>
                                     <th>Package</th>
@@ -78,6 +79,7 @@
                                     <td>{{$customer->first_name}} Sub A/c's <span class="badge badge-warning">{{\App\Models\Duplicate::where('duplicate_id', $customer->id)->count()}}</span></td>
 
                                     @endif
+                                    <td>{{$customer->location}}</td>
                                     <td>{{$customer->phone}}</td>
                                     <td>{{$customer->mik->name}}</td>
                                     <td>{{$customer->last_name}}</td>
