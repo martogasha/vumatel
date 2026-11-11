@@ -294,9 +294,10 @@ class MpesaController extends Controller
                                                     if($request->TransAmount>=2500 && $request->TransAmount < 3000){
                                                         $bandwidth = '20MBPS';
                                                     }
-                                                    if($request->TransAmount>=3000 && $request->TransAmount < 3500){
+                                                    if($request->TransAmount>=3000 && $request->TransAmount < 4000){
                                                         $bandwidth = '30MBPS';
                                                     }
+                                             
                                                     if($request->TransAmount>=9600 && $request->TransAmount < 10000){
                                                         $bandwidth = '80MBPS';
                                                     }

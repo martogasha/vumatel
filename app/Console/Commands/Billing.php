@@ -280,7 +280,6 @@ class Billing extends Command
                                                         
                                                         }
                                                 
-                                                        return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                                     }
                                                 
                                         
@@ -371,7 +370,6 @@ class Billing extends Command
                                                         
                                                         }
                                              
-                                                return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                             }
                                      
 
@@ -497,12 +495,7 @@ class Billing extends Command
                                                                 ->equal('profile', $bandwidth); // Change the assigned profile
                                                                 // ->equal('comment', 'Updated by Laravel'); // Add or change comments
 
-                                                            $client->query($updateQuery)->read(); // Execute the update
-                                                                $createLogninety = Logging::create([
-                                                                'user_id' => $getUser->id,
-                                                                'reason' => 90,
-                                                                'date' => $dateNow,
-                                                                 ]);
+                                                      
                                                             
                                                         }
                                                 
@@ -525,7 +518,6 @@ class Billing extends Command
                                                         
                                                         }
                                                      
-                                                        return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                                     }
 
                             
@@ -656,7 +648,6 @@ class Billing extends Command
                                                         }
                                              
                                                 
-                                                return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                             }
                                                         try {
                                                         // Get the MikroTik API client using the configured facade
@@ -706,7 +697,6 @@ class Billing extends Command
                                                         
                                                         }
                                          
-                                                return response()->json(['error' => 'Failed to disable PPPoE secret: ' . $e->getMessage()], 500);
                                             }
 
                                 }

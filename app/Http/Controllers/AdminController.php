@@ -771,8 +771,10 @@ class AdminController extends Controller
     }
     public function addCash(){
         $users = User::where('role',2)->get();
+        $mikrotiks = Mik::all();
         return view('admin.addCash',[
-            'users'=>$users
+            'users'=>$users,
+            'mikrotiks'=>$mikrotiks
         ]);
 
     }
@@ -2766,6 +2768,51 @@ class AdminController extends Controller
                         Log::info('password edit failed');
                        
                         return response()->json(['error' => 'Failed to update password secret: ' . $e->getMessage()], 500);
+                    }    
+
+        }
+         if(!isset($request->comment)){
+
+        }
+        else{
+            $edit->location = $request->comment;
+            $getA = User::find($id);
+
+          try {
+
+                                // Get the MikroTik API client using the configured facade
+                                $config = new Config([
+                                    'host' => $getA->mik->ip,
+                                    'user' => $getA->mik->user,
+                                    'pass' => $getA->mik->password,
+                                    'port' => $getA->mik->statusOne,
+                            ]);
+                            $client = new Client($config);
+                            $query = (new Query('/ppp/secret/print'))->where('.id', $getA->mikrotik_id);
+                            $secrets = $client->query($query)->read();
+                            // $secrets will be an array containing the user's details if found.
+                            
+                            if (!empty($secrets)) {
+                            $secretId = $secrets[0]['.id']; // Get the ID of the first matching user
+
+                            $updateQuery = (new Query('/ppp/secret/set'))
+                                ->equal('.id', $getA->mikrotik_id)
+                                ->equal('comment', $request->comment); // Change the assigned profile
+                                // ->equal('comment', 'Updated by Laravel'); // Add or change comments
+
+                            $client->query($updateQuery)->read(); // Execute the update
+                            
+                        }
+                 
+                                
+                        
+                    
+
+                    } catch (\Exception $e) {
+                        // 5. Handle any connection or API errors
+                        Log::info('comment edit failed');
+                       
+                        return response()->json(['error' => 'Failed to update coment secret: ' . $e->getMessage()], 500);
                     }    
 
         }

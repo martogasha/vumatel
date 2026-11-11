@@ -138,12 +138,11 @@
                                     </div>
                                 </div>
                             
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <div class="form-group">
-                                        <label for="dob">1Day MSG *</label>
-                                        <input type="date" value="" class="form-control" name="one_day_before"/>
-                                    </div>
-                                </div>
+                                
+                                   <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <label>Comment: <b>{{$customer->location}}</b></label>
+                                <input type="text" class="form-control" name="comment">
+                            </div>
                             @endif
                         
                             <div class="col-12 form-group mg-t-8">
