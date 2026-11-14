@@ -409,6 +409,7 @@ class Billing extends Command
                                             }
                                         
                             $updateUserProfile = User::where('id', $getUser->id)->update(['last_name' => $bandwidth]);
+                            Log::info($getUser->id);
                             $updateUserProfileAmount = User::where('id', $getUser->id)->update(['package_amount' => $currentBalance]);
                             $packageAmount = $getUser->package_amount;
                             $newBalance = 0;
