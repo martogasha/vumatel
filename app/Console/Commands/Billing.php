@@ -384,6 +384,7 @@ class Billing extends Command
                 }
                 else{
                     Log::info('no duplicate');
+                    Log::info($getUser->id);
                               if($currentBalance>=1500 || $currentBalance == 1 || $currentBalance == 2){
 
                                            if($currentBalance>=1500 && $currentBalance < 2000){
