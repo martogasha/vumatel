@@ -81,7 +81,7 @@
                                     @endif
                                     <td>{{$customer->location}}</td>
                                     <td>{{$customer->phone}}</td>
-                                    <td>{{$customer->mik->name}}</td>
+                                    <td>CCR2004</td>
                                     <td>{{$customer->last_name}}</td>
                                     @if($customer->role==50)
                                         <td><span class="badge badge-warning">Sub-Account</span></td>
