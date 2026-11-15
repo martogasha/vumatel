@@ -47,7 +47,7 @@
                                         @else
                                         <td><span class="badge badge-success">Active</span></td>
                                         @endif  
-                                        <td>{{$customer->mik->name}} {{$customer->mikrotik_id}}</td>
+                                        <td>{{$customer->mik->name}}</td>
                                         <td>{{$customer->first_name}}</td>
                                         <td>{{$customer->location}}</td>
                                         <td>{{$customer->last_name}}</td>
