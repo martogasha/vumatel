@@ -230,7 +230,7 @@ class AdminController extends Controller
     }
     public function customers(){
         if (Auth::check()){
-            $customers = User::where('dis_status','false')->where('role','!=',4)->orWhere('dis_status','true')->orderByDesc('id')->get();
+            $customers = User::where('dis_status','false')->where('role','!=',4)->where('role', '!=', 1)->orWhere('dis_status','true')->orderByDesc('id')->get();
             $mikrotiks = Mik::all();
             return view('admin.customers',[
                 'customers'=>$customers,
