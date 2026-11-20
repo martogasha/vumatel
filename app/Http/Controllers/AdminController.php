@@ -3437,4 +3437,38 @@ class AdminController extends Controller
         ]);
     }
 
+    public function missingPppoe(){
+                $client = new Client([
+                'host' => '102.209.56.86',
+                'user' => 'admin',
+                'pass' => 'vuma@anxvtT3n',
+                'port' => 56911,
+            ]);
+
+            // 1. Fetch all PPPoE secrets from MikroTik in a single call
+            $query = new Query('/ppp/secret/print');
+            // Optional: only request fields you need to reduce payload size
+            $query->equal('.proplist', '.id,name,disabled');
+
+            $secrets = $client->query($query)->read();
+
+            // 2. Collect available IDs (e.g. "*1", "*2", "*A")
+            $availableIds = array_values(array_filter(array_column($secrets, '.id')));
+                $expectedIds = User::query()
+                ->whereNotNull('mikrotik_id')
+                ->pluck('mikrotik_id')
+                ->all();
+
+            // 3. Your expected IDs (from DB, config, or input array)
+            // $expectedIds = ['*1', '*2', '*99', '*1A'];
+
+            // 4. Find IDs present in expectedIds that are NOT in MikroTik
+            $missingIds = array_values(array_diff($expectedIds, $availableIds));
+
+            print_r([
+                'available_count' => count($missingIds),
+                'missing_ids'     => $missingIds,
+            ]);
+    }
+
 }

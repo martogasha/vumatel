@@ -160,6 +160,7 @@ Route::get('ajax', [AdminController::class, 'ajax']);
 Route::get('showMonth', [AdminController::class, 'showMonth']);
 Route::get('mpesa', [MpesaController::class, 'index']);
 Route::get('cash', [CashController::class, 'index']);
+Route::get('missingPppoe', [AdminController::class, 'missingPppoe']);
 Route::get('test', [CashController::class, 'test']);
 Route::post('testOne', [CashController::class, 'testOne']);
 Route::get('users', [AdminController::class, 'employees']);
