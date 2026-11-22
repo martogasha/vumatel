@@ -3474,7 +3474,7 @@ class AdminController extends Controller
     public function missingUser(){
         $invoices = Invoice::whereNotIn('user_id', function ($query) {
             $query->select('id')->from('users');
-        })->delete();
+        })->get();
         dd($invoices->pluck('user_id')->toArray());
     }
 
